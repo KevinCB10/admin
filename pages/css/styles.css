@@ -1,0 +1,491 @@
+/* =============================
+   FUENTE GLOBAL PARA TODO ADMINLTE
+   ============================= */
+html, body {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700; /* Antes 600 */
+  font-size: 14px;
+  color: #333;
+}
+
+/* Navbar y Sidebar */
+.navbar,
+.main-sidebar,
+.main-header,
+.main-footer,
+.nav-sidebar .nav-link,
+.nav-sidebar .nav-header {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 700; /* Antes 600 */
+}
+
+.brand-text {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 800; /* Antes 700 */
+}
+
+.dropdown-menu,
+.dropdown-item {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 700; /* Antes 600 */
+}
+
+.btn {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 800; /* Antes 700 */
+}
+
+.card,
+.card-header,
+.card-title,
+.card-body,
+.table,
+.table thead th,
+.table td,
+.small-box,
+.small-box .inner,
+.small-box-footer {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 700; /* Antes 600 */
+}
+
+/* Encabezados */
+h1, h2, h3, h4, h5, h6,
+.card-title {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 900; /* Antes 800 */
+}
+
+/* =============================
+   ANIMACIONES Y EFECTOS
+   ============================= */
+@keyframes fadeInUpSoft {
+  0% {
+    transform: translateY(3%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.fadeInUp-animation {
+  animation: fadeInUpSoft 1.2s ease-out;
+}
+
+.small-box.active-card {
+  transform: scale(1.02);
+  transition: 0.2s;
+}
+
+#card-proyectos.active-card {
+  box-shadow: 0 0px 25px 5px rgba(23, 162, 184, 0.7);
+}
+
+#card-tareas.active-card {
+  box-shadow: 0 0px 25px 5px rgba(255, 193, 7, 0.7);
+}
+
+#card-todos.active-card {
+  box-shadow: 0 0px 25px 5px rgba(40, 167, 69, 0.7);
+}
+
+#card-aprobaciones.active-card {
+  box-shadow: 0 0px 25px 5px rgba(220, 53, 69, 0.7);
+}
+
+.nav-link.active {
+  background-color: #007bff !important;
+  color: white !important;
+  cursor: pointer;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+/* =============================
+   LOADER
+   ============================= */
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-color: #ccc #0000;
+  animation: l16 1s infinite linear;
+}
+
+.loader::before,
+.loader::after {    
+  content: '';
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+}
+
+.loader::before {
+  border-color: #f03355 #0000;
+  animation: inherit; 
+  animation-duration: .5s;
+  animation-direction: reverse;
+}
+
+.loader::after {
+  margin: 8px;
+}
+
+@keyframes l16 { 
+  100% { transform: rotate(1turn) }
+}
+
+/* =============================
+   FILE ITEM
+   ============================= */
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background: #fff;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.file-item:hover {
+  background: #f8f9fa;
+}
+
+.file-thumb {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.file-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.file-item-name {
+  flex: 1;
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.file-item-name:hover {
+  text-decoration: underline;
+}
+
+.file-item-changed {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-right: 10px;
+}
+
+/* =============================
+   CARD FULLSCREEN
+   ============================= */
+.card-fullscreen {
+  height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  justify-content: flex-start; 
+}
+
+/* =============================
+   BOTÓN VOLVER
+   ============================= */
+#btn-volver {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;  
+  font-weight: 800; /* Antes 700 */
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+
+#btn-volver i {
+  margin-right: 4px;
+  font-size: 1.1rem;
+}
+
+/* =============================
+   INFO BOX CONTENT
+   ============================= */
+.info-box-content .row {
+  margin-bottom: 0.15rem !important;
+}
+
+.info-box-content p {
+  margin-bottom: 0 !important;
+}
+
+.info-box-content {
+  padding-top: 0.2rem !important;
+  padding-bottom: 0.2rem !important;
+}
+
+/* =============================
+   RESPONSIVE TABLAS
+   ============================= */
+@media (max-width: 992px) {
+  table.projects th,
+  table.projects td {
+    font-size: 12px;
+    white-space: nowrap;  
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 150px;
+  }
+}
+
+table.projects tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* =============================
+   SPINNER BOTÓN
+   ============================= */
+@keyframes spinMe {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+#btn-actualizar-tareas i.spin::before {
+  display: inline-block;
+  animation: spinMe 1s linear infinite;
+}
+
+/* =============================
+   ANIMACIONES FADE
+   ============================= */
+.fade-show {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.fade-hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* =============================
+   TABLAS
+   ============================= */
+.table td, 
+.table th {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table .text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table td button {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table td {
+  font-size: 13px;
+}
+
+.table {
+  font-size: 13px;
+  font-weight: 800; /* Antes 700 */
+  color: #333;
+}
+
+.table thead th {
+  font-weight: 900; /* Antes 800 */
+  font-size: 14px;
+  text-transform: none;  
+  color: #222;
+}
+
+/* =============================
+   ESTILO PARA DETALLE PROYECTO
+   ============================= */
+
+/* Título grande del proyecto */
+.project-info .card-header .card-title {
+  font-weight: 900; /* Antes 800 */
+  font-size: 1.2rem;
+}
+
+/* Títulos de cada bloque */
+.project-info .description-header {
+  font-weight: 800; /* Antes 700 */
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+/* Valores debajo de los títulos */
+.project-info .description-block span {
+  color: #6c757d;
+  font-weight: 700; /* Antes 500 */
+}
+
+/* Ajuste de separación */
+.project-info .description-block {
+  margin-bottom: 8px;
+}
+
+/* Línea divisoria más suave */
+.project-info hr {
+  border-top: 1px solid #e0e0e0;
+}
+
+/* ======== ESTILO DETALLE ESTRUCTURAL ======== */
+.card .card-title {
+  font-weight: 800; /* Antes 700 */
+  font-size: 1.25rem;
+  color: #222;
+}
+
+.card-header.bg-danger h4,
+.card-header.bg-secondary h5 {
+  font-weight: 800; /* Antes 700 */
+  font-size: 1rem;
+}
+
+.table td.text-bold {
+  font-weight: 800; /* Antes 600 */
+  color: #333;
+  white-space: nowrap;
+}
+
+.table td:not(.text-bold) {
+  font-weight: 700; /* Antes 400 */
+  color: #6c757d;
+}
+
+.table td {
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+/* Lista de tareas */
+.todo-list .text {
+  font-weight: 700; /* Antes 500 */
+  color: #333;
+}
+
+.todo-list i {
+  margin-left: 8px;
+  color: #6c757d;
+}
+
+/* Estilo primera tabla muestra/troquel */
+.tabla-muestra td.text-bold {
+  font-weight: 800; /* Antes 700 */
+  color: #000;
+}
+
+.tabla-muestra td:not(.text-bold) {
+  font-weight: 700; /* Antes 500 */
+  color: #555;
+}
+
+/* Formato tablas detalle gráfico */
+.table.table-striped td strong,
+.table.table-striped td.text-bold {
+  font-weight: 800; /* Antes 700 */
+  color: #000;
+}
+
+.table.table-striped td:not(.text-bold):not(:has(strong)) {
+  font-weight: 700; /* Antes 500 */
+  color: #555;
+}
+
+.table.table-striped td {
+  vertical-align: middle;
+  padding: 6px 10px;
+}
+
+.card-header.text-center h5,
+.card-header.text-center h4 {
+  font-weight: 800; /* Antes 700 */
+}
+
+.detalle-grafico .table.table-striped td strong,
+.detalle-grafico .table.table-striped td.text-bold {
+  font-weight: 800; /* Antes 700 */
+  color: #000;
+}
+
+.detalle-grafico .table.table-striped td:not(.text-bold):not(:has(strong)) {
+  font-weight: 700; /* Antes 500 */
+  color: #555;
+}
+
+/* Quitar scroll y permitir saltos de línea */
+.tabla-no-scroll {
+  overflow-x: visible !important;
+}
+
+.tabla-no-scroll td {
+  white-space: normal !important;
+  word-break: break-word;
+  vertical-align: top;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* Aumentar ancho fijo de la primera columna de títulos */
+.col-title {
+  min-width: 220px;
+  white-space: normal;
+  vertical-align: top;
+  padding-right: 10px;
+}
+
+.table td {
+  padding-top: 25px !important;
+  padding-bottom: 25px !important;
+  font-size: 14px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding: 0.75rem 1rem;
+}
+
+.task-item:hover {
+  background-color: #f1f5f9;
+}
+
+.task-item i {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.card-activa {
+  box-shadow: 0 0 0 4px #00000033;
+  transform: scale(1.01);
+  transition: all 0.2s ease-in-out;
+}

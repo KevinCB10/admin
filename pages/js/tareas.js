@@ -363,7 +363,7 @@ function guardarTarea(id) {
         
         return; // Detiene la función, no cierra el modal
     } else {
-        mostrarAlerta('Tarea Agregada', 'La tarea se ha asignado al Departamento Interno', 'success',1800);  
+        mostrarAlerta('Tarea Agregada', 'La tarea se ha asignado al Departamento Interno', 'success', 1800);  
     }
 
     // Si sí hay selección, entonces cierra el modal normalmente

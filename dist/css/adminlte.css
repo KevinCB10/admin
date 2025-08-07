@@ -44756,7 +44756,7 @@ select.form-control-sm ~ .select2-container--default .select2-selection--multipl
 }
 
 .description-block > .description-text {
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .description-block .description-icon {
