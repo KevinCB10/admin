@@ -4,6 +4,7 @@
 const API_BASE_URL = 'http://174.65.1.204:8080/';
 const departamentos = ['Departamento Interno', 'Departamento Externo'];
 
+
 // Rutas y vistas del proyecto
 const rutas = {
     'proyecto_detalle': '/pages/project-detail.html',
@@ -23,6 +24,7 @@ const rutas = {
     'tareas_agrupaciones': '/pages/tareas_agrupaciones.html'
 };
 
+
 // Método que guarda la selección del tab en el sidebar si paso de una página padre a una página hija.
 const guardarTabActivo = tabHref => localStorage.setItem('tab-activo', tabHref) 
 
@@ -38,14 +40,7 @@ const redireccionPagina = (pagina, id = null, origen = null) => {
     const url = id ? `${baseUrl}?id=${encodeURIComponent(id)}` : baseUrl;
     window.location.href = url;
 };
-
-window.addEventListener('load', function () {
-    setTimeout(() => {
-        const loader = document.getElementById('loaderContainer');
-        if (loader) loader.style.display = 'non';
-    }, 500); 
-});
-
+ 
 
 window.addEventListener('load', function () {
     setTimeout(() => {
@@ -309,7 +304,7 @@ function mostrarAlerta(titulo, texto, icono = 'info', tiempo = 1800) {
                     <tr>
                         <td colspan='12' class='text-center text-danger py-5 px-3'>
                             <i class='fas fa-exclamation-triangle'></i>
-                            Error al cargar las tareas ${
+                            Error al cargar las tareas $ {
                                 error.message === 'timeout' ? '(Tiempo de espera agotado)' : ''
                             } 
                         </td>
@@ -458,6 +453,7 @@ function mostrarContenido(tipo) {
                 contenedor.innerHTML = contenido;
 
                 requestAnimationFrame(() => {
+                    
                     if (tareasPendientes === null) {
                         renderTareas();
                         // getData();
@@ -525,8 +521,7 @@ function mostrarContenido(tipo) {
                             <table class='table table-striped projects'>
                                 <thead>
                                     <tr>
-                                        <th style='width: 1%'>
-                                             
+                                        <th style='width: 1%'> 
                                         </th>
                                         <th style='width: 20%'>
                                             Nombre del Proyecto
@@ -672,18 +667,45 @@ document.addEventListener('DOMContentLoaded', function () {
     mostrarContenido(ultimaCard);
 });
 
-window.addEventListener('load', function () {
-    setTimeout(() => {
-        const loader = document.getElementById('loaderContainer');
-        if (loader) loader.style.display = 'none';
-    }, 1000); 
-});
-
-
+ 
 // ======================== FIN DASHBOARD =============================
 
 
 // ===================== DETALLE CLIENTE ========================
+
+// clientes
+const clientes = [
+  {
+    nombre: "VIÑEDOS Y BODEGAS LYNG, S.L.",
+    codigo: "8842",
+    email: "contacto@lyng.com",
+    telefono: "600123456"
+  },
+  {
+    nombre: "VIÑEDOS Y BODEGAS XXI,S.L.",
+    codigo: "11274",
+    email: "contacto@xxi.com",
+    telefono: "600234567"
+  },
+  {
+    nombre: "WARDA TRADING S.A.R.A.U.",
+    codigo: "42765",
+    email: "info@warda.com",
+    telefono: "600345678"
+  },
+  {
+    nombre: "WILKHAHN, S.A.",
+    codigo: "22985",
+    email: "info@wilkahn.com",
+    telefono: "600456789"
+  },
+  {
+    nombre: "WINES AND COMPANY",
+    codigo: "2312",
+    email: "ventas@wines.com",
+    telefono: "600567890"
+  }
+];
 
 const folderData = {
 
@@ -774,6 +796,7 @@ const renderFolder = (folderName) => {
         }
 
     });
+
 };
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -802,16 +825,16 @@ function renderBotonVolver() {
 
   contenedor.innerHTML = `
     <button id='btn-volver' class='btn btn-outline-info shadow-sm d-flex align-items-center'>
-        <i class='fas fa-chevron-left mr-2'></i> Volver
+      <i class='fas fa-chevron-left mr-2'></i> Volver
     </button>
   `;
 
   const btnVolver = document.getElementById('btn-volver');
   if (btnVolver) {
-    btnVolver.addEventListener('click', () => { 
-        window.history.length > 1
-            ? window.history.back()
-            : window.location.href = '/index.html'; 
+    btnVolver.addEventListener('click', () => {
+      window.history.length > 1 
+      ? window.history.back() 
+      : window.location.href = '/index.html';
     });
   }
 }
@@ -820,6 +843,41 @@ function formatearFecha(fecha) {
   const [anio, mes, dia] = fecha.split('-');
   return `${dia}/${mes}/${anio}`;
 }
+
+// SCRIPT CLIENTES
  
+document.addEventListener('DOMContentLoaded', function () {
+  const contenedor = document.getElementById('tabla-clientes');
+  if (!contenedor) return;
+
+  clientes.forEach(cliente => {
+    const inicial = cliente.nombre.trim().charAt(0).toUpperCase();
+
+    const fila = `
+      <tr style="cursor: pointer;">
+        <td class="col-cliente">
+          <div class='d-flex align-items-center'>
+            <div class='avatar-circle mr-3'>${inicial}</div>
+            <div>
+              <div class='font-weight-bold info-destacada'>${cliente.nombre}</div>
+            </div>
+          </div>
+        </td>
+        <td class="col-codigo">
+          <div class="info-destacada">${cliente.codigo}</div>
+        </td> 
+        <td class="col-acciones">
+          <button class='btn btn-sm btn-primary'><i class='fas fa-search'></i></button>
+          <button class='btn btn-sm btn-info'><i class='fas fa-edit'></i></button>
+          <button class='btn btn-sm btn-danger'><i class='fas fa-trash-alt'></i></button>
+        </td>
+      </tr>
+    `;
+
+    contenedor.insertAdjacentHTML('beforeend', fila);
+  });
+});
+
+
 
 document.addEventListener('DOMContentLoaded', renderBotonVolver);

@@ -1,10 +1,10 @@
 // ==================== VARIABLES GLOBALES ====================
 
 // Lista de usuarios simulados que podrían ser asignados a tareas
-const usuarios = ["Kevin de León", "María Gómez", "Luis Pérez", "Ana Torres", "Carlos Mendoza"];
+const usuarios = ['Kevin de León', 'María Gómez', 'Luis Pérez', 'Ana Torres', 'Carlos Mendoza'];
 
 // Departamentos a los que se pueden asignar las tareas
-const departamentos = ['Departamento Interno', "Departamento Externo"];
+const departamentos = ['Departamento Interno', 'Departamento Externo'];
 
 // Lista de gestores disponibles
 const gestores = ['Gestor 1', 'Gestor 2', 'Gestor 3', 'Gestor 4', 'Gestor 5'];
@@ -43,36 +43,36 @@ function crearTarea(id, autoFocus = false) {
     // Obtener estado correspondiente del gestor para esta tarea
     const estadosImpares = estados.filter((_, index) => (index + 1) % 2 === 1);
     const estadoAsignado = estadosImpares[Math.floor((id - 1) / 2)];
-    const esEstadoUno = estadoAsignado && estadoAsignado.startsWith("1. Solicitud de Tarea (Gestor)");
+    const esEstadoUno = estadoAsignado && estadoAsignado.startsWith('1. Solicitud de Tarea (Gestor)');
 
     // ==================== TAREA IMPAR - TIPO GESTOR ====================
     if (id % 2 === 1) {
         // Si es el primer estado, genera un modal para seleccionar departamento
         const modalHTML = esEstadoUno ? `
-        <div class="modal fade" id="modal-sm-${id}" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Asignar Departamento</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span> 
+        <div class='modal fade' id='modal-sm-${id}' data-backdrop='static' data-keyboard='false'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h4 class='modal-title'>Asignar Departamento</h4>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span> 
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group mt-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio-${id}">
-                                <label class="form-check-label">Departamento Interno</label>
+                    <div class='modal-body'>
+                        <div class='form-group mt-2'>
+                            <div class='form-check'>
+                                <input class='form-check-input' type='radio' name='radio-${id}'>
+                                <label class='form-check-label'>Departamento Interno</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio-${id}">
-                                <label class="form-check-label">Departamento Externo</label>
+                            <div class='form-check'>
+                                <input class='form-check-input' type='radio' name='radio-${id}'>
+                                <label class='form-check-label'>Departamento Externo</label>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-end">
-                        <button type="button" class="btn btn-default mr-3" data-dismiss="modal">Cancelar</button>
-                        <button id="buttonAgregarTareaImpar${id}" onclick="guardarTarea(${id})"  type="button" class="btn btn-success agregar-tarea-impar">Guardar</button>
+                    <div class='modal-footer justify-content-end'>
+                        <button type='button' class='btn btn-default mr-3' data-dismiss='modal'>Cancelar</button>
+                        <button id='buttonAgregarTareaImpar${id}' onclick='guardarTarea(${id})'  type='button' class='btn btn-success agregar-tarea-impar'>Guardar</button>
                     </div>
                 </div>
             </div>
@@ -80,34 +80,34 @@ function crearTarea(id, autoFocus = false) {
             
         // Botón que lanza el modal si aplica, o solo ejecuta la acción
         const botonModal = esEstadoUno
-            ? `<button type="button" data-toggle="modal" data-target="#modal-sm-${id}" class="btn btn-sm bg-gradient-success addTask ml-3">Agregar Tarea<i class="fas fa-plus ml-1"></i></button>`
-            : `<button type="button" class="btn btn-sm bg-gradient-success agregar-tarea-impar addTask  ml-3">Agregar Tarea<i class="fas fa-plus ml-1"></i></button>`;
+            ? `<button type='button' data-toggle='modal' data-target='#modal-sm-${id}' class='btn btn-sm bg-gradient-success addTask ml-3'>Agregar Tarea<i class='fas fa-plus ml-1'></i></button>`
+            : `<button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-impar addTask  ml-3'>Agregar Tarea<i class='fas fa-plus ml-1'></i></button>`;
 
         // HTML de la tarjeta de tarea impar
         divTarea.innerHTML = `
             ${modalHTML}
-            <div class="row justify-content-center info-box-content">
-                <div class="  " style="width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <h5><span class="badge badge-info">#${id}</span> Solicitar Maqueta</h5>
+            <div class='row justify-content-center info-box-content'>
+                <div class='  ' style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
+                    <div class='card-header'>
+                        <div class='d-flex align-items-center justify-content-between mb-2'>
+                            <h5><span class='badge badge-info'>#${id}</span> Solicitar Maqueta</h5>
                             ${botonModal}
                         </div>
                     </div>
-                    <div class="card-body">
-                        <h6>Estado de la tarea <span class="badge badge-secondary">Iniciada</span></h6>
-                        <div class="row mt-3">
-                            <div class="col-12 col-md-4 mb-2">
-                                <span class="info-box-number text-left">Iniciada:</span>
-                                <span class="info-box-number text-left text-muted ml-1">${fecha}</span>
+                    <div class='card-body'>
+                        <h6>Estado de la tarea <span class='badge badge-secondary'>Iniciada</span></h6>
+                        <div class='row mt-3'>
+                            <div class='col-12 col-md-4 mb-2'>
+                                <span class='info-box-number text-left'>Iniciada:</span>
+                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
                             </div>
-                            <div class="col-12 col-md-4 mb-2">
-                                <span class="info-box-number text-left">Completada:</span>
-                                <span class="info-box-number text-left text-muted ml-1">${fecha}</span>
+                            <div class='col-12 col-md-4 mb-2'>
+                                <span class='info-box-number text-left'>Completada:</span>
+                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
                             </div>
-                            <div class="col-12 col-md-4 mb-2">
-                                <span class="info-box-number text-left">Gestor:</span>
-                                <span class="info-box-number text-left text-muted ml-1">Kevin de León</span>
+                            <div class='col-12 col-md-4 mb-2'>
+                                <span class='info-box-number text-left'>Gestor:</span>
+                                <span class='info-box-number text-left text-muted ml-1'>Kevin de León</span>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ function crearTarea(id, autoFocus = false) {
         // Lógica de botones
         const botonAgregarImpar = divTarea.querySelector('.agregar-tarea-impar');
         const botonAddTask = divTarea.querySelector('.addTask');
-        const radios = document.querySelectorAll(`#modal-sm-${id} input[name="radio-${id}"]`);
+        const radios = document.querySelectorAll(`#modal-sm-${id} input[name='radio-${id}']`);
         
         if (botonAgregarImpar) {
             botonAgregarImpar.addEventListener('click', () => {
@@ -141,11 +141,11 @@ function crearTarea(id, autoFocus = false) {
                     botonAddTask.style.cursor = 'not-allowed';  
                 }  
                 if (algunoMarcado) {
-                    cambiarEstado(id, "Completada"); 
+                    cambiarEstado(id, 'Completada'); 
                 }
 
                 if (!algunoMarcado && !esEstadoUno) {
-                    cambiarEstado(id, "Completada");  
+                    cambiarEstado(id, 'Completada');  
                 }
             });
         }
@@ -153,51 +153,51 @@ function crearTarea(id, autoFocus = false) {
     // ==================== TAREA PAR - TIPO DISEÑADOR ====================
     } else {
         divTarea.innerHTML = `
-            <div class="row justify-content-center mt-2">
-                <div class=" " style="width: 70%; box-shadow: 0px; background-color: #f8f9fa !important">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <h5><span class="badge badge-info">#${id}</span> Crear Maqueta</h5>
-                            <button type="button" class="btn btn-sm bg-gradient-success agregar-tarea-par">Completar Tarea <i class="fas fa-check"></i></button>
+            <div class='row justify-content-center mt-2'>
+                <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
+                    <div class='card-header'>
+                        <div class='d-flex align-items-center justify-content-between mb-2'>
+                            <h5><span class='badge badge-info'>#${id}</span> Crear Maqueta</h5>
+                            <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row mt-1 g-2 align-items-end mb-3">
-                            <div class="col-md-6 mb-2" id="estado-container-${id}">
-                                <label class="form-label font-weight-bold">Estado:</label>
-                                <div class="input-group input-group-sm">
-                                    <input type="text" id="estado-text-${id}" class="form-control" readonly />
-                                    <select id="estado-select-${id}" class="form-control d-none mr-2">
-                                        ${estados.map(e => `<option value="${e}">${e}</option>`).join('')}
+                    <div class='card-body'>
+                        <div class='row mt-1 g-2 align-items-end mb-3'>
+                            <div class='col-md-6 mb-2' id='estado-container-${id}'>
+                                <label class='form-label font-weight-bold'>Estado:</label>
+                                <div class='input-group input-group-sm'>
+                                    <input type='text' id='estado-text-${id}' class='form-control' readonly />
+                                    <select id='estado-select-${id}' class='form-control d-none mr-2'>
+                                        ${estados.map(e => `<option value='${e}'>${e}</option>`).join('')}
                                     </select>
-                                    <button type="button" class="swalDefaultSuccess" style="padding: 4px; border: none; background-color: transparent;" id="btn-cambiar-estado-${id}" title="Cambiar Estado">
-                                        <i class="fa-solid fa-pen-to-square text-info h5"></i>
+                                    <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
+                                        <i class='fa-solid fa-pen-to-square text-info h5'></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="callout callout-info" style="padding: 7px; box-shadow: none;">
+                            <div class='col-md-6'>
+                                <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
                                     <p>Departamento Interno</p>
                                 </div>
                             </div>
 
-                            <div class="form-floating col-md-6 mt-3">
-                                <textarea class="form-control" placeholder="Indicaciones" id="floatingTextarea2-${id}" style="height: 100px"></textarea>
+                            <div class='form-floating col-md-6 mt-3'>
+                                <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 100px'></textarea>
                             </div>
                         </div> 
-                        <div class="row mt-5 justify-content-center">
-                            <div class="col-12 col-md-4 mb-2">
-                                <span class="info-box-number text-left">Iniciada:</span>
-                                <span class="info-box-number text-left text-muted ml-1">${fecha}</span>
+                        <div class='row mt-5 justify-content-center'>
+                            <div class='col-12 col-md-4 mb-2'>
+                                <span class='info-box-number text-left'>Iniciada:</span>
+                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
                             </div>
-                            <div class="col-12 col-md-4 mb-2">
-                                <span class="info-box-number text-left">Completada:</span>
-                                <span class="info-box-number text-left text-muted ml-1">${fecha}</span>
+                            <div class='col-12 col-md-4 mb-2'>
+                                <span class='info-box-number text-left'>Completada:</span>
+                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
                             </div>
-                            <div class="col-12 col-md-4 mb-2">
-                                <span class="info-box-number text-left">Asignada a:</span>
-                                <span class="info-box-number text-left text-muted ml-1">Comercial</span>
+                            <div class='col-12 col-md-4 mb-2'>
+                                <span class='info-box-number text-left'>Asignada a:</span>
+                                <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
                             </div>
                         </div>
                     </div>
@@ -234,16 +234,16 @@ function crearTarea(id, autoFocus = false) {
             if (estadoSelect.classList.contains('d-none')) {
                 estadoText.classList.add('d-none');
                 estadoSelect.classList.remove('d-none');
-                btnCambiarEstado.innerHTML = `<i class="fa-solid fa-floppy-disk text-success h5"></i>`;
-                btnCambiarEstado.title = "Guardar";
+                btnCambiarEstado.innerHTML = `<i class='fa-solid fa-floppy-disk text-success h5'></i>`;
+                btnCambiarEstado.title = 'Guardar';
                 estadoSelect.focus();
             } else {
                 const nuevoEstado = estadoSelect.value;
                 estadoText.value = nuevoEstado;
                 estadoText.classList.remove('d-none');
                 estadoSelect.classList.add('d-none'); 
-                btnCambiarEstado.title = "Cambiar Estado";
-                btnCambiarEstado.innerHTML = `<i class="fa-solid fa-pen-to-square text-info h5"></i>`;
+                btnCambiarEstado.title = 'Cambiar Estado';
+                btnCambiarEstado.innerHTML = `<i class='fa-solid fa-pen-to-square text-info h5'></i>`;
                 
                 // Toast de confirmación
                 const Toast = Swal.mixin({
@@ -275,7 +275,7 @@ function crearTarea(id, autoFocus = false) {
                 botonAgregarPar.classList.remove('bg-gradient-success');
                 botonAgregarPar.classList.add('btn-info');
                 botonAgregarPar.style.cursor = 'not-allowed';
-                cambiarEstado(id, "Completada");
+                cambiarEstado(id, 'Completada');
             });
         }
     }
@@ -314,17 +314,17 @@ function showFilePreview(file, id) {
     if (placeholder) placeholder.classList.add('d-none');
 
     preview.innerHTML = `
-        <div class="position-relative text-center mt-2">
-            <i class="fas ${iconClass}" style="font-size: 2.5rem;"></i>
-            <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" style="font-size: 0.7rem;" aria-label="Eliminar archivo" onclick="removeSelectedFile(${id})"></button>
-            <div class="small mt-2 text-muted">${file.name}</div>
+        <div class='position-relative text-center mt-2'>
+            <i class='fas ${iconClass}' style='font-size: 2.5rem;'></i>
+            <button type='button' class='btn-close position-absolute top-0 start-100 translate-middle' style='font-size: 0.7rem;' aria-label='Eliminar archivo' onclick='removeSelectedFile(${id})'></button>
+            <div class='small mt-2 text-muted'>${file.name}</div>
         </div>
     `;
 
     if (link) {
         link.href = url;
         link.download = file.name;
-        link.innerHTML = `<span class="d-inline-block text-truncate" style="max-width: 100px;">${file.name}</span> <i class="fa-solid fa-file-arrow-down mb-2"></i>`;
+        link.innerHTML = `<span class='d-inline-block text-truncate' style='max-width: 100px;'>${file.name}</span> <i class='fa-solid fa-file-arrow-down mb-2'></i>`;
         link.classList.remove('text-muted', 'disabled-link');
         link.style.pointerEvents = 'auto';
     }
@@ -352,7 +352,7 @@ function removeSelectedFile(id) {
 // Cierra el modal al guardar
 function guardarTarea(id) { 
     // Selecciona todos los radios del modal correspondiente
-    const radios = document.querySelectorAll(`#modal-sm-${id} input[name="radio-${id}"]`);
+    const radios = document.querySelectorAll(`#modal-sm-${id} input[name='radio-${id}']`);
 
     // Verifica si al menos uno está seleccionado
     const algunoMarcado = Array.from(radios).some(radio => radio.checked);
@@ -409,7 +409,7 @@ function mostrarAlerta(titulo, texto, icono = 'info', tiempo = 1800) {
         }
     }).then((result) => {
         if (result.dismiss === Swal.DismissReason.timer) {
-            console.log("Alerta cerrada automáticamente");
+            console.log('Alerta cerrada automáticamente');
         }
     });
 }

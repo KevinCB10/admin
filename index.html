@@ -4,9 +4,73 @@
       <meta charset='utf-8'>
       <meta name='viewport' content='width=device-width, initial-scale=1'>
       <title>Admin Tareas</title> 
+
+      <style>
+        #session-modal {
+          position: fixed;
+          top: 0; left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0,0,0,0.6);
+          display: none !important;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+
+        #session-modal.active {
+          display: flex !important;
+        }
+
+        #session-modal .modal-content {
+          background: white;
+          padding: 2rem;
+          border-radius: 10px;
+          text-align: center;
+          max-width: 400px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.4);
+        }
+
+        #session-modal button {
+          margin: 1rem;
+          padding: 0.5rem 1rem;
+          font-size: 16px;
+        }
+
+        #expired-modal {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        display: none !important;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+      }
+
+      #expired-modal.active {
+        display: flex !important;
+      }
+
+      #expired-modal .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 400px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      }
+
+      #expired-modal button {
+        margin: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 16px;
+      }
+      </style>
+
       <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
       <link rel='stylesheet' href='/pages/css/styles.css'>
-      <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback'> 
       <link rel='stylesheet' href='plugins/fontawesome-free/css/all.min.css'> 
       <link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'> 
       <link rel='stylesheet' href='plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css'> 
@@ -20,7 +84,22 @@
       <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
     </head>
 
-    <body class='hold-transition sidebar-mini layout-fixed'>
+    <body class='hold-transition sidebar-mini layout-fixed'> 
+      <div id="session-modal">
+        <div class="modal-content">
+          <p>¿Sigues ahí?</p>
+          <button id="stay-btn">Sí</button>
+          <button id="logout-btn">No</button>
+        </div>
+      </div>
+
+      <div id="expired-modal">
+        <div class="modal-content">
+          <p>❌ Tu sesión ha expirado por inactividad.</p>
+          <button id="expired-ok-btn">Aceptar</button>
+        </div>
+      </div>
+
       <div class='wrapper'> 
         <div id='loaderContainer' class='loader-overlay'>
           <div class='loader'></div>
@@ -120,8 +199,7 @@
       </div>
   
       <script src='plugins/jquery/jquery.min.js'></script> 
-      <script src='plugins/jquery-ui/jquery-ui.min.js'></script> 
-
+      <script src='plugins/jquery-ui/jquery-ui.min.js'></script>  
 
       <script src='plugins/bootstrap/js/bootstrap.bundle.min.js'></script> 
       <script src='plugins/moment/moment.min.js'></script>
@@ -135,10 +213,187 @@
       <script src='/pages/js/scripts.js'></script>
       <link   href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr' crossorigin='anonymous'>
       <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js' integrity='sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q' crossorigin='anonymous'></script>
-    
-    
+  
       <script>
-        $.widget.bridge('uibutton', $.ui.button) 
+        $.widget.bridge('uibutton', $.ui.button)    
+
+        // // Tiempo máximo de inactividad antes de mostrar el modal (30 segundos)
+        // const LIMITE_INACTIVIDAD = 30000;
+
+        // // Tiempo que tiene el usuario para responder al modal (10 segundos)
+        // const TIEMPO_MODAL = 10000;
+
+        // // ID único para identificar esta pestaña
+        // const idPestania = Date.now().toString() + Math.random().toString(36).slice(2);
+
+        // // Claves para localStorage que se comparten entre pestañas
+        // const CLAVE_LIDER = 'pestania-activa';
+        // const CLAVE_SESION_EXPIRADA = 'sesion-expirada';
+        // const CLAVE_MODAL_VISIBLE = 'modal-visible';
+        // const CLAVE_MODAL_RESPUESTA = 'modal-respuesta';
+
+        // // Estado de la pestaña
+        // let esLider = false;
+        // let sesionExpirada = false;
+
+        // // Temporizadores
+        // let temporizadorInactividad;
+        // let temporizadorModal;
+        // let intervaloCronometro;
+        // let segundosInactivo = 0;
+
+        // // Referencias al DOM
+        // const modalInactividad = document.getElementById('session-modal');
+        // const botonSeguir = document.getElementById('stay-btn');
+        // const botonSalir = document.getElementById('logout-btn');
+
+        // // 🔔 Mostrar modal de inactividad en esta pestaña
+        // function mostrarModal() {
+        //   modalInactividad.classList.add('active');
+        //   localStorage.setItem(CLAVE_MODAL_VISIBLE, Date.now().toString());
+
+        //   temporizadorModal = setTimeout(() => {
+        //     expirarSesion();
+        //   }, TIEMPO_MODAL);
+        // }
+
+        // // 🧹 Ocultar modal en esta pestaña
+        // function ocultarModal() {
+        //   modalInactividad.classList.remove('active');
+        //   clearTimeout(temporizadorModal);
+        //   clearInterval(intervaloCronometro);
+        // }
+
+        // // 🔁 Reiniciar contador de inactividad
+        // function reiniciarContadorInactividad() {
+        //   if (!esLider || sesionExpirada) return;
+
+        //   clearTimeout(temporizadorInactividad);
+        //   clearInterval(intervaloCronometro);
+        //   segundosInactivo = 0;
+
+        //   console.log(`[${new Date().toLocaleTimeString()}] 🔄 Temporizador reiniciado`);
+
+        //   intervaloCronometro = setInterval(() => {
+        //     segundosInactivo++;
+        //     console.log(`🕒 Inactividad: ${segundosInactivo}s...`);
+        //   }, 1000);
+
+        //   temporizadorInactividad = setTimeout(() => {
+        //     clearInterval(intervaloCronometro);
+        //     console.log(`[${new Date().toLocaleTimeString()}] ⏰ Mostrando modal de inactividad`);
+        //     mostrarModal();
+        //   }, LIMITE_INACTIVIDAD);
+        // }
+
+        // // ❌ Expirar sesión y notificar a otras pestañas
+        // function expirarSesion() {
+        //   if (sesionExpirada) return;
+        //   sesionExpirada = true;
+        //   esLider = false;
+        //   ocultarModal();
+        //   console.log(`[${new Date().toLocaleTimeString()}] ❌ SESIÓN EXPIRADA`);
+        //   localStorage.setItem(CLAVE_SESION_EXPIRADA, Date.now().toString());
+        // }
+
+        // // ✅ Esta pestaña toma el liderazgo
+        // function convertirEnLider() {
+        //   localStorage.setItem(CLAVE_LIDER, idPestania);
+        // }
+
+        // // 🔍 Verifica si esta pestaña es la líder actual
+        // function verificarLiderazgo() {
+        //   const liderActual = localStorage.getItem(CLAVE_LIDER);
+        //   if (liderActual === idPestania) {
+        //     esLider = true;
+        //     sesionExpirada = false;
+        //     console.log(`[${new Date().toLocaleTimeString()}] ✅ Esta pestaña es la líder`);
+        //     reiniciarContadorInactividad();
+        //   } else {
+        //     esLider = false;
+        //     clearTimeout(temporizadorInactividad);
+        //     clearInterval(intervaloCronometro);
+        //     ocultarModal();
+        //     console.log(`[${new Date().toLocaleTimeString()}] ❌ Esta pestaña no es líder`);
+        //   }
+        // }
+
+        // // 📦 Escucha eventos de otras pestañas
+        // window.addEventListener('storage', (evento) => {
+        //   if (evento.key === CLAVE_LIDER) {
+        //     verificarLiderazgo();
+        //   }
+
+        //   if (evento.key === CLAVE_SESION_EXPIRADA) {
+        //     if (!sesionExpirada) {
+        //       sesionExpirada = true;
+        //       clearInterval(intervaloCronometro);
+        //       ocultarModal();
+        //       console.log(`[${new Date().toLocaleTimeString()}] ❌ SESIÓN EXPIRADA (notificada por otra pestaña)`);
+        //     }
+        //   }
+
+        //   if (evento.key === CLAVE_MODAL_VISIBLE) {
+        //     if (!sesionExpirada) {
+        //       modalInactividad.classList.add('active');
+        //       console.log(`[${new Date().toLocaleTimeString()}] ⚠️ Modal mostrado por evento de otra pestaña`);
+        //     }
+        //   }
+
+        //   if (evento.key === CLAVE_MODAL_RESPUESTA) {
+        //     if (!sesionExpirada) {
+        //       ocultarModal();
+        //       console.log(`[${new Date().toLocaleTimeString()}] 🧹 Modal ocultado por respuesta en otra pestaña`);
+        //     }
+        //   }
+        // });
+
+        // // ▶️ Evento: el usuario hace clic en "Sí"
+        // botonSeguir.addEventListener('click', () => {
+        //   console.log(`[${new Date().toLocaleTimeString()}] ✅ Usuario sigue activo`);
+        //   ocultarModal();
+        //   localStorage.setItem(CLAVE_MODAL_RESPUESTA, Date.now().toString());
+        //   reiniciarContadorInactividad();
+        // });
+
+        // // ▶️ Evento: el usuario hace clic en "No"
+        // botonSalir.addEventListener('click', () => {
+        //   expirarSesion();
+        // });
+
+        // // 🎯 Detectar actividad del usuario en esta pestaña
+        // ['mousemove', 'keydown', 'click'].forEach(evento =>
+        //   window.addEventListener(evento, () => {
+        //     if (esLider && !sesionExpirada) {
+        //       reiniciarContadorInactividad();
+        //     }
+        //   })
+        // );
+
+        // // 🟢 Al cargar, intentar convertirse en líder
+        // setTimeout(() => {
+        //   convertirEnLider();
+        //   verificarLiderazgo();
+        // }, 100);
+
+        // // 🚪 Si se cierra la pestaña, liberar el liderazgo si lo tenía
+        // window.addEventListener('beforeunload', () => {
+        //   const liderActual = localStorage.getItem(CLAVE_LIDER);
+        //   if (liderActual === idPestania) {
+        //     localStorage.removeItem(CLAVE_LIDER);
+        //   }
+        // });
+
+        // // 👀 Cambiar de líder al enfocar esta pestaña (visibilidad)
+        // document.addEventListener('visibilitychange', () => {
+        //   if (document.visibilityState === 'visible' && !sesionExpirada) {
+        //     console.log(`[${new Date().toLocaleTimeString()}] 👀 Pestaña activa. Solicitando liderazgo...`);
+        //     convertirEnLider();
+        //     verificarLiderazgo();
+        //     reiniciarContadorInactividad();
+        //   }
+        // });
+
       </script>
     </body>
   </html>
