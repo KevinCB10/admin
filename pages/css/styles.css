@@ -1,6 +1,6 @@
 /* =============================
-   FUENTE GLOBAL PARA TODO ADMINLTE
-   ============================= */
+  FUENTE GLOBAL PARA TODO
+  ============================= */
 html, body {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700; /* Antes 600 */
@@ -744,3 +744,19 @@ table.projects tbody tr:hover {
   border-radius: 0.4rem !important;
 }
 
+.td-fonts {
+  font-size: 13px !important; 
+}
+ 
+
+@media (max-width: 1400px) {
+  .detalle-grid .col-stack {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  .scroll-desktop{
+    height: auto !important;
+    overflow: visible !important;
+    margin-bottom: 1rem;
+  }
+}

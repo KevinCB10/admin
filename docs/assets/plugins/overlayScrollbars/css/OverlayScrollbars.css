@@ -54,15 +54,18 @@ body.os-dragging * {
                 -ms-grid-row-align: flex-start;
             align-items: flex-start;
 }
+
 .os-host-flexbox {
     overflow: hidden !important;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
+
 .os-host-flexbox > .os-size-auto-observer {
     height: inherit !important;
 }
+
 .os-host-flexbox > .os-content-glue {
     -webkit-box-flex: 1;
         -ms-flex-positive: 1;
@@ -70,6 +73,7 @@ body.os-dragging * {
     -ms-flex-negative: 0;
         flex-shrink: 0;
 }
+
 .os-host-flexbox > .os-size-auto-observer,
 .os-host-flexbox > .os-content-glue {
     min-height: 0;

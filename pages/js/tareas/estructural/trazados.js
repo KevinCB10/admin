@@ -73,8 +73,8 @@ function crearTareaTrz(id, autoFocus = false) {
         // HTML de la tarjeta de tarea impar
         divTarea.innerHTML = `
             ${modalHTML}
-            <div class='row justify-content-center info-box-content fadeInUp-animation'>
-                <div class=' style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
+            <div class='row justify-content-center info-box-content fadeInUp-animation pb-4 mb-4'>
+                <div class='  ' style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
                     <div class='card-header'>
                         <div class='d-flex align-items-center justify-content-between mb-2'>
                             <h5><span class='badge badge-info'>#${id}</span> Solicitar Trazado</h5>
@@ -121,10 +121,12 @@ function crearTareaTrz(id, autoFocus = false) {
         const radios = document.querySelectorAll(`#modal-sm-${id} input[name='radio-${id}']`);
         
         if (botonAgregarImpar) {
+
             botonAgregarImpar.addEventListener('click', () => {
                 const algunoMarcado = Array.from(radios).some((radio =>{  
                     return radio.checked
                 }));
+
                 if (algunoMarcado || !esEstadoUno) {
                     botonAddTask.disabled = true;
                     botonAddTask.innerHTML = 'Agregada <span style="color: white;"><i class="fa-solid fa-circle-check"></i></span>';
@@ -132,6 +134,7 @@ function crearTareaTrz(id, autoFocus = false) {
                     botonAddTask.classList.add('btn-info');
                     botonAddTask.style.cursor = 'not-allowed';  
                 }  
+
                 if (algunoMarcado) {
                     cambiarEstadoTrz(id, 'Completada'); 
                 }
@@ -214,7 +217,6 @@ function crearTareaTrz(id, autoFocus = false) {
         // Estado inicial para diseñador
         const estadosImpares = estados_trz.filter((_, index) => (index + 1) % 2 === 1);
         const estadoValido = estadosImpares[Math.floor((id - 1) / 2)] || estadosImpares[estadosImpares.length - 1];
-
 
         if (estadoSelect && estadoText) {
             estadoSelect.value = estadoValido;

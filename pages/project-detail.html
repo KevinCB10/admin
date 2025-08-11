@@ -15,8 +15,7 @@
       <div class='wrapper'> 
         <div id='loaderContainer' class='loader-overlay'>
           <div class='loader'></div>
-        </div>
-
+        </div>  
         <div id='sidebar-placeholder'></div> 
         <nav class='main-header navbar navbar-expand navbar-white navbar-light'>
           <ul class='navbar-nav'>
@@ -109,9 +108,9 @@
                       </div>
                     </div>
 
-                    <button type='button' onclick='redireccionPagina("detalle_cliente")' class='ml-2 btn btn-outline-info btn-sm'>
-                      Ver detalles <i class='fa-solid fa-chevron-right'></i>
-                    </button>
+                    <button id='btn-volver' onclick='redireccionPagina("detalle_cliente")' class='btn btn-outline-info shadow-sm d-flex align-items-center'>
+                      Ver detalles <i class='ml-2 fa-solid fa-chevron-right'></i>
+                    </button> 
 
                     <div class='row mt-5'>
                       <div class='col-md-6 col-12 mb-4'>
@@ -123,16 +122,16 @@
                             <table class='table table-striped'>
                               <tbody>
                                 <tr>
-                                  <td class='text-bold'>N° Muestra:</td><td>345345</td>
-                                  <td class='text-bold'>N° Troquel:</td><td>234424</td>
+                                  <td class='text-bold td-fonts'>N° Muestra:</td><td class="td-fonts">345345</td>
+                                  <td class='text-bold td-fonts'>N° Troquel:</td><td class="td-fonts">234424</td>
                                 </tr>
                                 <tr>
-                                  <td class='text-bold'>Estado Muestra:</td><td>No iniciada</td>
-                                  <td class='text-bold'>Estado Troquel:</td><td>Pendiente</td>
+                                  <td class='text-bold td-fonts'>Estado Muestra:</td><td class="td-fonts">No iniciada</td>
+                                  <td class='text-bold td-fonts'>Estado Troquel:</td><td class="td-fonts">Pendiente</td>
                                 </tr>
                                 <tr>
-                                  <td class='text-bold'>Asignado:</td><td>Salva</td>
-                                  <td class='text-bold'>Proveedor:</td><td>Jose De León</td>
+                                  <td class='text-bold td-fonts'>Asignado:</td><td class="td-fonts">Salva</td>
+                                  <td class='text-bold td-fonts'>Proveedor:</td><td class="td-fonts">Jose De León</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -154,16 +153,16 @@
                             <table class='table table-striped'>
                               <tbody>
                                 <tr>
-                                  <td class='text-bold'>N° Boceto:</td><td>345345</td>
-                                  <td class='text-bold'>N° Impresión:</td><td>234424</td>
+                                  <td class='text-bold td-fonts'>N° Boceto:</td><td class='td-fonts'>345345</td>
+                                  <td class='text-bold td-fonts'>N° Impresión:</td><td>234424</td>
                                 </tr>
                                 <tr>
-                                  <td class='text-bold'>Estado:</td><td>No iniciada</td>
-                                  <td class='text-bold'>Impresión:</td><td>Digital</td>
+                                  <td class='text-bold td-fonts'>Estado:</td><td class='td-fonts'>No iniciada</td>
+                                  <td class='text-bold td-fonts'>Impresión:</td><td class='td-fonts'>Digital</td>
                                 </tr>
                                 <tr>
-                                  <td class='text-bold'>FSC Impreso:</td><td>No</td>
-                                  <td class='text-bold'>Asignado:</td><td>Juan De León</td>
+                                  <td class='text-bold td-fonts'>FSC Impreso:</td><td class='td-fonts'>No</td>
+                                  <td class='text-bold td-fonts'>Asignado:</td><td class='td-fonts'>Juan De León</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -179,7 +178,7 @@
 
                     <div class='info-box bg-light'>
                       <div class='info-box-content'>
-                        <h5 class='font-weight-bold mb-3'>Paletizado</h5>
+                        <h3 class='font-weight-bold mb-3'>Paletizado <i class='fas fa-pallet mb-1'></i></h3> 
                         <div class='row mb-3'>
                           <div class='col-md-4 col-12'>
                             <p class='mb-0 font-weight-bold'>Nombre referencia:</p>

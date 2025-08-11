@@ -11,7 +11,6 @@ const estados_rt = [
 // Contenedor donde se insertan dinámicamente las tareas
 const contenedorTareasRt = document.getElementById('contenedor-tareas-rt');
  
-
 // Contador global para generar IDs únicos
 let contadorTareasRt = 1;
 
