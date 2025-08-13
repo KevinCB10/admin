@@ -52,7 +52,7 @@
                         #
                       </td>
                       <td> 
-                        <button type="button" onclick="window.location.href = '/pages/project-detail.html'"  class="btn btn-secondary btn-sm">C2040-001309</button> 
+                        <button type="button" onclick="window.location.href = '/pages/detalle_proyecto.html'"  class="btn btn-secondary btn-sm">C2040-001309</button> 
                       </td>
                   
                       <td class="project_progress"> 
@@ -69,7 +69,7 @@
                         #
                       </td>
                       <td> 
-                        <button type="button" onclick="window.location.href = 'project-detail.html'"  class="btn btn-secondary btn-sm">C2040-001310</button> 
+                        <button type="button" onclick="window.location.href = 'detalle_proyecto.html'"  class="btn btn-secondary btn-sm">C2040-001310</button> 
                       </td> 
                       <td class="project_progress"> 
                         <button type="button" class="btn btn-secondary btn-sm">Cliente # 2</button>

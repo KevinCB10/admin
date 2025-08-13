@@ -1,817 +1,829 @@
+ 
 // ==================== VARIABLES Y FUNCIONES GLOBALES ====================
-
 
 const API_BASE_URL = 'http://174.65.1.204:8080/';
 const departamentos = ['Departamento Interno', 'Departamento Externo'];
 
-
-// Rutas y vistas del proyecto
+// Rutas y vistas del proyecto (sin cambios)
 const rutas = {
-    'proyecto_detalle': '/pages/project-detail.html',
-    'detalle_cliente': '/pages/detalle_cliente.html',
-    'estructural_detalle': '/pages/estructural_detalle.html',
-    'grafico_detalle': '/pages/grafico_detalle.html',
-    'tareas_maqueta': '/pages/tareas_maqueta.html',
-    'tareas_paletizado': '/pages/tareas_paletizado.html',
-    'tareas_muestra_forrada': '/pages/tareas_muestra_forrada.html',
-    'tareas_revision_troqueles': '/pages/tareas_revision_troqueles.html',
-    'tareas_trazados': '/pages/tareas_trazados.html',
-    'tareas_boceto': '/pages/tareas_boceto.html',
-    'tareas_plotter': '/pages/tareas_plotter.html',
-    'tareas_muestra_forrada_grafico': '/pages/tareas_muestra_forrada_grafico.html',
-    'tareas_consumo_tinta': '/pages/tareas_consumo_tinta.html',
-    'tareas_montajes': '/pages/tareas_montajes.html',
-    'tareas_agrupaciones': '/pages/tareas_agrupaciones.html'
+  'proyecto_detalle': '/pages/detalle_proyecto.html',
+  'detalle_cliente': '/pages/detalle_cliente.html',
+  'estructural_detalle': '/pages/estructural_detalle.html',
+  'grafico_detalle': '/pages/grafico_detalle.html',
+  'tareas_maqueta': '/pages/tareas_maqueta.html',
+  'tareas_paletizado': '/pages/tareas_paletizado.html',
+  'tareas_muestra_forrada': '/pages/tareas_muestra_forrada.html',
+  'tareas_revision_troqueles': '/pages/tareas_revision_troqueles.html',
+  'tareas_trazados': '/pages/tareas_trazados.html',
+  'tareas_boceto': '/pages/tareas_boceto.html',
+  'tareas_plotter': '/pages/tareas_plotter.html',
+  'tareas_muestra_forrada_grafico': '/pages/tareas_muestra_forrada_grafico.html',
+  'tareas_consumo_tinta': '/pages/tareas_consumo_tinta.html',
+  'tareas_montajes': '/pages/tareas_montajes.html',
+  'tareas_agrupaciones': '/pages/tareas_agrupaciones.html'
 };
 
+// Guarda selección de tab (sin cambios)
+const guardarTabActivo = tabHref => localStorage.setItem('tab-activo', tabHref);
 
-// Método que guarda la selección del tab en el sidebar si paso de una página padre a una página hija.
-const guardarTabActivo = tabHref => localStorage.setItem('tab-activo', tabHref) 
+// === REFACTORIZADO === Utils globales reutilizables
+const TIMEOUT_MS = 10000;
 
-// Método que recibe como parámetro una página y redirige según qué ruta se selecciona.
+function fetchWithTimeout(url, options = {}, timeout = TIMEOUT_MS) {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeout))
+  ]);
+}
+
+// === REFACTORIZADO === Normalizador opcional si lo necesitas
+function normalizarPath(p) {
+  if (!p) return '/';
+  return p.replace(/\/+$/, '').replace(/\/index\.html$/, '') || '/';
+}
+
+// === REFACTORIZADO === Método de redirección (firma igual, más consistente)
 const redireccionPagina = (pagina, id = null, origen = null) => {
-    if (!rutas[pagina]) return;
 
-    if (origen) {
-        localStorage.setItem('ultimaCardActiva', origen);
-    }
+  const baseUrl = rutas[pagina];
+  if (!baseUrl) return;
 
-    const baseUrl = rutas[pagina];
-    const url = id ? `${baseUrl}?id=${encodeURIComponent(id)}` : baseUrl;
-    window.location.href = url;
+  if (origen) localStorage.setItem('ultimaCardActiva', origen);
+
+  const params = new URLSearchParams();
+  if (id !== null && id !== undefined) params.set('id', String(id));
+
+  const url = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+  window.location.href = url;
+
 };
- 
 
+// Oculta loader (igual)
 window.addEventListener('load', function () {
-    setTimeout(() => {
+  setTimeout(() => {
     const loader = document.getElementById('loaderContainer');
-        if (loader) loader.style.display = 'none';
-    }, 1000); 
+    if (loader) loader.style.display = 'none';
+  }, 1000);
 });
 
-fetch('/pages/sidebar.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('sidebar-placeholder').innerHTML = html;
-
-        const tabGuardado = localStorage.getItem('tab-activo');
-        const currentPath = window.location.pathname;
-
-        const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
-
-        // Marca tab guardado o coincidencia exacta
-        links.forEach(link => {
-            const href = link.getAttribute('href');
-
-            if (href === tabGuardado) {
-                link.classList.add('active');
-            }
-
-            if (!tabGuardado && href === currentPath) {
-                link.classList.add('active');
-            }
-        });
-
-        // 🔹 Si no estamos en index.html → marcar siempre Inicio
-        if (!currentPath.endsWith('/index.html')) {
-            const inicioLink = document.querySelector('#sidebar-placeholder .nav-link[href="/index.html"]');
-            if (inicioLink) inicioLink.classList.add('active');
-        }
-    });
-
-
-// Limpieza de atributos y focus al cerrar modales Bootstrap
-$(document).on('hidden.bs.modal', function (e) {
-    const modal = e.target;
-    if (modal && modal.getAttribute('aria-hidden') === 'true') {
-        modal.removeAttribute('aria-hidden');
+// === REFACTORIZADO === Helper para marcar link activo del sidebar (plug-and-play)
+function marcarLinkActivo(links, currentPath, tabGuardado = null) {
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === tabGuardado || (!tabGuardado && href === currentPath)) {
+      link.classList.add('active');
     }
+  });
+}
 
-    setTimeout(() => {
-        if (document.activeElement) {
-            document.activeElement.blur();
-        }
-    }, 100);
+// Carga del sidebar y marcado de activo (misma lógica + helper)
+fetch('/pages/sidebar.html')
+  .then(response => response.text())
+  .then(html => {
+    document.getElementById('sidebar-placeholder').innerHTML = html;
+
+    const tabGuardado = localStorage.getItem('tab-activo');
+    const currentPath = window.location.pathname;
+    const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
+
+    marcarLinkActivo(links, currentPath, tabGuardado);
+
+    // Si no estamos en index.html → marcar siempre Inicio
+    if (!currentPath.endsWith('/index.html')) {
+      const inicioLink = document.querySelector('#sidebar-placeholder .nav-link[href="/index.html"]');
+      if (inicioLink) inicioLink.classList.add('active');
+    }
+  });
+
+// Limpieza de atributos y focus al cerrar modales Bootstrap (igual)
+$(document).on('hidden.bs.modal', function (e) {
+  const modal = e.target;
+  if (modal && modal.getAttribute('aria-hidden') === 'true') {
+    modal.removeAttribute('aria-hidden');
+  }
+  setTimeout(() => {
+    if (document.activeElement) document.activeElement.blur();
+  }, 100);
 });
 
-// Alerta global
+// Alerta global (igual)
 function mostrarAlerta(titulo, texto, icono = 'info', tiempo = 1800) {
-    let timerInterval;
-
-    Swal.fire({
-        icon: icono,
-        title: titulo,
-        text: texto,
-        timer: tiempo,
-        timerProgressBar: true,
-        didOpen: () => {
-            Swal.showLoading();
-        },
-        willClose: () => {
-            clearInterval(timerInterval);
-        }
-    }).then((result) => {
-        if (result.dismiss === Swal.DismissReason.timer) {
-            console.log('Alerta cerrada automáticamente');
-        }
-    });
+  let timerInterval;
+  Swal.fire({
+    icon: icono,
+    title: titulo,
+    text: texto,
+    timer: tiempo,
+    timerProgressBar: true,
+    didOpen: () => { Swal.showLoading(); },
+    willClose: () => { clearInterval(timerInterval); }
+  }).then((result) => {
+    if (result.dismiss === Swal.DismissReason.timer) {
+      console.log('Alerta cerrada automáticamente');
+    }
+  });
 }
 
 // =================== FIN VARIABLES Y FUNCIONES GLOBALES =========
 
 
-// =================== DASHBOARD =================================== 
 
-   let tareasPendientes = null; 
-    function waitForElement(selector, callback) {
-        const element = document.querySelector(selector);
-        if (element) {
-            callback(element);
-        } else {
-            const observer = new MutationObserver(() => {
-                const el = document.querySelector(selector);
-                if (el) {
-                    observer.disconnect();
-                    callback(el);
-                }
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-        }
+// =================== DASHBOARD ===================================
+
+let tareasPendientes = null;
+
+// === REFACTORIZADO === Espera de elementos (mantiene callback y añade promise)
+function waitForElement(selector, callback) {
+  const exec = (el) => callback && callback(el);
+  const el = document.querySelector(selector);
+  if (el) return exec(el);
+
+  const observer = new MutationObserver(() => {
+    const found = document.querySelector(selector);
+    if (found) {
+      observer.disconnect();
+      exec(found);
     }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+}
 
-    function renderTareas() {
-        const tbody = document.getElementById('tabla-tareas-body');
-        if (!tbody) {
-            console.warn('No se encontró el contenedor de la tabla todavía.');
-            return;
-        }
- 
-        // if (tareasPendientes === null) {
-        //     tbody.innerHTML = `
-        //         <tr class='fadeInUp-animation'>
-        //             <td colspan='12' class='text-center py-5 px-3 fs-5'>
-        //                 <div class='spinner-border text-primary' role='status'></div>
-        //                 <span class='ml-2'>Cargando tareas...</span>
-        //             </td>
-        //         </tr>
-        //     `;
-        //     return;
-        // }
+// === REFACTORIZADO === Versión Promise (opcional)
+function waitForElementAsync(selector) {
+  return new Promise((resolve) => {
+    const el = document.querySelector(selector);
+    if (el) return resolve(el);
+    const obs = new MutationObserver(() => {
+      const found = document.querySelector(selector);
+      if (found) {
+        obs.disconnect();
+        resolve(found);
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
+}
 
-        // // Si hay array vacío → no hay tareas
-        // if (tareasPendientes.length === 0) {
-        //     tbody.innerHTML = `
-        //         <tr class='fadeInUp-animation'>
-        //             <td colspan='12' class='text-center text-muted py-5 px-3 fs-5'>
-        //                 No hay tareas pendientes.
-        //             </td>
-        //         </tr>
-        //     `;
-        //     return;
-        // }
+// Render tareas (igual, solo usa formatearFecha mejorada)
+function renderTareas() {
+  const tbody = document.getElementById('tabla-tareas-body');
+  if (!tbody) {
+    console.warn('No se encontró el contenedor de la tabla todavía.');
+    return;
+  }
 
-        // Renderizar tareas con animación
-        tbody.innerHTML = [
-            {   
-                'id': 1,
-                'nombreProyecto': 'Proyecto Alpha',
-                'clienteCodigo': 'CL-001',
-                'clienteNombre': 'Cliente XYZ',
-                'descripcion': 'Diseño de empaque premium',
-                'tipo': 'Validación',
-                'estado': 'En Progreso',
-                'prioridad': 'Alta',
-                'departamentoCreador': 'Diseño',
-                'departamentoAsignado': 'Producción',
-                'comercial': 'María Gómez',
-                'asignadoA': 'Juan Pérez',
-                'fechaCreacion': '2025-08-06',
-            },
-            {
-                'id': 2,
-                'nombreProyecto': 'Proyecto Alpha',
-                'clienteCodigo': 'CL-001',
-                'clienteNombre': 'Cliente XYZ',
-                'descripcion': 'Diseño de empaque premium',
-                'tipo': 'Validación',
-                'estado': 'En Progreso',
-                'prioridad': 'Alta',
-                'departamentoCreador': 'Diseño',
-                'departamentoAsignado': 'Producción',
-                'comercial': 'María Gómez',
-                'asignadoA': 'Juan Pérez',
-                'fechaCreacion': '2025-08-06',
-            },
-            {
-                'id': 2,
-                'nombreProyecto': 'Proyecto Alpha',
-                'clienteCodigo': 'CL-001',
-                'clienteNombre': 'Cliente XYZ',
-                'descripcion': 'Diseño de empaque premium',
-                'tipo': 'Validación',
-                'estado': 'En Progreso',
-                'prioridad': 'Alta',
-                'departamentoCreador': 'Diseño',
-                'departamentoAsignado': 'Producción',
-                'comercial': 'María Gómez',
-                'asignadoA': 'Juan Pérez',
-                'fechaCreacion': '2025-08-06',
-            },
-
-        ].map(t => `
-            <tr onclick='redireccionPagina("proyecto_detalle", ${t.id}, "tareas")' style='font-size: 13px; cursor: pointer;' class='fadeInUp-animation'>
-                <td>
-                    <button type='button' class='btn btn-secondary btn-sm text-truncate' style='max-width: 140px;'>
-                        ${t.nombreProyecto}
-                    </button>
-                </td>
-                <td class='text-truncate' style='max-width: 140px;'>${t.clienteCodigo}</td>
-                <td class='text-truncate' style='max-width: 160px;'>${t.clienteNombre}</td>
-                <td class='text-truncate' style='max-width: 200px;'>${t.descripcion}</td>
-                <td  class='text-truncate'>${t.tipo}</td>
-                <td  class='text-truncate'>${t.estado}</td>
-                <td  class='text-truncate'>${t.prioridad}</td>
-                <td  class='text-truncate'>${t.departamentoCreador}</td>
-                <td  class='text-truncate'>${t.departamentoAsignado}</td>
-                <td  class='text-truncate'>${t.comercial}</td>
-                <td  class='text-truncate'>${t.asignadoA}</td>
-                <td  class='text-truncate'> ${formatearFecha(t.fechaCreacion)} </td>
-            </tr>
-        `).join('');
-
-        // tbody.innerHTML = tareasPendientes.map(t => `
-        //     <tr  onclick='redireccionPagina("proyecto_detalle")'  style='font-size: 13px; cursor: pointer;' class='fadeInUp-animation'> 
-        //         <td>
-        //             <button type='button' class='btn btn-secondary btn-sm text-truncate' style='max-width: 140px;'>
-        //                 ${t.proyecto || 'Sin info.'}
-        //             </button>
-        //         </td>
-        //         <td class='text-truncate' style='max-width: 160px;'>
-        //             <button type='button' class='btn btn-secondary btn-sm'>
-        //                 ${t.clienteCodigo || 'Sin info.'}
-        //             </button>
-        //         </td>
-        //         <td  class='text-truncate' style='max-width: 140px;'>
-        //             <button type='button' class='btn btn-secondary btn-sm'>
-        //                 ${t.clienteNombre || 'Sin info.'}
-        //             </button>
-        //         </td>
-        //         <td class='text-truncate' style='max-width: 200px;'>${t.descripcion}</td>
-        //         <td>${t.tipo || 'Sin info.'}</td>
-        //         <td>${t.estado || 'Sin info.'}</td>
-        //         <td>${t.prioridad}</td>
-        //         <td>${t.departamentoCreador}</td>
-        //         <td>${t.departamentoAsignado}</td>
-        //         <td>${t.creadoPor}</td>
-        //         <td>${t.asignadoA}</td>
-        //         <td>${t.fechaCreacion}</td> 
-
-        //     </tr>
-        // `).join('');
+  tbody.innerHTML = [
+    {
+      'id': 1,
+      'nombreProyecto': 'Proyecto Alpha',
+      'clienteCodigo': 'CL-001',
+      'clienteNombre': 'Cliente XYZ',
+      'descripcion': 'Diseño de empaque premium',
+      'tipo': 'Validación',
+      'estado': 'En Progreso',
+      'prioridad': 'Alta',
+      'departamentoCreador': 'Diseño',
+      'departamentoAsignado': 'Producción',
+      'comercial': 'María Gómez',
+      'asignadoA': 'Juan Pérez',
+      'fechaCreacion': '2025-08-06'
+    },
+    {
+      'id': 2,
+      'nombreProyecto': 'Proyecto Alpha',
+      'clienteCodigo': 'CL-001',
+      'clienteNombre': 'Cliente XYZ',
+      'descripcion': 'Diseño de empaque premium',
+      'tipo': 'Validación',
+      'estado': 'En Progreso',
+      'prioridad': 'Alta',
+      'departamentoCreador': 'Diseño',
+      'departamentoAsignado': 'Producción',
+      'comercial': 'María Gómez',
+      'asignadoA': 'Juan Pérez',
+      'fechaCreacion': '2025-08-06'
+    },
+    {
+      'id': 2,
+      'nombreProyecto': 'Proyecto Alpha',
+      'clienteCodigo': 'CL-001',
+      'clienteNombre': 'Cliente XYZ',
+      'descripcion': 'Diseño de empaque premium',
+      'tipo': 'Validación',
+      'estado': 'En Progreso',
+      'prioridad': 'Alta',
+      'departamentoCreador': 'Diseño',
+      'departamentoAsignado': 'Producción',
+      'comercial': 'María Gómez',
+      'asignadoA': 'Juan Pérez',
+      'fechaCreacion': '2025-08-06'
     }
+  ].map(t => `
+    <tr onclick='redireccionPagina("proyecto_detalle", ${t.id}, "tareas")' style='font-size: 13px; cursor: pointer;' class='fadeInUp-animation'>
+      <td>
+        <button type='button' class='btn btn-secondary btn-sm text-truncate' style='max-width: 140px;'>
+          ${t.nombreProyecto}
+        </button>
+      </td>
+      <td class='text-truncate td-fonts' style='max-width: 140px;'>${t.clienteCodigo}</td>
+      <td class='text-truncate td-fonts' style='max-width: 160px;'>${t.clienteNombre}</td>
+      <td class='text-truncate td-fonts' style='max-width: 200px;'>${t.descripcion}</td>
+      <td class='text-truncate td-fonts'>${t.tipo}</td>
+      <td class='text-truncate td-fonts'>${t.estado}</td>
+      <td class='text-truncate td-fonts'>${t.prioridad}</td>
+      <td class='text-truncate td-fonts'>${t.departamentoCreador}</td>
+      <td class='text-truncate td-fonts'>${t.departamentoAsignado}</td>
+      <td class='text-truncate td-fonts'>${t.comercial}</td>
+      <td class='text-truncate td-fonts'>${t.asignadoA}</td>
+      <td class='text-truncate td-fonts'> ${formatearFecha(t.fechaCreacion)} </td>
+    </tr>
+  `).join('');
+}
 
-    async function getData() { 
-        const url = `${API_BASE_URL}tareas/pendientes/test/dmaiques`;
-        
-        console.log('📡 Llamando a API (refresco de tareas)...', url); 
+// === REFACTORIZADO === getData (usa fetchWithTimeout global)
+async function getData() {
+  const url = `${API_BASE_URL}tareas/pendientes/test/dmaiques`;
+  console.log('📡 Llamando a API (refresco de tareas)...', url);
 
-        const TIMEOUT_MS = 10000;   
-        const fetchWithTimeout = (url, options, timeout = TIMEOUT_MS) => {
-            return Promise.race([
-                fetch(url, options),
-                new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('timeout')), timeout)
-                )
-            ]);
-        };
+  try {
+    const response = await fetchWithTimeout(url);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
-        try {
-            const response = await fetchWithTimeout(url); 
-            if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    const result = await response.json();
+    console.log('📊 Respuesta JSON:', result);
+    tareasPendientes = result;
+    renderTareas();
+  } catch (error) {
+    console.error('❌ Error en getData():', error);
 
-            const result = await response.json();
-            console.log('📊 Respuesta JSON:', result); 
-            tareasPendientes = result;
-            renderTareas();
-
-        } catch (error) {
-            console.error('❌ Error en getData():', error);
-
-            // Mostrar mensaje en tabla si hay error o timeout
-            const tbody = document.getElementById('tabla-tareas-body');
-            if (tbody) {
-                tbody.innerHTML = ` 
-                    <tr>
-                        <td colspan='12' class='text-center text-danger py-5 px-3'>
-                            <i class='fas fa-exclamation-triangle'></i>
-                            Error al cargar las tareas $ {
-                                error.message === 'timeout' ? '(Tiempo de espera agotado)' : ''
-                            } 
-                        </td>
-                    </tr> 
-                `;
-            }
-        }
+    const tbody = document.getElementById('tabla-tareas-body');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan='12' class='text-center text-danger py-5 px-3'>
+            <i class='fas fa-exclamation-triangle'></i>
+            Error al cargar las tareas ${error.message === 'timeout' ? '(Tiempo de espera agotado)' : ''}
+          </td>
+        </tr>
+      `;
     }
-
+  }
+}
 
 function mostrarContenido(tipo) {
+  const contenedor = document.getElementById('dashboard-content');
+  localStorage.setItem('ultimaCardActiva', tipo);
 
-    const contenedor = document.getElementById('dashboard-content');
-    localStorage.setItem('ultimaCardActiva', tipo)
+  // Quitar resaltado y poner al seleccionado
+  document.querySelectorAll('.small-box').forEach(card => card.classList.remove('active-card'));
+  const cardSeleccionada = document.getElementById(`card-${tipo}`);
+  if (cardSeleccionada) cardSeleccionada.classList.add('active-card');
 
-    // Primero quitamos el resaltado a todas las tarjetas
-    document.querySelectorAll('.small-box').forEach(card => {
-        card.classList.remove('active-card');
-    });
+  let contenido = '';
+  let tituloTabla = '';
 
-    // Luego agregamos el resaltado a la tarjeta seleccionada
-    const cardSeleccionada = document.getElementById(`card-${tipo}`);
-    if (cardSeleccionada) {
-        cardSeleccionada.classList.add('active-card');
-    }
+  switch (tipo) {
+    case 'proyectos':
+        tituloTabla = 'Proyectos';
+        contenido = `
+          <div class="card-header bg-white d-flex align-items-center justify-content-between flex-wrap">
+            <h3 id="tablaTitulo" class="m-0 text-bold">${tituloTabla}</h3>
 
-    // Ahora insertamos el contenido correspondiente
-    let contenido = '';
-    let tituloTabla = '';
-
-    switch (tipo) {
-        case 'proyectos':
-            tituloTabla = 'Proyectos';
-            contenido = `
-                <div class='card card-default fadeInUp-animation'>
-                    <div class='card-header'>
-                        <h3 id='tablaTitulo' class='card-title text-bold'>${tituloTabla}</h3>
-                    </div>
-                    <div class='card-body'> 
-                        <div class='card-body p-0'>
-                            <table class='table table-striped projects'>
-                                <thead>
-                                    <tr>
-                                        <th style='width: 1%'>
-                                             
-                                        </th>
-                                        <th style='width: 20%'>
-                                            Nombre del Proyecto
-                                        </th> 
-                                        <th>
-                                            Cliente
-                                        </th>
-                                        <th>
-                                            Descripción
-                                        </th>
-                                        <th style='width: 8%' class='text-center'>
-                                            Estado
-                                        </th> 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                             
-                                        </td>
-                                        <td> 
-                                            <button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001309</button> 
-                                        </td> 
-                                        <td class='project_progress'> 
-                                            <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
-                                        </td>
-                                        <td>
-                                            Descripción del proyecto 1
-                                        </td>
-                                        <td class='project-state'>
-                                            <span class='badge badge-success'>Success</span>
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                             
-                                        </td>
-                                        <td> 
-                                            <button type='button' onclick='redireccionPagina("proyecto_detalle")'  class='btn btn-secondary btn-sm'>C2040-001310</button> 
-                                        </td> 
-                                        <td class='project_progress'> 
-                                            <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
-                                        </td>
-                                        <td>
-                                            Descripción del proyecto 2
-                                        </td>
-                                        <td class='project-state'>
-                                            <span class='badge badge-success'>Success</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>
+            <div class="proj-toolbar">
+              <div class="input-group input-group-lg mr-2">
+                <input
+                  id="proj-search"
+                  type="search"
+                  class="form-control"
+                  placeholder="Buscar…"
+                  autocomplete="off"
+                />
+                <div class="input-group-append">
+                  <span
+                    id="proj-clear"
+                    class="input-group-text clear-addon"
+                    role="button"
+                    tabindex="0"
+                    title="Limpiar búsqueda"
+                    aria-label="Limpiar búsqueda"
+                  >
+                    <i class="fa-solid fa-eraser"></i>
+                  </span>
                 </div>
-            `;
+              </div>
+
+              <div class="proj-select-wrap mr-2">
+                <select
+                  id="proj-status-filter"
+                  class="form-control form-control-lg proj-select"
+                  required
+                >
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option>Success</option>
+                  <option>En Progreso</option>
+                  <option>Pendiente</option>
+                </select>
+              </div>
+
+              <button
+                id="proj-refresh"
+                class="btn btn-outline-secondary btn-lg"
+                title="Actualizar"
+              >
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="table-responsive table-outline table-scroll-x">
+              <table class="table table-striped table-bordered projects table-hover align-middle mb-0">
+                <thead class="thead-light">
+                  <tr>
+                    <th style="width:20%" class="td-fonts pb-3">Nombre del Proyecto</th>
+                    <th class="td-fonts pb-3">Cliente</th>
+                    <th class="td-fonts pb-3">Descripción</th>
+                    <th style="width:15%" class="td-fonts pb-3">Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="proyectos-tbody">
+                  <tr onclick='redireccionPagina("proyecto_detalle")' style="cursor: pointer;">
+                    <td>
+                      <button class="btn btn-secondary td-fonts">C2040-001309</button>
+                    </td>
+                    <td class="project_progress">
+                      <button class="btn btn-secondary td-fonts">Cliente</button>
+                    </td>
+                    <td class="td-fonts" title="Descripción del proyecto 1">Descripción del proyecto 1</td>
+                    <td class="project-state td-fonts">
+                      <span class="badge badge-success badge-lg">Success</span>
+                    </td>
+                  </tr>
+                  <tr onclick='redireccionPagina("proyecto_detalle")' style="cursor: pointer;">
+                    <td>
+                      <button class="btn btn-secondary td-fonts">C2040-001310</button>
+                    </td>
+                    <td class="project_progress">
+                      <button class="btn btn-secondary td-fonts">Clientazo</button>
+                    </td>
+                    <td class="td-fonts" title="Descripción del proyecto 2">Descripción del proyecto 2</td>
+                    <td class="project-state td-fonts">
+                      <span class="badge badge-warning badge-lg">Failed</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> 
+        `;
         break;
 
-        case 'tareas':
-            tituloTabla = 'Tareas Pendientes';
-            contenido = `
-                <div class='card card-default fadeInUp-animation'>
-                    <div class='card-header d-flex justify-content-start align-items-center'>
-                        <h3 id='tablaTitulo' class='card-title text-bold mb-0'>${tituloTabla}</h3>
-                        <button id='btn-actualizar-tareas' class='btn btn-link p-0 btn-icon d-flex align-items-center' title='Actualizar'>
-                            <span class='icono-actualizar fade-show'>
-                                <i class='fas fa-sync-alt ml-2 mt-2'></i>
-                            </span>
-                            <span class='spinner-cargando fade-hide'>
-                                <span class='spinner-border spinner-border-sm ml-2' role='status' aria-hidden='true'></span>
-                            </span>
-                        </button>
-                    </div>
-                    <div class='card-body p-0'>
-                        <div class='table-responsive'>
-                            <table class='table table-striped projects table-hover align-middle mb-0'>
-                                <thead class='thead-light'>
-                                    <tr style='font-size: 13px;'> 
-                                        <th>Nombre Proyecto</th>
-                                        <th>Cliente/Código</th>
-                                        <th>Cliente/Ubicación</th>
-                                        <th>Descripción</th> 
-                                        <th>Tipo</th>
-                                        <th>Estado</th>
-                                        <th>Prioridad</th>
-                                        <th>Departamento Creador</th>
-                                        <th>Departamento Asignado</th>
-                                        <th>Creado por</th>
-                                        <th>Asignado a</th>
-                                        <th>Tarea Creada</th>
-                                    </tr>
-                                </thead>
-                                <tbody id='tabla-tareas-body'></tbody>
-                            </table>
-                        </div>
-                    </div>
+    case 'tareas':
+      tituloTabla = 'Tareas Pendientes';
+        contenido = `
+          <div class='card-header bg-white d-flex align-items-center justify-content-between flex-wrap'>
+            <h3 id='tablaTitulo' class='m-0 text-bold'>${tituloTabla}</h3>
+
+            <div class='proj-toolbar'>
+              <div class='input-group input-group-lg mr-2'>
+                <input
+                  id='proj-search'
+                  type='search'
+                  class='form-control'
+                  placeholder='Buscar…'
+                  autocomplete='off'
+                />
+                <div class='input-group-append'>
+                  <span
+                    id='proj-clear'
+                    class='input-group-text clear-addon'
+                    role='button'
+                    tabindex='0'
+                    title='Limpiar búsqueda'
+                    aria-label='Limpiar búsqueda'
+                  >
+                    <i class='fa-solid fa-eraser'></i>
+                  </span>
                 </div>
-            `;
+              </div>
 
-            if (contenedor) {
-                contenedor.innerHTML = contenido;
+              <div class='proj-select-wrap mr-2'>
+                <select
+                  id='proj-status-filter'
+                  class='form-control form-control-lg proj-select'
+                  required
+                >
+                  <option value='' disabled selected>Seleccionar...</option>
+                  <option>Success</option>
+                  <option>En Progreso</option>
+                  <option>Pendiente</option>
+                </select>
+              </div>
 
-                requestAnimationFrame(() => {
-                    
-                    if (tareasPendientes === null) {
-                        renderTareas();
-                        // getData();
-                    } else {
-                        console.log('♻️ Usando datos en caché');
-                        renderTareas();
-                    }
+              <button
+                id='proj-refresh'
+                class='btn btn-outline-secondary btn-lg'
+                title='Actualizar'
+              >
+                <i class='fas fa-sync-alt'></i>
+              </button>
+            </div>
+          </div>
 
-                    let actualizandoTareas = false;
-                    const btnActualizar = document.getElementById('btn-actualizar-tareas');
-                    const icono = btnActualizar?.querySelector('.icono-actualizar');
-                    const spinner = btnActualizar?.querySelector('.spinner-cargando');
+          <div class='card-body p-0'>
+            <div class='table-responsive table-outline table-scroll-x'>
+              <table class='table table-striped table-bordered projects table-hover align-middle mb-0'>
+                <thead class='thead-light'>
+                  <tr>
+                    <th class='pb-3 td-fonts'>Nombre Proyecto</th>
+                    <th class='pb-3 td-fonts'>Cliente/Código</th>
+                    <th class='pb-3 td-fonts'>Cliente/Ubicación</th>
+                    <th class='pb-3 td-fonts'>Descripción</th>
+                    <th class='pb-3 td-fonts'>Tipo</th>
+                    <th class='pb-3 td-fonts'>Estado</th>
+                    <th class='pb-3 td-fonts'>Prioridad</th>
+                    <th class='pb-3 td-fonts'>Departamento Creador</th>
+                    <th class='pb-3 td-fonts'>Departamento Asignado</th>
+                    <th class='pb-3 td-fonts'>Creado por</th>
+                    <th class='pb-3 td-fonts'>Asignado a</th>
+                    <th class='pb-3 td-fonts'>Tarea Creada</th>
+                  </tr>
+                </thead>
+                <tbody id='tabla-tareas-body'></tbody>
+              </table>
+            </div>
+          </div>
+        `;
 
-                    if (btnActualizar && icono && spinner) {
-                        btnActualizar.addEventListener('click', async () => {
-                            if (actualizandoTareas) return;
-
-                            actualizandoTareas = true;
-                            console.log('🔄 Actualizando tareas desde backend...');
-
-                            // Bloquear botón y poner gris
-                            btnActualizar.style.opacity = '0.5';
-                            btnActualizar.style.pointerEvents = 'none';
-
-                            // Fade icono → spinner
-                            icono.classList.remove('fade-show');
-                            icono.classList.add('fade-hide');
-                            spinner.classList.remove('fade-hide');
-                            spinner.classList.add('fade-show');
-
-                            tareasPendientes = null;
-                            renderTareas();
-
-                            try {
-                                await getData();
-                            } catch (error) {
-                                console.error('❌ Error al actualizar:', error);
-                            } finally {
-                                // Fade spinner → icono
-                                spinner.classList.remove('fade-show');
-                                spinner.classList.add('fade-hide');
-                                icono.classList.remove('fade-hide');
-                                icono.classList.add('fade-show');
-
-                                // Restaurar botón
-                                btnActualizar.style.opacity = '1';
-                                btnActualizar.style.pointerEvents = 'auto';
-                                actualizandoTareas = false;
-                            }
-                        });
-                    }
-                });
-            }
-        break; 
- 
-        case 'todos':
-            tituloTabla = 'Todos los Proyectos';
-            contenido = `
-                <div class='card card-default fadeInUp-animation'>
-                    <div class='card-header'>
-                        <h3 id='tablaTitulo' class='card-title text-bold'>${tituloTabla}</h3>
-                    </div>
-                    <div class='card-body'> 
-                        <div class='card-body p-0'>
-                            <table class='table table-striped projects'>
-                                <thead>
-                                    <tr>
-                                        <th style='width: 1%'> 
-                                        </th>
-                                        <th style='width: 20%'>
-                                            Nombre del Proyecto
-                                        </th> 
-                                        <th>
-                                            Cliente
-                                        </th>
-                                        <th>
-                                            Descripción
-                                        </th>
-                                        <th style='width: 8%' class='text-center'>
-                                            Estado
-                                        </th> 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            
-                                        </td>
-                                        <td> 
-                                            <button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001309</button> 
-                                        </td> 
-                                        <td class='project_progress'> 
-                                            <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
-                                        </td>
-                                        <td>
-                                            Descripción del proyecto 1
-                                        </td>
-                                        <td class='project-state'>
-                                            <span class='badge badge-success'>Success</span>
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                             
-                                        </td>
-                                        <td> 
-                                            <button type='button' onclick='redireccionPagina("proyecto_detalle")'  class='btn btn-secondary btn-sm'>C2040-001310</button> 
-                                        </td> 
-                                        <td class='project_progress'> 
-                                            <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
-                                        </td>
-                                        <td>
-                                            Descripción del proyecto 2
-                                        </td>
-                                        <td class='project-state'>
-                                            <span class='badge badge-success'>Success</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>
-                </div>
-            `;
-        break;
-
-        case 'aprobaciones':
-            tituloTabla = 'Aprobaciones Pendientes';
-            contenido = `
-                <div class='card card-default fadeInUp-animation'>
-                    <div class='card-header'>
-                        <h3 id='tablaTitulo' class='card-title text-bold'>${tituloTabla}</h3>
-                    </div>
-                    <div class='card-body'> 
-                        <div class='card-body p-0'>
-                            <table class='table table-striped projects'>
-                                <thead>
-                                    <tr>
-                                        <th style='width: 1%'>
-                                             
-                                        </th>
-                                        <th style='width: 20%'>
-                                            Tarea
-                                        </th> 
-                                        <th>
-                                            Proyecto
-                                        </th>
-                                        <th>
-                                            Descripción
-                                        </th>
-                                        <th style='width: 8%' class='text-center'>
-                                            Estado
-                                        </th> 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                             
-                                        </td>
-                                        <td> 
-                                            <button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001309</button> 
-                                        </td> 
-                                        <td class='project_progress'> 
-                                            <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
-                                        </td>
-                                        <td>
-                                            Descripción del proyecto 1
-                                        </td>
-                                        <td class='project-state'>
-                                            <span class='badge badge-success'>Success</span>
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                             
-                                        </td>
-                                        <td> 
-                                            <button type='button' onclick='redireccionPagina("proyecto_detalle")'  class='btn btn-secondary btn-sm'>C2040-001310</button> 
-                                        </td> 
-                                        <td class='project_progress'> 
-                                            <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
-                                        </td>
-                                        <td>
-                                            Descripción del proyecto 2
-                                        </td>
-                                        <td class='project-state'>
-                                            <span class='badge badge-success'>Success</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>
-                </div>
-            `;
-        break;
-
-        default:
-            contenido = '<p>Selecciona una tarjeta para ver su contenido.</p>';
-    }
-    
-    if (contenedor) {
+      if (contenedor) {
         contenedor.innerHTML = contenido;
+
+        requestAnimationFrame(() => {
+          if (tareasPendientes === null) {
+            renderTareas();
+            // getData();
+          } else {
+            console.log('♻️ Usando datos en caché');
+            renderTareas();
+          }
+
+          let actualizandoTareas = false;
+          const btnActualizar = document.getElementById('btn-actualizar-tareas');
+          const icono = btnActualizar?.querySelector('.icono-actualizar');
+          const spinner = btnActualizar?.querySelector('.spinner-cargando');
+
+          if (btnActualizar && icono && spinner) {
+            btnActualizar.addEventListener('click', async () => {
+              if (actualizandoTareas) return;
+
+              actualizandoTareas = true;
+              console.log('🔄 Actualizando tareas desde backend...');
+
+              btnActualizar.style.opacity = '0.5';
+              btnActualizar.style.pointerEvents = 'none';
+
+              icono.classList.remove('fade-show');
+              icono.classList.add('fade-hide');
+              spinner.classList.remove('fade-hide');
+              spinner.classList.add('fade-show');
+
+              tareasPendientes = null;
+              renderTareas();
+              try {
+                await getData();
+              } catch (error) {
+                console.error('❌ Error al actualizar:', error);
+              } finally {
+                spinner.classList.remove('fade-show');
+                spinner.classList.add('fade-hide');
+                icono.classList.remove('fade-hide');
+                icono.classList.add('fade-show'); 
+                btnActualizar.style.opacity = '1';
+                btnActualizar.style.pointerEvents = 'auto';
+                actualizandoTareas = false;
+              }
+            });
+          }
+        });
+      }
+      break;
+
+    case 'todos':
+      tituloTabla = 'Todos los Proyectos';
+      contenido = `
+        <div class='card card-default fadeInUp-animation'>
+          <div class='card-header'>
+            <h3 id='tablaTitulo' class='card-title text-bold'>${tituloTabla}</h3>
+          </div>
+          <div class='card-body'>
+            <div class='table-responsive table-outline'>
+                <table class="table table-striped table-bordered projects table-hover align-middle mb-0">
+                <thead class='thead-light'>
+                  <tr>
+                    <th style='width: 1%'></th>
+                    <th style='width: 20%'>Nombre del Proyecto</th>
+                    <th>Cliente</th>
+                    <th>Descripción</th>
+                    <th style='width: 8%' class='text-center'>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td><button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001309</button></td>
+                    <td class='project_progress'><button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button></td>
+                    <td>Descripción del proyecto 1</td>
+                    <td class='project-state'><span class='badge badge-success'>Success</span></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001310</button></td>
+                    <td class='project_progress'><button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button></td>
+                    <td>Descripción del proyecto 2</td>
+                    <td class='project-state'><span class='badge badge-success'>Success</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+      break;
+
+    case 'aprobaciones':
+      tituloTabla = 'Aprobaciones Pendientes';
+      contenido = `
+        <div class='card card-default fadeInUp-animation'>
+          <div class='card-header'>
+            <h3 id='tablaTitulo' class='card-title text-bold'>${tituloTabla}</h3>
+          </div>
+          <div class='card-body'>
+            <div class='card-body p-0'>
+              <table class='table table-striped projects'>
+                <thead>
+                  <tr>
+                    <th style='width: 1%'></th>
+                    <th style='width: 20%'>Tarea</th>
+                    <th>Proyecto</th>
+                    <th>Descripción</th>
+                    <th style='width: 8%' class='text-center'>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td><button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001309</button></td>
+                    <td class='project_progress'><button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button></td>
+                    <td>Descripción del proyecto 1</td>
+                    <td class='project-state'><span class='badge badge-success'>Success</span></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><button type='button' onclick='redireccionPagina("proyecto_detalle")' class='btn btn-secondary btn-sm'>C2040-001310</button></td>
+                    <td class='project_progress'><button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button></td>
+                    <td>Descripción del proyecto 2</td>
+                    <td class='project-state'><span class='badge badge-success'>Success</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+      break;
+
+    default:
+      contenido = '<p>Selecciona una tarjeta para ver su contenido.</p>';
+  }
+
+  if (contenedor) {
+    contenedor.innerHTML = contenido;
+        // Si la vista actual es "proyectos", engancha la toolbar
+    if (tipo === 'proyectos') {
+        const tbody    = document.getElementById('proyectos-tbody');
+        const search   = document.getElementById('proj-search');
+        const status   = document.getElementById('proj-status-filter');
+        const refresh  = document.getElementById('proj-refresh');
+        const clearEl  = document.getElementById('proj-clear'); // addon con icono de borrador
+
+        // Debounce helper
+        const debounce = (fn, wait = 150) => {
+            let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
+        };
+
+        const filtrarTabla = () => {
+            if (!tbody) return;
+            const q  = (search?.value || '').trim().toLowerCase();
+            const st = (status?.value || '').trim().toLowerCase();
+
+            tbody.querySelectorAll('tr').forEach(row => {
+            const text  = row.textContent.toLowerCase();
+            const badge = row.querySelector('.project-state .badge');
+            const cur   = badge ? badge.textContent.trim().toLowerCase() : '';
+            const okQ   = !q || text.includes(q);
+            const okSt  = !st || cur === st;
+            row.style.display = (okQ && okSt) ? '' : 'none';
+            });
+        };
+
+        // Habilita/deshabilita el botón-borrador según haya texto
+        const actualizarEstadoBorrador = () => {
+            if (!clearEl || !search) return;
+            const hayTexto = !!search.value.trim();
+            clearEl.classList.toggle('is-disabled', !hayTexto);
+            clearEl.setAttribute('aria-disabled', String(!hayTexto));
+        };
+
+        // Eventos
+        if (search) {
+            search.addEventListener('input', debounce(() => {
+            filtrarTabla();
+            actualizarEstadoBorrador();
+            }, 150));
+        }
+
+        if (status) status.addEventListener('change', filtrarTabla);
+
+        // Borrar solo el texto del buscador (no toca el select)
+        if (clearEl) {
+            clearEl.style.cursor = 'pointer';
+            clearEl.addEventListener('click', () => {
+            if (!search || !search.value) return;
+            search.value = '';
+            search.focus();
+            filtrarTabla();
+            actualizarEstadoBorrador();
+            });
+            // Accesibilidad con teclado
+            clearEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                clearEl.click();
+            }
+            });
+        }
+
+        // Refresh: por ahora solo reaplica filtros (hook futuro para recargar datos)
+        if (refresh) {
+            refresh.style.cursor = 'pointer';
+            refresh.addEventListener('click', () => {
+            filtrarTabla();
+            });
+        }
+
+        // Tooltips de truncado
+        if (tbody) {
+            tbody.querySelectorAll('td.td-fonts').forEach(td => {
+            if (!td.getAttribute('title')) td.setAttribute('title', td.textContent.trim());
+            });
+        }
+
+        // Estado inicial del borrador
+        actualizarEstadoBorrador();
+        }
     }
 }
 
-// Mostrar la vista por defecto al cargar
+// Mostrar la vista por defecto al cargar (igual)
 document.addEventListener('DOMContentLoaded', function () {
-    const ultimaCard = localStorage.getItem('ultimaCardActiva') || 'proyectos';
-    mostrarContenido(ultimaCard);
+  const ultimaCard = localStorage.getItem('ultimaCardActiva') || 'proyectos';
+  mostrarContenido(ultimaCard);
 });
 
- 
 // ======================== FIN DASHBOARD =============================
 
 
 // ===================== DETALLE CLIENTE ========================
 
-// clientes
 const clientes = [
-  {
-    nombre: "VIÑEDOS Y BODEGAS LYNG, S.L.",
-    codigo: "8842",
-    email: "contacto@lyng.com",
-    telefono: "600123456"
-  },
-  {
-    nombre: "VIÑEDOS Y BODEGAS XXI,S.L.",
-    codigo: "11274",
-    email: "contacto@xxi.com",
-    telefono: "600234567"
-  },
-  {
-    nombre: "WARDA TRADING S.A.R.A.U.",
-    codigo: "42765",
-    email: "info@warda.com",
-    telefono: "600345678"
-  },
-  {
-    nombre: "WILKHAHN, S.A.",
-    codigo: "22985",
-    email: "info@wilkahn.com",
-    telefono: "600456789"
-  },
-  {
-    nombre: "WINES AND COMPANY",
-    codigo: "2312",
-    email: "ventas@wines.com",
-    telefono: "600567890"
-  }
+    { 
+        nombre: 'VIÑEDOS Y BODEGAS LYNG, S.L.', 
+        codigo: '8842', 
+        email: 'contacto@lyng.com', 
+        telefono: '600123456', 
+    },
+    { nombre: 'VIÑEDOS Y BODEGAS XXI,S.L.', 
+        codigo: '11274', 
+        email: 'contacto@xxi.com', 
+        telefono: '600234567' 
+    },
+    { 
+        nombre: 'WARDA TRADING S.A.R.A.U.', 
+        codigo: '42765', 
+        email: 'info@warda.com', 
+        telefono: '600345678' 
+    },
+    { 
+        nombre: 'WILKHAHN, S.A.', 
+        codigo: '22985', 
+        email: 'info@wilkahn.com', 
+        telefono: '600456789' 
+    },
+    { 
+        nombre: 'WINES AND COMPANY', 
+        codigo: '2312', 
+        email: 'ventas@wines.com', 
+        telefono: '600567890' 
+    }
 ];
 
 const folderData = {
 
-    imágenes: [
-        { 
-            name: 'Image-1.jpg', 
-            icon: 'fas fa-image',
-            date: '2025-06-01' 
-        },
-        { 
-            name: 'Image-2.png', 
-            icon: 'fas fa-image', 
-            date: '2025-06-02' 
-        },
-        { 
-            name: 'Image-3.gif', 
-            icon: 'fas fa-image', 
-            date: '2025-06-03' 
-        }
-    ],
+  imágenes: [
+    { 
+        name: 'Image-1.jpg', 
+        icon: 'fas fa-image', 
+        date: '2025-06-01' 
+    },
+    { 
+        name: 'Image-2.png', 
+        icon: 'fas fa-image', 
+        date: '2025-06-02' 
+    },
+    { 
+        name: 'Image-3.gif', 
+        icon: 'fas fa-image', 
+        date: '2025-06-03' 
+    }
+  ],
 
-    scripts: [
-        { 
-            name: 'app.js', 
-            icon: 'fab fa-js', 
-            date: '2025-06-04' 
-        },
-        { 
-            name: 'main.js', 
-            icon: 'fab fa-js', 
-            date: '2025-06-05' 
-        }
-    ],
+  scripts: [
+    { 
+        name: 'app.js',  
+        icon: 'fab fa-js', 
+        date: '2025-06-04' 
+    },
+    { 
+        name: 'main.js', 
+        icon: 'fab fa-js', 
+        date: '2025-06-05' 
+    }
+  ],
 
-    docs: [
-        { 
-            name: 'README.txt', 
-            icon: 'fas fa-file-alt', 
-            date: '2025-06-06' 
-        },
-        { 
-            name: 'Checklist.doc', 
-            icon: 'fas fa-file-word', 
-            date: '2025-06-07' 
-        }
-    ]
-
+  docs: [
+    { 
+        name: 'README.txt',     
+        icon: 'fas fa-file-alt',  
+        date: '2025-06-06' 
+    },
+    { 
+        name: 'Checklist.doc',  
+        icon: 'fas fa-file-word', 
+        date: '2025-06-07' 
+    }
+  ]
+  
 };
 
- 
 const folderList = document.getElementById('folder-list');
 const folderTitle = document.getElementById('folder-title');
 const folderContent = document.getElementById('folder-content');
 
+// === REFACTORIZADO === helper para crear ítems de carpeta
+const createFileItem = (file) => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'file-item mb-2';
+  wrapper.innerHTML = `
+    <div class='file-item-icon ${file.icon} text-info mr-3'></div>
+    <a href='#' class='file-item-name flex-grow-1'>${file.name}</a>
+    <div class='file-item-changed text-muted mr-3'>${file.date}</div>
+    <div class='file-item-actions btn-group'>
+      <button type='button' class='btn btn-sm dropdown-toggle' data-toggle='dropdown'>
+        <i class='fas fa-ellipsis-v'></i>
+      </button>
+      <div class='dropdown-menu dropdown-menu-right'>
+        <a class='dropdown-item' href='#'>Renombrar</a>
+        <a class='dropdown-item' href='#'>Eliminar</a>
+      </div>
+    </div>
+  `;
+  return wrapper;
+};
+
+// === REFACTORIZADO === renderFolder más limpio
 const renderFolder = (folderName) => {
+  if (folderTitle) folderTitle.textContent = `Contenido de ${capitalize(folderName)}`;
+  if (folderContent) folderContent.innerHTML = '';
 
-    if (folderTitle) {
-        folderTitle.textContent = `Contenido de ${capitalize(folderName)}`;    
-    }
-
-    if (folderContent) {
-        folderContent.innerHTML = '';
-    }
-
-    const files = folderData[folderName] || [];
-
-    files.forEach(file => {
-
-        const item = document.createElement('div');
-        item.className = 'file-item mb-2';
-        item.innerHTML = `
-            <div class='file-item-icon ${file.icon} text-secondary mr-3'></div>
-            <a href='#' class='file-item-name flex-grow-1'>${file.name}</a>
-            <div class='file-item-changed text-muted mr-3'>${file.date}</div>
-            <div class='file-item-actions btn-group'>
-                <button type='button' class='btn btn-sm dropdown-toggle' data-toggle='dropdown'>
-                    <i class='fas fa-ellipsis-v'></i>
-                </button>
-                <div class='dropdown-menu dropdown-menu-right'>
-                    <a class='dropdown-item' href='#'>Renombrar</a>
-                    <a class='dropdown-item' href='#'>Eliminar</a>
-                </div>
-            </div>
-        `;
-
-        if (folderContent) {
-            folderContent.appendChild(item);
-        }
-
-    });
-
+  const files = folderData[folderName] || [];
+  files.forEach(file => {
+    if (folderContent) folderContent.appendChild(createFileItem(file));
+  });
 };
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
- if (folderList) {
-    folderList.addEventListener('click', (e) => {
-        const item = e.target.closest('li[data-folder]');
-        if (item) {
-            document.querySelectorAll('#folder-list .list-group-item').forEach(li => li.classList.remove('active'));
-            item.classList.add('active');
-            const folderName = item.getAttribute('data-folder');
-            renderFolder(folderName);
-        }
-    });
-} 
+if (folderList) {
+  folderList.addEventListener('click', (e) => {
+    const item = e.target.closest('li[data-folder]');
+    if (item) {
+      document.querySelectorAll('#folder-list .list-group-item').forEach(li => li.classList.remove('active'));
+      item.classList.add('active');
+      const folderName = item.getAttribute('data-folder');
+      renderFolder(folderName);
+    }
+  });
+}
 
 renderFolder('imágenes');
 
@@ -832,20 +844,37 @@ function renderBotonVolver() {
   const btnVolver = document.getElementById('btn-volver');
   if (btnVolver) {
     btnVolver.addEventListener('click', () => {
-      window.history.length > 1 
-      ? window.history.back() 
-      : window.location.href = '/index.html';
+      window.history.length > 1
+        ? window.history.back()
+        : window.location.href = '/index.html';
     });
   }
 }
 
+// === REFACTORIZADO === formatearFecha robusta (misma salida dd/mm/aaaa)
 function formatearFecha(fecha) {
-  const [anio, mes, dia] = fecha.split('-');
-  return `${dia}/${mes}/${anio}`;
+  if (!fecha) return '';
+  if (fecha instanceof Date && !isNaN(fecha)) {
+    const dd = String(fecha.getDate()).padStart(2, '0');
+    const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+    const yyyy = String(fecha.getFullYear());
+    return `${dd}/${mm}/${yyyy}`;
+  }
+  if (typeof fecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+    const [anio, mes, dia] = fecha.split('-');
+    return `${dia}/${mes}/${anio}`;
+  }
+  const parsed = new Date(fecha);
+  if (!isNaN(parsed)) {
+    const dd = String(parsed.getDate()).padStart(2, '0');
+    const mm = String(parsed.getMonth() + 1).padStart(2, '0');
+    const yyyy = String(parsed.getFullYear());
+    return `${dd}/${mm}/${yyyy}`;
+  }
+  return '';
 }
 
-// SCRIPT CLIENTES
- 
+// SCRIPT CLIENTES (igual)
 document.addEventListener('DOMContentLoaded', function () {
   const contenedor = document.getElementById('tabla-clientes');
   if (!contenedor) return;
@@ -854,8 +883,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const inicial = cliente.nombre.trim().charAt(0).toUpperCase();
 
     const fila = `
-      <tr style="cursor: pointer;">
-        <td class="col-cliente">
+      <tr style='cursor: pointer;'>
+        <td class='col-cliente'>
           <div class='d-flex align-items-center'>
             <div class='avatar-circle mr-3'>${inicial}</div>
             <div>
@@ -863,21 +892,91 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
           </div>
         </td>
-        <td class="col-codigo">
-          <div class="info-destacada">${cliente.codigo}</div>
-        </td> 
-        <td class="col-acciones">
+        <td class='col-codigo'>
+          <div class='info-destacada'>${cliente.codigo}</div>
+        </td>
+        <td class='col-acciones'>
           <button class='btn btn-sm btn-primary'><i class='fas fa-search'></i></button>
           <button class='btn btn-sm btn-info'><i class='fas fa-edit'></i></button>
           <button class='btn btn-sm btn-danger'><i class='fas fa-trash-alt'></i></button>
         </td>
       </tr>
     `;
-
     contenedor.insertAdjacentHTML('beforeend', fila);
   });
 });
 
-
-
 document.addEventListener('DOMContentLoaded', renderBotonVolver);
+
+// ====================== FIN BOTON VOLVER =============================
+
+
+// ====================== NAV BAR ======================================
+
+class AppNavbar extends HTMLElement {
+    connectedCallback() {
+      const logoutUrl   = this.getAttribute('logout-url')     || '/login.html';
+      const tooltipText = this.getAttribute('tooltip-text')   || 'Cerrar sesión';
+      const placement   = this.getAttribute('placement')      || 'bottom';
+      const iconSize    = this.getAttribute('icon-size')      || 'fa-2x';
+      const menuIconSz  = this.getAttribute('menu-icon-size') || 'fa-2x';
+      const clearKeys   = (this.getAttribute('clear-keys')    || 'tab-activo, ultimaCardActiva').split(',').map(s => s.trim()).filter(Boolean);
+
+      // Render (sin Shadow DOM para que apliquen estilos de Bootstrap/AdminLTE)
+      this.innerHTML = `
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button" title="Menú">
+                        <i class="fas fa-bars ${menuIconSz}"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item">
+                    <a
+                        class="nav-link btn-logout"
+                        href="#"
+                        aria-label="${tooltipText}"
+                        title="${tooltipText}"
+                        data-bs-toggle="tooltip"       
+                        data-toggle="tooltip"         
+                        data-bs-placement="${placement}"
+                        data-placement="${placement}"
+                    >
+                        <i class="fa-solid fa-right-from-bracket ${iconSize}"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+      `;
+
+      // Logout handler (limpia storage opcional y redirige)
+      const btn = this.querySelector('.btn-logout');
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          try { clearKeys.forEach(k => localStorage.removeItem(k)); } catch {}
+          window.location.href = logoutUrl;
+        });
+      }
+
+      // Inicializa tooltips (BS5 o fallback BS4)
+      const initTooltips = () => {
+        const el = this.querySelector('[data-bs-toggle="tooltip"], [data-toggle="tooltip"]');
+        if (!el) return;
+        if (window.bootstrap && bootstrap.Tooltip) {
+          new bootstrap.Tooltip(el);
+        } else if (window.jQuery && typeof jQuery.fn.tooltip === 'function') {
+          jQuery(el).tooltip();
+        }
+      };
+
+        document.readyState === 'complete' || document.readyState === 'interactive'
+            ? setTimeout(initTooltips, 0)
+            : document.addEventListener('DOMContentLoaded', initTooltips)   
+    }
+  }
+  customElements.define('app-navbar', AppNavbar);
+ 

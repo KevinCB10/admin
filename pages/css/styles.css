@@ -57,8 +57,8 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* =============================
-   ANIMACIONES Y EFECTOS
-   ============================= */
+  ANIMACIONES Y EFECTOS
+  ============================= */
 @keyframes fadeInUpSoft {
   0% {
     transform: translateY(3%);
@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .nav-link.active {
-  background-color: #007bff !important;
+  background-color: #17a2b8 !important;
   color: white !important;
   cursor: pointer;
 }
@@ -178,7 +178,7 @@ h1, h2, h3, h4, h5, h6,
 
 .file-item-name {
   flex: 1;
-  color: #007bff;
+  color: #17a2b8;
   text-decoration: none;
   cursor: pointer;
 }
@@ -503,7 +503,7 @@ table.projects tbody tr:hover {
 
 /* USER LIST TABLE */
 .user-list tbody td > img {
-    position: relative;
+  position: relative;
 	max-width: 50px;
 	float: left;
 	margin-right: 15px;
@@ -737,7 +737,7 @@ table.projects tbody tr:hover {
 }
 
 .nav-sidebar .nav-link.active {
-  background-color: #007bff !important;
+  background-color: #17a2b8 !important;
   color: #fff !important;
   font-weight: bold;
   width: 100%;
@@ -745,7 +745,7 @@ table.projects tbody tr:hover {
 }
 
 .td-fonts {
-  font-size: 13px !important; 
+  font-size: 16px !important; 
 }
  
 
@@ -759,4 +759,191 @@ table.projects tbody tr:hover {
     overflow: visible !important;
     margin-bottom: 1rem;
   }
+}
+
+/* tabla compacta */
+.tabla-compacta{
+  table-layout: fixed;            /* ayuda a que el texto envuelva */
+  width: 100%;
+}
+
+.tabla-compacta th,
+.tabla-compacta td{ 
+  vertical-align: top;               /* evita “estirar” por centrado vertical */
+  white-space: normal;               /* permite varias líneas */
+  word-break: break-word;            /* corta palabras largas */
+}
+
+.tabla-compacta .td-fonts{
+  font-size: .9rem; /* baja un poco la fuente (ajusta a gusto) */
+}
+
+.badge-lg {
+  font-size: 14px;
+  padding: .5em .7em; 
+}
+ 
+
+/*  MEJORAS  */
+
+:root{
+  --radius: 12px;
+  --shadow: 0 8px 20px rgba(0,0,0,.06);
+}
+
+body { background: #f5f7fb; }
+
+/* Small boxes */
+.small-box { border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: transform .12s ease, box-shadow .12s ease, filter .12s ease; }
+.small-box .inner { padding-top: 14px; padding-bottom: 14px; }
+.small-box .icon { opacity: .25; transition: transform .15s ease, opacity .15s ease; }
+.small-box:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.09); filter: saturate(1.05); }
+.small-box:hover .icon { opacity: .35; transform: scale(1.06); }
+
+/* Card */
+.card { border-radius: var(--radius); box-shadow: var(--shadow); border: 0; }
+.card-header { border-bottom: 1px solid rgba(0,0,0,.06); }
+
+/* Tabla Proyectos */
+.table.projects thead th {
+  text-align: left !important;
+  vertical-align: middle;
+  background: #eef2f7;
+  color: #475569;
+  font-weight: 600;
+  position: sticky;    /* thead sticky */
+  top: 0;
+  z-index: 1;
+}
+
+.table.projects tbody td { vertical-align: middle; font-size: 14px; }
+.table.projects tbody tr { transition: background-color .12s ease; }
+.table.projects tbody tr:hover { background: #f8fafc; }
+
+/* Badges */
+.badge.badge-success,.badge.badge-warning,.badge.badge-info,.badge.badge-danger{
+  font-size: .9rem; padding: .45em .7em; border-radius: 999px;
+}
+
+/* Truncado útil */
+.td-fonts, .text-truncate { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Toolbar de filtros (espaciados) */
+ 
+
+/* Restaurar posición y capa del icono en las small-box */
+.small-box { position: relative; } /* por si se perdió */
+.small-box .icon {
+  position: absolute;
+  top: 12px;           /* ← clave: vuelve arriba */
+  right: 14px;
+  bottom: auto;        /* ← por si algún CSS puso bottom */
+  display: block;      /* evita flex raros de otras libs */
+  z-index: 0;          /* detrás del contenido, delante del fondo */
+  opacity: .25;
+  transition: transform .15s ease, opacity .15s ease;
+}
+.small-box .icon > i {
+  font-size: 64px;     /* ajusta al gusto (60–72) */
+  line-height: 1;
+}
+.small-box:hover .icon {
+  transform: scale(1.06) translateY(-2px); /* “se acerca” un pelín */
+  opacity: .35;
+}
+
+/* Si quieres que el footer no tape nada aunque el icono baje: */
+.small-box .small-box-footer { position: relative; z-index: 1; }
+
+/* Toolbar de filtros: horizontal en desktop, apilado en móviles */
+.proj-toolbar { display: flex; align-items: center; flex-wrap: wrap; }
+.proj-toolbar > * { margin-right: .5rem; margin-bottom: .5rem; }
+.proj-toolbar > *:last-child { margin-right: 0; }
+
+/* Tamaños mínimos para que se vean generosos */
+.proj-toolbar .input-group.input-group-lg { min-width: 280px; }
+.proj-toolbar .form-control.form-control-lg { min-width: 220px; }
+
+/* Redondeo y look más pulido */
+.proj-toolbar .form-control,
+.proj-toolbar .input-group-text,
+.proj-toolbar .btn { border-radius: 10px; }
+
+/* En desktop no se apilan */
+@media (min-width: 768px) {
+  .proj-toolbar { flex-wrap: nowrap; }
+  .proj-toolbar > * { margin-bottom: 0; }
+}
+
+/* Quita la “x” nativa del input search */
+input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+input[type="search"]::-ms-clear { display: none; width: 0; height: 0; }
+
+/* Que el addon se vea EXACTO como el de la lupa, pero clicable */
+.proj-toolbar .input-group.input-group-lg .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.proj-toolbar .input-group-append .input-group-text {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.proj-toolbar .clear-addon {
+  cursor: pointer;
+  user-select: none;
+  /* por si tu tema lo dejó blanco, forzamos el gris típico del addon */
+  background-color: #e9ecef;
+}
+
+.proj-toolbar .clear-addon:active { transform: translateY(0.5px); }
+
+/* Estado deshabilitado cuando no hay texto */
+.proj-toolbar .clear-addon.is-disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+/* texto del select en gris si está el placeholder seleccionado */
+#proj-status-filter:invalid { color: #9aa0a6 !important; }
+
+/* opciones del desplegable en negro */
+#proj-status-filter option { color: #0f172a; }
+
+/* la opción placeholder también gris dentro del desplegable */
+#proj-status-filter option[value=""] { color: #9aa0a6; }
+
+
+
+/* Borde exterior tipo outline para la tabla */
+.table-outline{
+  border: 1px solid #dfe7ef;   /* gris suave */
+  border-radius: 12px;
+  overflow: hidden;            /* recorta esquinas del thead/filas */
+  background: #fff;            /* opcional, para contraste */
+}
+
+/* Asegura que no haya margen extra bajo la tabla */
+.table-outline .table{
+  margin-bottom: 0;
+}
+
+/* Scroll horizontal suave dentro del wrapper */
+.table-scroll-x{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fuerza un ancho mínimo para que aparezca el scroll */
+.table-scroll-x > table{
+  min-width: 1400px;   /* ajusta según columnas/contenido */
+}
+
+/* Si quieres afinar por breakpoint */
+@media (max-width: 1400px){
+  .table-scroll-x > table{ min-width: 1200px; }
+}
+@media (max-width: 992px){
+  .table-scroll-x > table{ min-width: 900px; }
 }
