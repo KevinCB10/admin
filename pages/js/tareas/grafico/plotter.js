@@ -1,7 +1,6 @@
  
 
-// =================== TAREAS PLOTTER - DISEÑO GRAFICO =========== 
- 
+// =================== TAREAS PLOTTER - DISEÑO GRAFICO ===========  
 
 // Lista de gestores disponibles
 const gestores = ['Gestor 1', 'Gestor 2', 'Gestor 3', 'Gestor 4', 'Gestor 5'];
@@ -22,9 +21,10 @@ const estados_plot = [
  
 const contenedorTareasPlot = document.getElementById('contenedor-tareas-plot');
                                  
-// Contador global para generar IDs únicos
-let contadorTareasPlot = 1;
 
+
+// Contador global para generar IDs únicos
+let contadorTareasPlot = 1; 
 // FUNCIÓN PRINCIPAL PARA CREAR TAREAS
 
 function crearTareaPlot(id, autoFocus = false) {
@@ -155,63 +155,63 @@ function crearTareaPlot(id, autoFocus = false) {
     // TAREA PAR
     } else {
         divTarea.innerHTML = `
-            <div class='row justify-content-center pb-4 fadeInUp-animation'>
-                <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
-                    <div class='card-header'>
-                        <div class='d-flex align-items-center justify-content-between mb-2'>
-                            <h5><span class='badge badge-info'>#${id}</span> Crear Plotter</h5>
-                            <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
-                        </div>
+        <div class='row justify-content-center pb-4 fadeInUp-animation'>
+            <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
+                <div class='card-header'>
+                    <div class='d-flex align-items-center justify-content-between mb-2'>
+                        <h5><span class='badge badge-info'>#${id}</span> Crear Plotter</h5>
+                        <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
                     </div>
-                    <div class='card-body'>
-                        <div class='row mt-1 g-2 align-items-end mb-3'>
-                            <div class='col-md-6 mb-2' id='estado-container-${id}'>
-                                <label class='form-label font-weight-bold'>Estado:</label>
-                                <div class='input-group input-group-sm'>
-                                    <input type='text' id='estado-text-${id}' class='form-control' readonly />
-                                    <select id='estado-select-${id}' class='form-control d-none mr-2'>
-                                        ${estados_plot.map(e => `<option value='${e}'>${e}</option>`).join('')}
-                                    </select>
-                                    <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
-                                        <i class='fa-solid fa-pen-to-square text-info h5'></i>
-                                    </button>
-                                </div>
+                </div>
+                <div class='card-body'>
+                    <div class='row mt-1 g-2 align-items-end mb-3'>
+                        <div class='col-md-6 mb-2' id='estado-container-${id}'>
+                            <label class='form-label font-weight-bold'>Estado:</label>
+                            <div class='input-group input-group-sm'>
+                                <input type='text' id='estado-text-${id}' class='form-control' readonly />
+                                <select id='estado-select-${id}' class='form-control d-none mr-2'>
+                                    ${estados_plot.map(e => `<option value='${e}'>${e}</option>`).join('')}
+                                </select>
+                                <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
+                                    <i class='fa-solid fa-pen-to-square text-info h5'></i>
+                                </button>
                             </div>
+                        </div>
 
-                            <div class='col-md-6'>
-                                <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
-                                    <p>Departamento Interno</p>
-                                </div>
+                        <div class='col-md-6'>
+                            <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
+                                <p>Departamento Interno</p>
                             </div>
+                        </div>
 
-                            <div class='form-floating col-md-6 mt-3'>
-                                <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 100px'></textarea>
-                            </div>
-                        </div> 
-                        <div class='row mt-5 justify-content-center'>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Iniciada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Completada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Asignada a:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
-                            </div>
+                        <div class='form-floating col-md-6 mt-3'>
+                            <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 100px'></textarea>
+                        </div>
+                    </div> 
+                    <div class='row mt-5 justify-content-center'>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Iniciada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Completada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Asignada a:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
 
 
-            if (contenedorTareasPlot.children.length > 0) {
-                const hr = document.createElement('hr');
-                hr.className = 'my-4'; // espacio arriba y abajo del divider
-                contenedorTareasPlot.appendChild(hr);
-            }
+        if (contenedorTareasPlot.children.length > 0) {
+            const hr = document.createElement('hr');
+            hr.className = 'my-4'; // espacio arriba y abajo del divider
+            contenedorTareasPlot.appendChild(hr);
+        }
 
         contenedorTareasPlot.appendChild(divTarea);
 
@@ -364,8 +364,7 @@ function guardarTarea(id) {
 
     // Si sí hay selección, entonces cierra el modal normalmente
     $(`#modal-sm-${id}`).modal('hide');
-}
-
+} 
 
 // Incrementa el contador de tareas y crea una nueva
 function cambiarEstadoPlot(){  
@@ -374,6 +373,5 @@ function cambiarEstadoPlot(){
 }
 
 crearTareaPlot(contadorTareasPlot);
- 
-
+  
 // =================== FIN TAREAS PLOTTER - DISEÑO GRAFICO =========== 

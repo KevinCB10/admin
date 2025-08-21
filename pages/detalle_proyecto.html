@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+  <html lang='en'>
+    <head>
+      <meta charset='utf-8'>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
+      <title>Admin Tareas</title> 
+      <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
+      <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
+      <link rel='stylesheet' href='/pages/css/styles.css'>
+      <link rel='stylesheet' href='../../dist/css/adminlte.min.css'>
+    </head>
+
+    <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'>
+      <div class='wrapper'> 
+        <div id='loaderContainer' class='loader-overlay'>
+          <div class='loader'></div>
+        </div>  
+        <div id='sidebar-placeholder'></div>  
+        <app-navbar
+          logout-url=''
+          tooltip-text='Cerrar sesión'
+          placement='bottom'
+          icon-size='fa-2x'
+          menu-icon-size='fa-2x'
+          clear-keys='tab-activo, ultimaCardActiva'>
+        </app-navbar>
+
+        <div class='content-wrapper'> 
+          <section class='content-header'>
+            <div class='container-fluid'>
+              <div class='row'>
+                <div class='col-sm-6'>
+                  <h1>Detalle de la petición</h1>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class=''>
+            <div class='card ml-3 mr-3'>
+              <div class='card-header fadeInUp-animation'>
+                <h3 class='card-title'>
+                  Proyecto 102365 | 44435685/105950039 LOTE CHRISTMAS 2 HUEVOS 40GR CON GADGET (P-000743)
+                </h3>
+              </div>
+              <div class='card-body content fadeInUp-animation'>
+                <div class='row'>
+                  <div class='col-12'> 
+                    <div class='row'>
+                      <div class='col-sm-4'>
+                        <div class='info-box bg-light info-box--center'>
+                          <div class='info-box-content text-center'>
+                            <div class='row'>
+                              <span class=' td-fonts'>Fecha Creación:</span>
+                              <span class='text-muted td-fonts ml-2'>07/06/1995</span>
+                            </div>
+                            <div class='row'>
+                              <span class='td-fonts'>Última Modificación:</span>
+                              <span class='text-muted td-fonts ml-2'>07/06/1995</span>
+                            </div> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class='col-sm-4'>
+                        <div class='info-box bg-light info-box--center'>
+                          <div class='info-box-content text-center'>
+                            <div class='row'>
+                              <span class='td-fonts'>Código Cliente:</span>
+                              <span class='text-muted td-fonts ml-2'>34657</span>
+                            </div>
+                            <div class='row'>
+                              <span class='td-fonts'>Cliente:</span>
+                              <span class='text-muted td-fonts ml-2'>NESTLE ESPAÑA, S.A. C</span>
+                            </div> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class='col-sm-4'>
+                        <div class='info-box bg-light info-box--center'>
+                          <div class='info-box-content text-center'>
+                            <div class='row'>
+                              <span class='td-fonts'>Estado del proyecto:</span>
+                              <span class='text-muted td-fonts ml-2'>En progreso</span>
+                            </div>
+                            <div class='row'>
+                              <span class='td-fonts'>Comercial:</span>
+                              <span class='text-muted td-fonts ml-2'>Alicia Hinojosa</span>
+                            </div> 
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                    <div class='info-box bg-light '>
+                      <div class='info-box-content'>
+                        <div class='row'>
+                          <div class='col-7'>
+                            <span class='info-box-number td-fonts'>Solicita:</span>
+                            <span class='text-muted  td-fonts td-wrap'>
+                              N° Maquetas: 0 Bocetos: 1 N° Plotters: 1 Dev Plotter: Original N° Forradas: 0 Dev. Forrada:____
+                            </span>
+                          </div>
+                          <div class='col-5'>
+                            <span class='info-box-number td-fonts'>Documentación aportada:</span>
+                            <span class='text-muted td-fonts td-wrap'>
+                              Plano cad editable, enlace descarga, archivos adjuntos: 4
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button id='btn-volver' onclick='redireccionPagina("detalle_cliente")' class='btn btn-outline-info shadow-sm d-flex align-items-center'>
+                      Ver detalles <i class='ml-2 fa-solid fa-chevron-right'></i>
+                    </button>  
+                    <div id='lista-proyectos-estructural' class='mt-4'></div>
+                    
+                    <!-- FIN PIEZA 2 --> 
+                    <div class='info-box bg-light'>
+                      <div class='info-box-content'>
+                        <h2 class='font-weight-bold mb-3'><span class='badge badge-secondary'>Paletizado <i class='fas fa-pallet mb-1'></i></span></h2> 
+                        <div class='row mb-3'>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Nombre referencia:</p>
+                            <p class='text-muted td-fonts'>Luis Simoes Guadalajara</p>
+                          </div>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Altura máxima:</p>
+                            <p class='text-muted td-fonts'>130</p>
+                          </div>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Cantoneras:</p>
+                            <p class='text-muted td-fonts'>No</p>
+                          </div>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Palet tablero:</p>
+                            <p class='text-muted td-fonts'>No</p>
+                          </div> 
+                        </div> 
+                        <div class='row mb-3'>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Flejado:</p>
+                            <p class='text-muted td-fonts'>No</p>
+                          </div>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Retráctilado:</p>
+                            <p class='text-muted td-fonts'>No</p>
+                          </div>
+                          <div class='col-md-3 col-12'>
+                            <p class='mb-0 font-weight-bold td-fonts'>Puede sobresalir:</p>
+                            <p class='text-muted td-fonts'>No</p>
+                          </div> 
+                        </div>  
+                      </div>
+                    </div> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div> 
+        <footer class='main-footer'>
+          <strong>Cartonajes Bernabeú.</strong>
+        </footer> 
+        <aside class='control-sidebar control-sidebar-dark'></aside>
+      </div> 
+      <script src='/plugins/jquery/jquery.min.js'></script>
+      <script src='/plugins/bootstrap/js/bootstrap.bundle.min.js'></script>
+      <script src='/dist/js/adminlte.min.js'></script>
+      <script src='/pages/js/scripts.js'></script>
+    </body>
+  </html>

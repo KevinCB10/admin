@@ -20,19 +20,19 @@
     switch (tipo) {
       case 'proyectos':
         contenido = `
-          <div class="card card-default">
-            <div class="card-header">
-              <h3 class="card-title text-bold">Proyectos</h3>
+          <div class='card card-default'>
+            <div class='card-header'>
+              <h3 class='card-title text-bold'>Proyectos</h3>
             </div>
-            <div class="card-body"> 
-              <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <div class='card-body'> 
+              <div class='card-body p-0'>
+                <table class='table table-striped projects'>
                   <thead>
                     <tr>
-                      <th style="width: 1%">
+                      <th style='width: 1%'>
                         #
                       </th>
-                      <th style="width: 20%">
+                      <th style='width: 20%'>
                         Nombre del Proyecto
                       </th> 
                       <th>
@@ -41,7 +41,7 @@
                       <th>
                         Descripción
                       </th>
-                      <th style="width: 8%" class="text-center">
+                      <th style='width: 8%' class='text-center'>
                         Estado
                       </th> 
                     </tr>
@@ -52,33 +52,33 @@
                         #
                       </td>
                       <td> 
-                        <button type="button" onclick="window.location.href = '/pages/project-detail.html'"  class="btn btn-secondary btn-sm">C2040-001309</button> 
+                        <button type='button' onclick='window.location.href = '/pages/detalle_proyecto.html''  class='btn btn-secondary btn-sm'>C2040-001309</button> 
                       </td>
                   
-                      <td class="project_progress"> 
-                        <button type="button" class="btn btn-secondary btn-sm">Cliente # 2</button>
+                      <td class='project_progress'> 
+                        <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
                       </td>
                       <td>
                         Descripción del proyecto 1
                       </td>
-                      <td class="project-state">
-                        <span class="badge badge-success">Success</span>
+                      <td class='project-state'>
+                        <span class='badge badge-success'>Success</span>
                       </td>
                     </tr> 
                       <td>
                         #
                       </td>
                       <td> 
-                        <button type="button" onclick="window.location.href = 'project-detail.html'"  class="btn btn-secondary btn-sm">C2040-001310</button> 
+                        <button type='button' onclick='window.location.href = 'detalle_proyecto.html''  class='btn btn-secondary btn-sm'>C2040-001310</button> 
                       </td> 
-                      <td class="project_progress"> 
-                        <button type="button" class="btn btn-secondary btn-sm">Cliente # 2</button>
+                      <td class='project_progress'> 
+                        <button type='button' class='btn btn-secondary btn-sm'>Cliente # 2</button>
                       </td>
                       <td>
                         Descripción del proyecto 2
                       </td>
-                      <td class="project-state">
-                        <span class="badge badge-success">Success</span>
+                      <td class='project-state'>
+                        <span class='badge badge-success'>Success</span>
                       </td>
                     </tr>
                   </tbody>
@@ -91,11 +91,11 @@
 
       case 'tareas':
         contenido = `
-          <div class="card card-default">
-            <div class="card-header">
-              <h3 class="card-title text-bold">Tareas Pendientes</h3>
+          <div class='card card-default'>
+            <div class='card-header'>
+              <h3 class='card-title text-bold'>Tareas Pendientes</h3>
             </div>
-            <div class="card-body">
+            <div class='card-body'>
               <p>Contenido genérico para tareas pendientes.</p>
             </div>
           </div>
@@ -104,11 +104,11 @@
 
       case 'todos':
         contenido = `
-          <div class="card card-default">
-            <div class="card-header">
-              <h3 class="card-title text-bold">Todos los Proyectos</h3>
+          <div class='card card-default'>
+            <div class='card-header'>
+              <h3 class='card-title text-bold'>Todos los Proyectos</h3>
             </div>
-            <div class="card-body">
+            <div class='card-body'>
               <p>Contenido genérico para todos los proyectos.</p>
             </div>
           </div>
@@ -117,11 +117,11 @@
 
       case 'aprobaciones':
         contenido = `
-          <div class="card card-default">
-            <div class="card-header">
-              <h3 class="card-title text-bold">Aprobaciones Pendientes</h3>
+          <div class='card card-default'>
+            <div class='card-header'>
+              <h3 class='card-title text-bold'>Aprobaciones Pendientes</h3>
             </div>
-            <div class="card-body">
+            <div class='card-body'>
               <p>Contenido genérico para aprobaciones pendientes.</p>
             </div>
           </div>
@@ -140,9 +140,9 @@
     mostrarContenido('proyectos');
   });
 
-  window.addEventListener("load", function () {
+  window.addEventListener('load', function () {
     setTimeout(() => {
-      const loader = document.getElementById("loaderContainer");
-      if (loader) loader.style.display = "none";
+      const loader = document.getElementById('loaderContainer');
+      if (loader) loader.style.display = 'none';
     }, 1000); 
   });

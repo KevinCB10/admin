@@ -14,8 +14,7 @@ const contenedorTareasMfg = document.getElementById('contenedor-tareas-mfg');
 // Contador global para generar IDs únicos
 let contadorTareasMfg = 1;
 
-// FUNCIÓN PRINCIPAL PARA CREAR TAREAS
-
+// FUNCIÓN PRINCIPAL PARA CREAR TAREAS 
 function crearTareaMfg(id, autoFocus = false) {
     // Crea un div para representar la tarea y le asigna clase e ID según si es impar o par
     const divTarea = document.createElement('div');
@@ -71,34 +70,34 @@ function crearTareaMfg(id, autoFocus = false) {
 
         // HTML de la tarjeta de tarea impar
         divTarea.innerHTML = `
-            ${modalHTML}
-            <div class='row justify-content-center info-box-content'>
-                <div class='' style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
-                    <div class='card-header'>
-                        <div class='d-flex align-items-center justify-content-between mb-2'>
-                            <h5><span class='badge badge-info'>#${id}</span> Muestra Forrada G.</h5>
-                            ${botonModal}
-                        </div>
+        ${modalHTML}
+        <div class='row justify-content-center info-box-content'>
+            <div class='' style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
+                <div class='card-header'>
+                    <div class='d-flex align-items-center justify-content-between mb-2'>
+                        <h5><span class='badge badge-info'>#${id}</span> Muestra Forrada G.</h5>
+                        ${botonModal}
                     </div>
-                    <div class='card-body'>
-                        <h6>Estado de la tarea <span class='badge badge-secondary'>Iniciada</span></h6>
-                        <div class='row mt-3'>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Iniciada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Completada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Gestor:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>Kevin de León</span>
-                            </div>
+                </div>
+                <div class='card-body'>
+                    <h6>Estado de la tarea <span class='badge badge-secondary'>Iniciada</span></h6>
+                    <div class='row mt-3'>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Iniciada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Completada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Gestor:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>Kevin de León</span>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
 
 
         if (document.getElementById('contenedor-tareas-mfg')) {
@@ -112,8 +111,7 @@ function crearTareaMfg(id, autoFocus = false) {
         if (document.getElementById('contenedor-tareas-mfg')) {
             contenedorTareasMfg.appendChild(divTarea); 
         }
-       
-
+        
         // Lógica de botones
         const botonAgregarImpar = divTarea.querySelector('.agregar-tarea-impar');
         const botonAddTask = divTarea.querySelector('.addTask');
@@ -143,64 +141,64 @@ function crearTareaMfg(id, autoFocus = false) {
 
     // TAREA PAR
     } else {
-        divTarea.innerHTML = `
-            <div class='row justify-content-center pb-4 fadeInUp-animation'>
-                <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
-                    <div class='card-header'>
-                        <div class='d-flex align-items-center justify-content-between mb-2'>
-                            <h5><span class='badge badge-info'>#${id}</span> Crear Muestra Forrada G.</h5>
-                            <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
-                        </div>
+    divTarea.innerHTML = `
+        <div class='row justify-content-center pb-4 fadeInUp-animation'>
+            <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
+                <div class='card-header'>
+                    <div class='d-flex align-items-center justify-content-between mb-2'>
+                        <h5><span class='badge badge-info'>#${id}</span> Crear Muestra Forrada G.</h5>
+                        <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
                     </div>
-                    <div class='card-body'>
-                        <div class='row mt-1 g-2 align-items-end mb-3'>
-                            <div class='col-md-6 mb-2' id='estado-container-${id}'>
-                                <label class='form-label font-weight-bold'>Estado:</label>
-                                <div class='input-group input-group-sm'>
-                                    <input type='text' id='estado-text-${id}' class='form-control' readonly />
-                                    <select id='estado-select-${id}' class='form-control d-none mr-2'>
-                                        ${estados_mfg.map(e => `<option value='${e}'>${e}</option>`).join('')}
-                                    </select>
-                                    <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
-                                        <i class='fa-solid fa-pen-to-square text-info h5'></i>
-                                    </button>
-                                </div>
+                </div>
+                <div class='card-body'>
+                    <div class='row mt-1 g-2 align-items-end mb-3'>
+                        <div class='col-md-6 mb-2' id='estado-container-${id}'>
+                            <label class='form-label font-weight-bold'>Estado:</label>
+                            <div class='input-group input-group-sm'>
+                                <input type='text' id='estado-text-${id}' class='form-control' readonly />
+                                <select id='estado-select-${id}' class='form-control d-none mr-2'>
+                                    ${estados_mfg.map(e => `<option value='${e}'>${e}</option>`).join('')}
+                                </select>
+                                <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
+                                    <i class='fa-solid fa-pen-to-square text-info h5'></i>
+                                </button>
                             </div>
+                        </div>
 
-                            <div class='col-md-6'>
-                                <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
-                                    <p>Departamento Interno</p>
-                                </div>
+                        <div class='col-md-6'>
+                            <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
+                                <p>Departamento Interno</p>
                             </div>
+                        </div>
 
-                            <div class='form-floating col-md-6 mt-3'>
-                                <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 100px'></textarea>
-                            </div>
-                        </div> 
-                        <div class='row mt-5 justify-content-center'>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Iniciada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Completada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Asignada a:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
-                            </div>
+                        <div class='form-floating col-md-6 mt-3'>
+                            <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 100px'></textarea>
+                        </div>
+                    </div> 
+                    <div class='row mt-5 justify-content-center'>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Iniciada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Completada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Asignada a:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
 
 
-            if (contenedorTareasMfg.children.length > 0) {
-                const hr = document.createElement('hr');
-                hr.className = 'my-4'; 
-                contenedorTareasMfg.appendChild(hr);
-            }
+        if (contenedorTareasMfg.children.length > 0) {
+            const hr = document.createElement('hr');
+            hr.className = 'my-4'; 
+            contenedorTareasMfg.appendChild(hr);
+        }
 
         contenedorTareasMfg.appendChild(divTarea);
 
@@ -213,7 +211,6 @@ function crearTareaMfg(id, autoFocus = false) {
         // Estado inicial para diseñador
         const estadosImpares = estados_mfg.filter((_, index) => (index + 1) % 2 === 1);
         const estadoValido = estadosImpares[Math.floor((id - 1) / 2)] || estadosImpares[estadosImpares.length - 1];
-
 
         if (estadoSelect && estadoText) {
             estadoSelect.value = estadoValido;

@@ -132,11 +132,11 @@ function crearTareaMt(id, autoFocus = false) {
                     botonAddTask.style.cursor = 'not-allowed';  
                 }  
                 if (algunoMarcado) {
-                    cambiarEstadoMt(id, 'Completada'); 
+                    cambiarEstadoMt(); 
                 }
 
                 if (!algunoMarcado && !esEstadoUno) {
-                    cambiarEstadoMt(id, 'Completada');  
+                    cambiarEstadoMt();  
                 }
             });
         }
@@ -144,75 +144,75 @@ function crearTareaMt(id, autoFocus = false) {
     // TAREA PAR
     } else {
         divTarea.innerHTML = `
-            <div class='row justify-content-center pb-4 fadeInUp-animation'>
-                <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
-                    <div class='card-header'>
-                        <div class='d-flex align-items-center justify-content-between mb-2'>
-                            <h5><span class='badge badge-info'>#${id}</span> Montajes</h5>
-                            <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
-                        </div>
+        <div class='row justify-content-center pb-4 fadeInUp-animation'>
+            <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
+                <div class='card-header'>
+                    <div class='d-flex align-items-center justify-content-between mb-2'>
+                        <h5><span class='badge badge-info'>#${id}</span> Montajes</h5>
+                        <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
                     </div>
-                    <div class='card-body'>
-                        <div class='row mt-1 g-2 align-items-end mb-3'>
-                            <div class='col-md-6 mb-2' id='estado-container-${id}'>
-                                <label class='form-label font-weight-bold'>Estado:</label>
-                                <div class='input-group input-group-sm'>
-                                    <input type='text' id='estado-text-${id}' class='form-control' readonly />
-                                    <select id='estado-select-${id}' class='form-control d-none mr-2'>
-                                        ${estados_mt.map(e => `<option value='${e}'>${e}</option>`).join('')}
-                                    </select>
-                                    <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
-                                        <i class='fa-solid fa-pen-to-square text-info h5'></i>
-                                    </button>
-                                </div>
+                </div>
+                <div class='card-body'>
+                    <div class='row mt-1 g-2 align-items-end mb-3'>
+                        <div class='col-md-6 mb-2' id='estado-container-${id}'>
+                            <label class='form-label font-weight-bold'>Estado:</label>
+                            <div class='input-group input-group-sm'>
+                                <input type='text' id='estado-text-${id}' class='form-control' readonly />
+                                <select id='estado-select-${id}' class='form-control d-none mr-2'>
+                                    ${estados_mt.map(e => `<option value='${e}'>${e}</option>`).join('')}
+                                </select>
+                                <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
+                                    <i class='fa-solid fa-pen-to-square text-info h5'></i>
+                                </button>
                             </div>
+                        </div>
 
-                            <div class='col-md-6'>
-                                <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
-                                    <p>Departamento Interno</p>
-                                </div>
+                        <div class='col-md-6'>
+                            <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
+                                <p>Departamento Interno</p>
                             </div>
+                        </div>
 
-                            <div class='form-floating col-md-6 mt-3'>
-                                <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 87px'></textarea>
-                            </div>
-                            <div class='form-floating col-md-6 '>  
-                                <div id='drop-area-${id}' class='file-drop-area'>
-                                    <div id='drop-placeholder-${id}' class='text-center'>
-                                        <div class='file-icon'>
-                                        <i class='fas fa-cloud-upload-alt text-secondary'></i>
-                                        </div>
-                                        <p class='text-primary ' style='cursor: pointer; font-size: 14px;' onclick='document.getElementById('fileInput-${id}').click()'>Arrastra tus archivos aquí</p>
+                        <div class='form-floating col-md-6 mt-3'>
+                            <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 87px'></textarea>
+                        </div>
+                        <div class='form-floating col-md-6 '>  
+                            <div id='drop-area-${id}' class='file-drop-area'>
+                                <div id='drop-placeholder-${id}' class='text-center'>
+                                    <div class='file-icon'>
+                                    <i class='fas fa-cloud-upload-alt text-secondary'></i>
                                     </div>
-                                    <input type='file' id='fileInput-${id}' hidden>
-                                    <div id='file-preview-${id}' class=' d-flex flex-column align-items-center position-relative'  ></div>
+                                    <p class='text-primary ' style='cursor: pointer; font-size: 14px;' onclick='document.getElementById("fileInput-${id}").click()'>Arrastra tus archivos aquí</p>
                                 </div>
-                            </div>  
-                        </div> 
-                        <div class='row mt-5 justify-content-center'>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Iniciada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                                <input type='file' id='fileInput-${id}' hidden>
+                                <div id='file-preview-${id}' class=' d-flex flex-column align-items-center position-relative'  ></div>
                             </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Completada:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                            </div>
-                            <div class='col-12 col-md-4 mb-2'>
-                                <span class='info-box-number text-left'>Asignada a:</span>
-                                <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
-                            </div>
+                        </div>  
+                    </div> 
+                    <div class='row mt-5 justify-content-center'>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Iniciada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Completada:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+                        </div>
+                        <div class='col-12 col-md-4 mb-2'>
+                            <span class='info-box-number text-left'>Asignada a:</span>
+                            <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
 
 
-            if (contenedorTareasMt.children.length > 0) {
-                const hr = document.createElement('hr');
-                hr.className = 'my-4'; // espacio arriba y abajo del divider
-                contenedorTareasMt.appendChild(hr);
-            }
+        if (contenedorTareasMt.children.length > 0) {
+            const hr = document.createElement('hr');
+            hr.className = 'my-4'; // espacio arriba y abajo del divider
+            contenedorTareasMt.appendChild(hr);
+        }
 
         contenedorTareasMt.appendChild(divTarea);
 
@@ -225,7 +225,6 @@ function crearTareaMt(id, autoFocus = false) {
         // Estado inicial para diseñador
         const estadosImpares = estados_mt.filter((_, index) => (index + 1) % 2 === 1);
         const estadoValido = estadosImpares[Math.floor((id - 1) / 2)] || estadosImpares[estadosImpares.length - 1];
-
 
         if (estadoSelect && estadoText) {
             estadoSelect.value = estadoValido;
@@ -285,12 +284,10 @@ function crearTareaMt(id, autoFocus = false) {
 
     const dropArea = document.getElementById(`drop-area-${id}`);
     const fileInput = document.getElementById(`fileInput-${id}`);
-    const filePreview = document.getElementById(`file-preview-${id}`);
 
     function showFilePreview(file, id) {
         const placeholder = document.getElementById(`drop-placeholder-${id}`);
         const filePreview = document.getElementById(`file-preview-${id}`);
-        const downloadLinkId = `file-download-link-${id}`;
 
         if (!file) {
             filePreview.innerHTML = '';
@@ -323,7 +320,7 @@ function crearTareaMt(id, autoFocus = false) {
     }
 
     window.removeSelectedFile = function(id) {
-    const fileInput = document.getElementById(`fileInput-${id}`);
+        const fileInput = document.getElementById(`fileInput-${id}`);
         const filePreview = document.getElementById(`file-preview-${id}`);
         const externalDownloadLink = document.getElementById(`file-download-link-${id}`);
         const placeholder = document.getElementById(`drop-placeholder-${id}`);
@@ -344,23 +341,23 @@ function crearTareaMt(id, autoFocus = false) {
     if (dropArea) {
         ['dragenter', 'dragover'].forEach(event => {
             dropArea.addEventListener(event, e => {
-            e.preventDefault();
-            dropArea.classList.add('dragover');
+                e.preventDefault();
+                dropArea.classList.add('dragover');
             });
         });
 
         ['dragleave', 'drop'].forEach(event => {
             dropArea.addEventListener(event, e => {
-            e.preventDefault();
-            dropArea.classList.remove('dragover');
+                e.preventDefault();
+                dropArea.classList.remove('dragover');
             });
         });
 
         dropArea.addEventListener('drop', e => {
             const files = e.dataTransfer.files;
             if (files.length) {
-            fileInput.files = files;
-            showFilePreview(files[0]);
+                fileInput.files = files;
+                showFilePreview(files[0], id);
             }
         }); 
         
@@ -368,8 +365,7 @@ function crearTareaMt(id, autoFocus = false) {
             const file = this.files[0];
             showFilePreview(file, id); 
         }); 
-    }
-
+    } 
 }
 
 // Cierra el modal al guardar
@@ -394,6 +390,5 @@ function cambiarEstadoMt(){
 }
 
 crearTareaMt(contadorTareasMt);
-
 
 // ================== FIN TAREAS MONTAJES - DISEÑO GRAFICO =========

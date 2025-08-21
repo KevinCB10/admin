@@ -1,83 +1,79 @@
 <!DOCTYPE html>
-  <html lang="es">
+  <html lang='es'>
     <head>
-      <meta charset="UTF-8"> 
+      <meta charset='UTF-8'> 
       <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
       <link rel='stylesheet' href='/pages/css/styles.css'>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'>
     </head>
-    <body>
-
+    <body> 
       <aside class='main-sidebar sidebar-dark-primary elevation-4'>
         <a href='/index.html' class='brand-link text-center'>
           Admin
         </a>
         <div class='sidebar'>
           <nav class='mt-2'>
-            <ul class='nav nav-pills nav-sidebar flex-column'>
-
+            <ul class='nav nav-pills nav-sidebar flex-column'> 
               <li class='nav-item'>
                 <a href='/index.html' class='nav-link'>
                   <i class='nav-icon fas fa-home'></i>
-                  <p>Inicio</p>
+                  <p style='font-size: 17px;'>Inicio</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/buscar_por_ficha.html' class='nav-link'>
                   <i class='nav-icon fas fa-id-card'></i>
-                  <p>Buscar por Ficha</p>
+                  <p style='font-size: 17px;'>Buscar por Ficha</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/buscar_por_impresion.html' class='nav-link'>
                   <i class='nav-icon fas fa-print'></i>
-                  <p>Buscar por Impresión</p>
+                  <p style='font-size: 17px;'>Buscar por Impresión</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/buscar_por_referencia.html' class='nav-link'>
                   <i class='nav-icon fas fa-barcode'></i>
-                  <p>Buscar por Referencia</p>
+                  <p style='font-size: 17px;'>Buscar por Referencia</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/buscar_por_troquel.html' class='nav-link'>
                   <i class='nav-icon fas fa-vector-square'></i>
-                  <p>Buscar por Troquel</p>
+                  <p style='font-size: 17px;'>Buscar por Troquel</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/escanear_qr.html' class='nav-link'>
                   <i class='nav-icon fas fa-qrcode'></i>
-                  <p>Escanear QR</p>
+                  <p style='font-size: 17px;'>Escanear QR</p>
                 </a>
               </li> 
               <li class='nav-item'>
                 <a href='/pages/listado_clientes.html' class='nav-link'>
                   <i class='nav-icon fas fa-users'></i>
-                  <p>Clientes</p>
+                  <p style='font-size: 17px;'>Clientes</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/listado_maquetas_y_trazados.html' class='nav-link'>
                   <i class='nav-icon fas fa-list'></i>
-                  <p>Maquetas y Trazados</p>
+                  <p style='font-size: 17px;'>Maquetas y Trazados</p>
                 </a>
               </li>
               <li class='nav-item'>
                 <a href='/pages/peticion.html' class='nav-link'>
                   <i class='nav-icon fas fa-file-alt'></i>
-                  <p>Petición</p>
+                  <p style='font-size: 17px;'>Petición</p>
                 </a>
-              </li> 
-
+              </li>  
             </ul>
           </nav>
         </div>
       </aside> 
-
+      <div id='sidebar-backdrop' class='sidebar-backdrop'></div>
       <script>
-
         document.addEventListener('DOMContentLoaded', function () {
           const currentUrl = window.location.pathname;
           const navLinks = document.querySelectorAll('.nav-sidebar a.nav-link');
@@ -89,8 +85,6 @@
             }
           });
         });
-
       </script>
-
     </body>
 </html>
