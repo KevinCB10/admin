@@ -3,9 +3,7 @@
     <head>
       <meta charset='utf-8'>
       <meta name='viewport' content='width=device-width, initial-scale=1'>
-      <title>Admin Tareas</title>
-
-   
+      <title>Admin Tareas</title> 
       <link rel='stylesheet' href='/pages/css/styles.css'>
       <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
       <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
@@ -20,15 +18,15 @@
         <div id='sidebar-placeholder'></div> 
         
         <app-navbar
-          logout-url="/login.html"
-          tooltip-text="Cerrar sesión"
-          placement="bottom"
-          icon-size="fa-2x"
-          menu-icon-size="fa-2x"
-          clear-keys="tab-activo, ultimaCardActiva">
+          logout-url=''
+          tooltip-text='Cerrar sesión'
+          placement='bottom'
+          icon-size='fa-2x'
+          menu-icon-size='fa-2x'
+          clear-keys='tab-activo, ultimaCardActiva'>
         </app-navbar>
 
-        <div class='content-wrapper ' >
+        <div class='content-wrapper'>
           <div class='nav navbar navbar-expand navbar-white navbar-light border-bottom p-0'></div>
           <div class='tab-content'>
             <div class='tab-empty'>
@@ -53,15 +51,14 @@
 
       <script>
         fetch('sidebar.html').then(response => response.text()).then(html => {
-          document.getElementById('sidebar-placeholder').innerHTML = html;
-
+          document.getElementById('sidebar-placeholder').innerHTML = html; 
           // Después de insertar el HTML, activa el enlace correcto
           const currentPath = window.location.pathname;
           const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
           links.forEach(link => { 
             link.getAttribute('href') === currentPath 
-              ? link.classList.add('active') 
-              : link.classList.remove('active'); 
+            ? link.classList.add('active') 
+            : link.classList.remove('active'); 
           });
         });
       </script>

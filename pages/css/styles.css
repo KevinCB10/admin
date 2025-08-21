@@ -1,949 +1,1297 @@
 /* =============================
   FUENTE GLOBAL PARA TODO
   ============================= */
-html, body {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700; /* Antes 600 */
-  font-size: 14px;
-  color: #333;
-}
-
-/* Navbar y Sidebar */
-.navbar,
-.main-sidebar,
-.main-header,
-.main-footer,
-.nav-sidebar .nav-link,
-.nav-sidebar .nav-header {
+html, body,
+.navbar, .main-sidebar, .main-header, .main-footer,
+.nav-sidebar .nav-link, .nav-sidebar .nav-header,
+.brand-text,
+.dropdown-menu, .dropdown-item,
+.btn,
+.card, .card-header, .card-title, .card-body,
+.table, .table thead th, .table td,
+.small-box, .small-box .inner, .small-box-footer,
+h1, h2, h3, h4, h5, h6, .card-title {
   font-family: 'Quicksand', sans-serif !important;
-  font-weight: 700; /* Antes 600 */
 }
-
-.brand-text {
-  font-family: 'Quicksand', sans-serif !important;
-  font-weight: 800; /* Antes 700 */
-}
-
-.dropdown-menu,
-.dropdown-item {
-  font-family: 'Quicksand', sans-serif !important;
-  font-weight: 700; /* Antes 600 */
-}
-
-.btn {
-  font-family: 'Quicksand', sans-serif !important;
-  font-weight: 800; /* Antes 700 */
-}
-
-.card,
-.card-header,
-.card-title,
-.card-body,
-.table,
-.table thead th,
-.table td,
-.small-box,
-.small-box .inner,
-.small-box-footer {
-  font-family: 'Quicksand', sans-serif !important;
-  font-weight: 700; /* Antes 600 */
-}
-
-/* Encabezados */
-h1, h2, h3, h4, h5, h6,
-.card-title {
-  font-family: 'Quicksand', sans-serif !important;
-  font-weight: 900; /* Antes 800 */
-}
+html, body { font-weight: 700; font-size: 14px; color: #333; }
+.brand-text { font-weight: 800; }
+.btn { font-weight: 800; }
+h1, h2, h3, h4, h5, h6, .card-title { font-weight: 900; }
 
 /* =============================
   ANIMACIONES Y EFECTOS
   ============================= */
 @keyframes fadeInUpSoft {
-  0% {
-    transform: translateY(3%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
+  0% { transform: translateY(3%); opacity: 0; }
+  100% { transform: translateY(0%); opacity: 1; }
 }
+.fadeInUp-animation { animation: fadeInUpSoft 1.2s ease-out; }
 
-.fadeInUp-animation {
-  animation: fadeInUpSoft 1.2s ease-out;
-}
+.small-box.active-card { transform: scale(1.02); transition: 0.2s; }
+#card-proyectos.active-card { box-shadow: 0 0px 25px 5px rgba(23,162,184,.7); }
+#card-tareas.active-card { box-shadow: 0 0px 25px 5px rgba(255,193,7,.7); }
+#card-todos.active-card { box-shadow: 0 0px 25px 5px rgba(40,167,69,.7); }
+#card-aprobaciones.active-card { box-shadow: 0 0px 25px 5px rgba(220,53,69,.7); }
 
-.small-box.active-card {
-  transform: scale(1.02);
-  transition: 0.2s;
-}
-
-#card-proyectos.active-card {
-  box-shadow: 0 0px 25px 5px rgba(23, 162, 184, 0.7);
-}
-
-#card-tareas.active-card {
-  box-shadow: 0 0px 25px 5px rgba(255, 193, 7, 0.7);
-}
-
-#card-todos.active-card {
-  box-shadow: 0 0px 25px 5px rgba(40, 167, 69, 0.7);
-}
-
-#card-aprobaciones.active-card {
-  box-shadow: 0 0px 25px 5px rgba(220, 53, 69, 0.7);
-}
-
-.nav-link.active {
-  background-color: #17a2b8 !important;
-  color: white !important;
-  cursor: pointer;
-}
-
-.nav-link {
-  cursor: pointer;
-}
+.nav-link { cursor: pointer; }
+.nav-link.active { background-color: #17a2b8 !important; color: #fff !important; cursor: pointer; }
 
 /* =============================
-   LOADER
-   ============================= */
+  LOADER
+  ============================= */
+
 .loader {
-  width: 50px;
-  aspect-ratio: 1;
-  display: grid;
-  border: 4px solid #0000;
-  border-radius: 50%;
-  border-color: #ccc #0000;
+  width: 50px; aspect-ratio: 1; display: grid;
+  border: 4px solid #0000; border-radius: 50%; border-color: #ccc #0000;
   animation: l16 1s infinite linear;
 }
 
-.loader::before,
-.loader::after {    
-  content: '';
-  grid-area: 1/1;
-  margin: 2px;
-  border: inherit;
-  border-radius: 50%;
+.loader::before, .loader::after {
+  content: ''; grid-area: 1/1; margin: 2px; border: inherit; border-radius: 50%;
 }
 
-.loader::before {
-  border-color: #f03355 #0000;
-  animation: inherit; 
-  animation-duration: .5s;
-  animation-direction: reverse;
-}
-
-.loader::after {
-  margin: 8px;
-}
-
-@keyframes l16 { 
-  100% { transform: rotate(1turn) }
-}
+.loader::before { border-color: #f03355 #0000; animation: inherit; animation-duration: .5s; animation-direction: reverse; }
+.loader::after { margin: 8px; }
+@keyframes l16 { 100% { transform: rotate(1turn) } }
 
 /* =============================
   FILE ITEM
   ============================= */
-
 .file-item {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  background: #fff;
-  margin-bottom: 6px;
-  cursor: pointer;
+  display: flex; align-items: center; padding: 8px; border: 1px solid #dee2e6;
+  border-radius: 6px; background: #fff; margin-bottom: 6px; cursor: pointer;
 }
-
-.file-item:hover {
-  background: #f8f9fa;
-}
-
-.file-thumb {
-  width: 32px;
-  height: 32px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
-.file-icon {
-  font-size: 18px;
-  width: 24px;
-  text-align: center;
-  margin-right: 10px;
-}
-
-.file-item-name {
-  flex: 1;
-  color: #17a2b8;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.file-item-name:hover {
-  text-decoration: underline;
-}
-
-.file-item-changed {
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin-right: 10px;
-}
+.file-item:hover { background: #f8f9fa; }
+.file-thumb { width: 32px; height: 32px; object-fit: cover; border-radius: 4px; margin-right: 10px; }
+.file-icon { font-size: 18px; width: 24px; text-align: center; margin-right: 10px; }
+.file-item-name { flex: 1; color: #17a2b8; text-decoration: none; cursor: pointer; }
+.file-item-name:hover { text-decoration: underline; }
+.file-item-changed { font-size: .85rem; color: #6c757d; margin-right: 10px; }
 
 /* =============================
   CARD FULLSCREEN
   ============================= */
-
-.card-fullscreen {
-  height: 100vh; 
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  justify-content: flex-start; 
-}
+.card-fullscreen { height: 100vh; display: flex; flex-direction: column; overflow-y: auto; justify-content: flex-start; }
 
 /* =============================
   BOTÓN VOLVER
   ============================= */
-
-#btn-volver {
-  display: inline-flex;
-  align-items: center;
-  font-size: 1rem;  
-  font-weight: 800; /* Antes 700 */
-  padding: 6px 14px;
-  border-radius: 8px;
-}
-
-#btn-volver i {
-  margin-right: 4px;
-  font-size: 1.1rem;
-}
+#btn-volver { display: inline-flex; align-items: center; font-size: 1rem; font-weight: 800; padding: 6px 14px; border-radius: 8px; }
+#btn-volver i { margin-right: 4px; font-size: 1.1rem; }
 
 /* =============================
   INFO BOX CONTENT
   ============================= */
-
-.info-box-content .row {
-  margin-bottom: 0.15rem !important;
-}
-
-.info-box-content p {
-  margin-bottom: 0 !important;
-}
-
-.info-box-content {
-  padding-top: 0.2rem !important;
-  padding-bottom: 0.2rem !important;
-}
+.info-box-content .row { margin-bottom: .15rem !important; }
+.info-box-content p { margin-bottom: 0 !important; }
+.info-box-content { padding-top: .2rem !important; padding-bottom: .2rem !important; }
 
 /* =============================
   RESPONSIVE TABLAS
   ============================= */
-
 @media (max-width: 992px) {
-  table.projects th,
-  table.projects td {
-    font-size: 12px;
-    white-space: nowrap;  
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 150px;
+  table.projects th, table.projects td {
+    font-size: 12px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 150px;
   }
 }
-
-table.projects tbody tr:hover {
-  background-color: rgba(0, 123, 255, 0.05);
-}
+table.projects tbody tr:hover { background-color: rgba(0,123,255,.05); }
 
 /* =============================
   SPINNER BOTÓN
   ============================= */
-
-@keyframes spinMe {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-#btn-actualizar-tareas i.spin::before {
-  display: inline-block;
-  animation: spinMe 1s linear infinite;
-}
+@keyframes spinMe { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#btn-actualizar-tareas i.spin::before { display: inline-block; animation: spinMe 1s linear infinite; }
 
 /* =============================
   ANIMACIONES FADE
   ============================= */
-
-.fade-show {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-}
-
-.fade-hide {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-}
+.fade-show { opacity: 1; visibility: visible; transition: opacity .25s ease, visibility .25s ease; }
+.fade-hide { opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease; }
 
 /* =============================
   TABLAS
   ============================= */
-
-.table td, 
-.table th {
-  vertical-align: middle;
-  white-space: nowrap;
+.table { font-size: 13px; font-weight: 800; color: #333; border-collapse: separate; }
+.table td, .table th { vertical-align: middle; white-space: nowrap; }
+.table .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.table td button { overflow: hidden; text-overflow: ellipsis; }
+.table td { font-size: 13px; padding: 6px 8px; } /* dedupe: padding base */
+.table thead th { font-weight: 900; font-size: 14px; text-transform: none; color: #222; }
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th { background-color: #eee; }
+.table thead > tr > th { border-bottom: 1px solid #C2C2C2; padding-bottom: 0; }
+.table tbody > tr > td {
+  font-size: .875em; background: #f5f5f5; border-top: 10px solid #fff; vertical-align: middle; padding: 12px 8px;
 }
-
-.table .text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.table tbody > tr > td:first-child, .table thead > tr > th:first-child { padding-left: 20px; }
+.table thead > tr > th span {
+  border-bottom: 2px solid #C2C2C2; display: inline-block; padding: 0 5px 5px; font-weight: normal;
 }
+.table thead > tr > th > a span { color: #344644; }
+.table thead > tr > th > a span:after { content: "\f0dc"; font-family: FontAwesome; margin-left: 5px; font-size: .75em; }
+.table thead > tr > th > a.asc span:after { content: "\f0dd"; }
+.table thead > tr > th > a.desc span:after { content: "\f0de"; }
+.table thead > tr > th > a:hover span { text-decoration: none; color: #2bb6a3; border-color: #2bb6a3; }
+.table.table-hover tbody > tr > td { transition: background-color .15s ease-in-out; }
 
-.table td button {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.table tbody tr td .call-type { display: block; font-size: .75em; text-align: center; }
+.table tbody tr td .first-line { line-height: 1.5; font-weight: 400; font-size: 1.125em; }
+.table tbody tr td .first-line span { font-size: .875em; color: #969696; font-weight: 300; }
+.table tbody tr td .second-line { font-size: .875em; line-height: 1.2; }
+.table a.table-link { margin: 0 5px; font-size: 1.125em; }
+.table a.table-link:hover { text-decoration: none; color: #2aa493; }
+.table a.table-link.danger { color: #fe635f; }
+.table a.table-link.danger:hover { color: #dd504c; }
 
-.table td {
-  font-size: 13px;
-}
+.table-products tbody > tr > td { background: none; border: none; border-bottom: 1px solid #ebebeb; transition: background-color .15s ease-in-out; position: relative; }
+.table-products tbody > tr:hover > td { background-color: #f6f6f6; }
+.table-products .name { display: block; font-weight: 600; padding-bottom: 7px; }
+.table-products .price, .table-products .warranty { display: block; text-decoration: none; width: 50%; float: left; font-size: .875em; }
+.table-products .price > i { color: #8dc859; }
+.table-products .warranty > i { color: #f1c40f; }
 
-.table {
-  font-size: 13px;
-  font-weight: 800; /* Antes 700 */
-  color: #333;
-}
-
-.table thead th {
-  font-weight: 900; /* Antes 800 */
-  font-size: 14px;
-  text-transform: none;  
-  color: #222;
-}
+.table tbody > tr.table-line-fb > td { background-color: #9daccb; color: #262525; }
+.table tbody > tr.table-line-twitter > td { background-color: #9fccff; color: #262525; }
+.table tbody > tr.table-line-plus > td { background-color: #eea59c; color: #262525; }
+.table-stats .status-social-icon { font-size: 1.9em; vertical-align: bottom; }
+.table-stats .table-line-fb .status-social-icon { color: #556484; }
+.table-stats .table-line-twitter .status-social-icon { color: #5885b8; }
+.table-stats .table-line-plus .status-social-icon { color: #a75d54; }
 
 /* =============================
   ESTILO PARA DETALLE PROYECTO
   ============================= */
-
-/* Título grande del proyecto */
-.project-info .card-header .card-title {
-  font-weight: 900; /* Antes 800 */
-  font-size: 1.2rem;
-}
-
-/* Títulos de cada bloque */
-.project-info .description-header {
-  font-weight: 800; /* Antes 700 */
-  font-size: 0.95rem;
-  margin-bottom: 2px;
-}
-
-/* Valores debajo de los títulos */
-.project-info .description-block span {
-  color: #6c757d;
-  font-weight: 700; /* Antes 500 */
-}
-
-/* Ajuste de separación */
-.project-info .description-block {
-  margin-bottom: 8px;
-}
-
-/* Línea divisoria más suave */
-.project-info hr {
-  border-top: 1px solid #e0e0e0;
-}
+.project-info .card-header .card-title { font-weight: 900; font-size: 1.2rem; }
+.project-info .description-header { font-weight: 800; font-size: .95rem; margin-bottom: 2px; }
+.project-info .description-block span { color: #6c757d; font-weight: 700; }
+.project-info .description-block { margin-bottom: 8px; }
+.project-info hr { border-top: 1px solid #e0e0e0; }
 
 /* ======== ESTILO DETALLE ESTRUCTURAL ======== */
-.card .card-title {
-  font-weight: 800; /* Antes 700 */
-  font-size: 1.25rem;
-  color: #222;
-}
+.card .card-title { font-weight: 800; font-size: 1.25rem; color: #222; }
+.card-header.bg-danger h4, .card-header.bg-secondary h5 { font-weight: 800; font-size: 1rem; }
 
-.card-header.bg-danger h4,
-.card-header.bg-secondary h5 {
-  font-weight: 800; /* Antes 700 */
-  font-size: 1rem;
-}
+.table td.text-bold { font-weight: 800; color: #333; white-space: nowrap; }
+.table td:not(.text-bold) { font-weight: 700; color: #6c757d; }
+.table td { padding: 6px 8px; vertical-align: middle; } /* dedupe */
 
-.table td.text-bold {
-  font-weight: 800; /* Antes 600 */
-  color: #333;
-  white-space: nowrap;
-}
-
-.table td:not(.text-bold) {
-  font-weight: 700; /* Antes 400 */
-  color: #6c757d;
-}
-
-.table td {
-  padding: 6px 8px;
-  vertical-align: middle;
-}
-
-/* Lista de tareas */
-.todo-list .text {
-  font-weight: 700; /* Antes 500 */
-  color: #333;
-}
-
-.todo-list i {
-  margin-left: 8px;
-  color: #6c757d;
-}
+.todo-list .text { font-weight: 700; color: #333; }
+.todo-list i { margin-left: 8px; color: #6c757d; }
 
 /* Estilo primera tabla muestra/troquel */
-.tabla-muestra td.text-bold {
-  font-weight: 800; /* Antes 700 */
-  color: #000;
-}
-
-.tabla-muestra td:not(.text-bold) {
-  font-weight: 700; /* Antes 500 */
-  color: #555;
-}
+.tabla-muestra td.text-bold { font-weight: 800; color: #000; }
+.tabla-muestra td:not(.text-bold) { font-weight: 700; color: #555; }
 
 /* Formato tablas detalle gráfico */
 .table.table-striped td strong,
-.table.table-striped td.text-bold {
-  font-weight: 800; /* Antes 700 */
-  color: #000;
-}
+.table.table-striped td.text-bold { font-weight: 800; color: #000; }
+.table.table-striped td:not(.text-bold):not(:has(strong)) { font-weight: 700; color: #555; }
+.table.table-striped td { vertical-align: middle; padding: 6px 10px; }
 
-.table.table-striped td:not(.text-bold):not(:has(strong)) {
-  font-weight: 700; /* Antes 500 */
-  color: #555;
-}
-
-.table.table-striped td {
-  vertical-align: middle;
-  padding: 6px 10px;
-}
-
-.card-header.text-center h5,
-.card-header.text-center h4 {
-  font-weight: 800; /* Antes 700 */
-}
+.card-header.text-center h5, .card-header.text-center h4 { font-weight: 800; }
 
 .detalle-grafico .table.table-striped td strong,
-.detalle-grafico .table.table-striped td.text-bold {
-  font-weight: 800; /* Antes 700 */
-  color: #000;
-}
-
-.detalle-grafico .table.table-striped td:not(.text-bold):not(:has(strong)) {
-  font-weight: 700; /* Antes 500 */
-  color: #555;
-}
+.detalle-grafico .table.table-striped td.text-bold { font-weight: 800; color: #000; }
+.detalle-grafico .table.table-striped td:not(.text-bold):not(:has(strong)) { font-weight: 700; color: #555; }
 
 /* Quitar scroll y permitir saltos de línea */
-.tabla-no-scroll {
-  overflow-x: visible !important;
-}
-
+.tabla-no-scroll { overflow-x: visible !important; }
 .tabla-no-scroll td {
-  white-space: normal !important;
-  word-break: break-word;
-  vertical-align: top;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  line-height: 1.5;
+  white-space: normal !important; word-break: break-word; vertical-align: top;
+  padding-top: 8px; padding-bottom: 8px; line-height: 1.5;
 }
 
 /* Aumentar ancho fijo de la primera columna de títulos */
-.col-title {
-  min-width: 220px;
-  white-space: normal;
-  vertical-align: top;
-  padding-right: 10px;
-}
+.col-title { min-width: 220px; white-space: normal; vertical-align: top; padding-right: 10px; }
 
-.table td {
-  padding-top: 25px !important;
-  padding-bottom: 25px !important;
-  font-size: 14px;
-}
+/* Ajustes de celda más grande si se requiere */
+.table td { padding-top: 14px !important; padding-bottom: 14px !important; font-size: 14px; } /* dedupe: regla final dominante */
 
+/* Tareas */
 .task-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.3rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  padding: 0.75rem 1rem;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1.3rem; font-weight: 500; cursor: pointer; transition: background .2s ease; padding: .75rem 1rem;
 }
-
-.task-item:hover {
-  background-color: #f1f5f9;
-}
-
-.task-item i {
-  font-size: 1.2rem;
-  color: #555;
-}
-
-.card-activa {
-  box-shadow: 0 0 0 4px #00000033;
-  transform: scale(1.01);
-  transition: all 0.2s ease-in-out;
-}
-
+.task-item:hover { background-color: #f1f5f9; }
+.task-item i { font-size: 1.2rem; color: #555; }
+.card-activa { box-shadow: 0 0 0 4px #00000033; transform: scale(1.01); transition: all .2s ease-in-out; }
 
 /* CLIENTES */
-
-/* USER LIST TABLE */
-.user-list tbody td > img {
-  position: relative;
-	max-width: 50px;
-	float: left;
-	margin-right: 15px;
-}
-.user-list tbody td .user-link {
-	display: block;
-	font-size: 1.25em;
-	padding-top: 3px;
-	margin-left: 60px;
-}
-.user-list tbody td .user-subhead {
-	font-size: 0.875em;
-	font-style: italic;
-}
-
-/* TABLES */
-.table {
-    border-collapse: separate;
-}
-.table-hover > tbody > tr:hover > td,
-.table-hover > tbody > tr:hover > th {
-	background-color: #eee;
-}
-.table thead > tr > th {
-	border-bottom: 1px solid #C2C2C2;
-	padding-bottom: 0;
-}
-.table tbody > tr > td {
-	font-size: 0.875em;
-	background: #f5f5f5;
-	border-top: 10px solid #fff;
-	vertical-align: middle;
-	padding: 12px 8px;
-}
-
-.table tbody > tr > td:first-child,
-.table thead > tr > th:first-child {
-	padding-left: 20px;
-}
-
-.table thead > tr > th span {
-	border-bottom: 2px solid #C2C2C2;
-	display: inline-block;
-	padding: 0 5px;
-	padding-bottom: 5px;
-	font-weight: normal;
-}
-
-.table thead > tr > th > a span {
-	color: #344644;
-}
-
-.table thead > tr > th > a span:after {
-	content: "\f0dc";
-	font-family: FontAwesome;
-	font-style: normal;
-	font-weight: normal;
-	text-decoration: inherit;
-	margin-left: 5px;
-	font-size: 0.75em;
-}
-
-.table thead > tr > th > a.asc span:after {
-	content: "\f0dd";
-}
-
-.table thead > tr > th > a.desc span:after {
-	content: "\f0de";
-}
-
-.table thead > tr > th > a:hover span {
-	text-decoration: none;
-	color: #2bb6a3;
-	border-color: #2bb6a3;
-}
-
-.table.table-hover tbody > tr > td {
-	-webkit-transition: background-color 0.15s ease-in-out 0s;
-	transition: background-color 0.15s ease-in-out 0s;
-}
-
-.table tbody tr td .call-type {
-	display: block;
-	font-size: 0.75em;
-	text-align: center;
-}
-.table tbody tr td .first-line {
-	line-height: 1.5;
-	font-weight: 400;
-	font-size: 1.125em;
-}
-.table tbody tr td .first-line span {
-	font-size: 0.875em;
-	color: #969696;
-	font-weight: 300;
-}
-.table tbody tr td .second-line {
-	font-size: 0.875em;
-	line-height: 1.2;
-}
-.table a.table-link {
-	margin: 0 5px;
-	font-size: 1.125em;
-}
-.table a.table-link:hover {
-	text-decoration: none;
-	color: #2aa493;
-}
-.table a.table-link.danger {
-	color: #fe635f;
-}
-.table a.table-link.danger:hover {
-	color: #dd504c;
-}
-
-.table-products tbody > tr > td {
-	background: none;
-	border: none;
-	border-bottom: 1px solid #ebebeb;
-	-webkit-transition: background-color 0.15s ease-in-out 0s;
-	transition: background-color 0.15s ease-in-out 0s;
-	position: relative;
-}
-.table-products tbody > tr:hover > td {
-	text-decoration: none;
-	background-color: #f6f6f6;
-}
-.table-products .name {
-	display: block;
-	font-weight: 600;
-	padding-bottom: 7px;
-}
-.table-products .price {
-	display: block;
-	text-decoration: none;
-	width: 50%;
-	float: left;
-	font-size: 0.875em;
-}
-.table-products .price > i {
-	color: #8dc859;
-}
-.table-products .warranty {
-	display: block;
-	text-decoration: none;
-	width: 50%;
-	float: left;
-	font-size: 0.875em;
-}
-.table-products .warranty > i {
-	color: #f1c40f;
-}
-.table tbody > tr.table-line-fb > td {
-	background-color: #9daccb;
-	color: #262525;
-}
-.table tbody > tr.table-line-twitter > td {
-	background-color: #9fccff;
-	color: #262525;
-}
-.table tbody > tr.table-line-plus > td {
-	background-color: #eea59c;
-	color: #262525;
-}
-.table-stats .status-social-icon {
-	font-size: 1.9em;
-	vertical-align: bottom;
-}
-.table-stats .table-line-fb .status-social-icon {
-	color: #556484;
-}
-.table-stats .table-line-twitter .status-social-icon {
-	color: #5885b8;
-}
-.table-stats .table-line-plus .status-social-icon {
-	color: #a75d54;
-}
+.user-list tbody td > img { position: relative; max-width: 50px; float: left; margin-right: 15px; }
+.user-list tbody td .user-link { display: block; font-size: 1.25em; padding-top: 3px; margin-left: 60px; }
+.user-list tbody td .user-subhead { font-size: .875em; font-style: italic; }
 
 .avatar-circle {
-  width: 30px;
-  height: 30px;
-  background-color: #c62857;  
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  font-weight: bold;
-  font-family: 'Quicksand', sans-serif;
-  box-shadow: 0 0 0 2px #c62857;
+  width: 30px; height: 30px; background-color: #c62857; color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold;
+  font-family: 'Quicksand', sans-serif; box-shadow: 0 0 0 2px #c62857;
 }
-
-.info-destacada {
-  font-size: 1.1rem !important;
-  font-weight: 600;
-  color: black; /* Gris oscuro Bootstrap */
-}
+.info-destacada { font-size: 1.1rem !important; font-weight: 600; color: black; }
 
 /* ESTILOS LISTADO CLIENTES */
+.col-cliente { width: 50%; }
+.col-codigo { width: 25%; }
+.col-acciones { width: 25%; text-align: left; }
+@media (max-width: 768px) { .col-cliente, .col-codigo, .col-acciones { width: auto; } }
 
-/* Ancho fijo para cada columna */
-.col-cliente {
-  width: 50%;
-}
-
-.col-codigo {
-  width: 25%;
-}
-
-.col-acciones {
-  width: 25%;
-  text-align: left;
-}
-
-/* Opcional: para que no se rompa el diseño en pantallas pequeñas */
-@media (max-width: 768px) {
-  .col-cliente, .col-codigo, .col-acciones {
-    width: auto;
-  }
-}
-
+/* Sidebar nav */
 .nav-sidebar .nav-link {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  border-radius: 0 !important;
-  padding: 0.75rem 1rem !important;
-  font-weight: 700;
-  color: #c2c7d0;
+  display: flex; align-items: center; width: 100%;
+  border-radius: 0 !important; padding: .75rem 1rem !important; font-weight: 700; color: #c2c7d0;
 }
-
 .nav-sidebar .nav-link.active {
-  background-color: #17a2b8 !important;
-  color: #fff !important;
-  font-weight: bold;
-  width: 100%;
-  border-radius: 0.4rem !important;
+  background-color: #17a2b8 !important; color: #fff !important; font-weight: bold; width: 100%; border-radius: .4rem !important;
 }
 
-.td-fonts {
-  font-size: 16px !important; 
-}
- 
+.td-fonts { font-size: 16px !important; }
 
-@media (max-width: 1400px) {
-  .detalle-grid .col-stack {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-  }
-  .scroll-desktop{
-    height: auto !important;
-    overflow: visible !important;
-    margin-bottom: 1rem;
-  }
-}
+/* =============================
+  LAYOUT HEIGHT HELPERS
+  ============================= */
+/* dedupe: conservar la última (400px) */
 
-/* tabla compacta */
-.tabla-compacta{
-  table-layout: fixed;            /* ayuda a que el texto envuelva */
-  width: 100%;
+.same-h-460 { height: 400px; display: flex; flex-direction: column; }
+.same-h-460 .card-body { flex: 1 1 auto; overflow: auto; }
+
+@media (min-width: 1200px) {
+  .equal-h-xl-420 { height: 320px; display: flex; flex-direction: column; }
+  .equal-h-xl-420 .card-body { flex: 1 1 auto; overflow: auto; }
+  .equal-h-xl-420 .fp-canvas { height: 100%; }
 }
 
-.tabla-compacta th,
-.tabla-compacta td{ 
-  vertical-align: top;               /* evita “estirar” por centrado vertical */
-  white-space: normal;               /* permite varias líneas */
-  word-break: break-word;            /* corta palabras largas */
+@media (max-width: 1199.98px) {
+  .stack-below-xl > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
+  .equal-h-xl-420 { height: auto; }
+  .equal-h-xl-420 .card-body { overflow: visible; }
+  .fp-canvas { height: 260px !important; }
 }
 
-.tabla-compacta .td-fonts{
-  font-size: .9rem; /* baja un poco la fuente (ajusta a gusto) */
+/* Centrado info-box superiores */
+.info-box--center .info-box-content { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.info-box--center .info-box-number, .info-box--center .text-muted { display: block; }
+/* Anular truncado dentro de info-box */
+.info-box .td-fonts { white-space: normal !important; max-width: none !important; overflow: visible !important; text-overflow: clip !important; }
+.info-box .td-wrap { display: block; white-space: normal !important; overflow-wrap: break-word; word-break: normal; }
+
+/* =============================
+  TABLE WRAPPERS (unificado)
+  ============================= */
+.table-responsive { width: 100%; overflow-x: hidden; overflow-y: hidden; } /* dedupe */
+
+@media (max-width: 768px) {
+  .table-responsive { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+  .table { min-width: 600px; }
+  .td-fonts { white-space: nowrap; }
 }
+.table-responsive .text-center button { margin-bottom: 20px; }
 
-.badge-lg {
-  font-size: 14px;
-  padding: .5em .7em; 
-}
- 
-
-/*  MEJORAS  */
-
-:root{
-  --radius: 12px;
-  --shadow: 0 8px 20px rgba(0,0,0,.06);
-}
-
+/* =============================
+  PALETA, RADIUS y SOMBRAS
+  ============================= */
+  
+:root { --radius: 12px; --shadow: 0 8px 20px rgba(0,0,0,.06); }
 body { background: #f5f7fb; }
 
-/* Small boxes */
-.small-box { border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: transform .12s ease, box-shadow .12s ease, filter .12s ease; }
+.small-box { border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: transform .12s ease, box-shadow .12s ease, filter .12s ease; position: relative; } /* dedupe */
 .small-box .inner { padding-top: 14px; padding-bottom: 14px; }
-.small-box .icon { opacity: .25; transition: transform .15s ease, opacity .15s ease; }
+.small-box .icon {
+  position: absolute; top: 12px; right: 14px; display: block; z-index: 0;
+  opacity: .25; transition: transform .15s ease, opacity .15s ease; /* dedupe */
+}
+.small-box .icon > i { font-size: 64px; line-height: 1; }
 .small-box:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.09); filter: saturate(1.05); }
-.small-box:hover .icon { opacity: .35; transform: scale(1.06); }
+.small-box:hover .icon { opacity: .35; transform: scale(1.06) translateY(-2px); }
+.small-box .small-box-footer { position: relative; z-index: 1; }
 
-/* Card */
 .card { border-radius: var(--radius); box-shadow: var(--shadow); border: 0; }
 .card-header { border-bottom: 1px solid rgba(0,0,0,.06); }
 
 /* Tabla Proyectos */
 .table.projects thead th {
-  text-align: left !important;
-  vertical-align: middle;
-  background: #eef2f7;
-  color: #475569;
-  font-weight: 600;
-  position: sticky;    /* thead sticky */
-  top: 0;
-  z-index: 1;
+  text-align: left !important; vertical-align: middle; background: #eef2f7; color: #475569;
+  font-weight: 600; position: sticky; top: 0; z-index: 1;
 }
-
 .table.projects tbody td { vertical-align: middle; font-size: 14px; }
 .table.projects tbody tr { transition: background-color .12s ease; }
 .table.projects tbody tr:hover { background: #f8fafc; }
 
 /* Badges */
-.badge.badge-success,.badge.badge-warning,.badge.badge-info,.badge.badge-danger{
-  font-size: .9rem; padding: .45em .7em; border-radius: 999px;
+.badge-lg, .badge.badge-success, .badge.badge-warning, .badge.badge-info, .badge.badge-danger {
+  font-size: 14px; padding: .5em .7em;
 }
-
 /* Truncado útil */
 .td-fonts, .text-truncate { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Toolbar de filtros (espaciados) */
- 
-
-/* Restaurar posición y capa del icono en las small-box */
-.small-box { position: relative; } /* por si se perdió */
-.small-box .icon {
-  position: absolute;
-  top: 12px;           /* ← clave: vuelve arriba */
-  right: 14px;
-  bottom: auto;        /* ← por si algún CSS puso bottom */
-  display: block;      /* evita flex raros de otras libs */
-  z-index: 0;          /* detrás del contenido, delante del fondo */
-  opacity: .25;
-  transition: transform .15s ease, opacity .15s ease;
-}
-.small-box .icon > i {
-  font-size: 64px;     /* ajusta al gusto (60–72) */
-  line-height: 1;
-}
-.small-box:hover .icon {
-  transform: scale(1.06) translateY(-2px); /* “se acerca” un pelín */
-  opacity: .35;
-}
-
-/* Si quieres que el footer no tape nada aunque el icono baje: */
-.small-box .small-box-footer { position: relative; z-index: 1; }
-
-/* Toolbar de filtros: horizontal en desktop, apilado en móviles */
+/* Toolbar de filtros */
 .proj-toolbar { display: flex; align-items: center; flex-wrap: wrap; }
 .proj-toolbar > * { margin-right: .5rem; margin-bottom: .5rem; }
 .proj-toolbar > *:last-child { margin-right: 0; }
-
-/* Tamaños mínimos para que se vean generosos */
 .proj-toolbar .input-group.input-group-lg { min-width: 280px; }
 .proj-toolbar .form-control.form-control-lg { min-width: 220px; }
-
-/* Redondeo y look más pulido */
-.proj-toolbar .form-control,
-.proj-toolbar .input-group-text,
-.proj-toolbar .btn { border-radius: 10px; }
-
-/* En desktop no se apilan */
-@media (min-width: 768px) {
-  .proj-toolbar { flex-wrap: nowrap; }
-  .proj-toolbar > * { margin-bottom: 0; }
-}
-
-/* Quita la “x” nativa del input search */
+.proj-toolbar .form-control, .proj-toolbar .input-group-text, .proj-toolbar .btn { border-radius: 10px; }
+@media (min-width: 768px) { .proj-toolbar { flex-wrap: nowrap; } .proj-toolbar > * { margin-bottom: 0; } }
 input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
 input[type="search"]::-ms-clear { display: none; width: 0; height: 0; }
-
-/* Que el addon se vea EXACTO como el de la lupa, pero clicable */
-.proj-toolbar .input-group.input-group-lg .form-control {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.proj-toolbar .input-group-append .input-group-text {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.proj-toolbar .clear-addon {
-  cursor: pointer;
-  user-select: none;
-  /* por si tu tema lo dejó blanco, forzamos el gris típico del addon */
-  background-color: #e9ecef;
-}
-
-.proj-toolbar .clear-addon:active { transform: translateY(0.5px); }
-
-/* Estado deshabilitado cuando no hay texto */
-.proj-toolbar .clear-addon.is-disabled {
-  opacity: .5;
-  pointer-events: none;
-}
-
-/* texto del select en gris si está el placeholder seleccionado */
+.proj-toolbar .input-group.input-group-lg .form-control { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.proj-toolbar .input-group-append .input-group-text { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.proj-toolbar .clear-addon { cursor: pointer; user-select: none; background-color: #e9ecef; }
+.proj-toolbar .clear-addon:active { transform: translateY(.5px); }
+.proj-toolbar .clear-addon.is-disabled { opacity: .5; pointer-events: none; }
 #proj-status-filter:invalid { color: #9aa0a6 !important; }
-
-/* opciones del desplegable en negro */
 #proj-status-filter option { color: #0f172a; }
-
-/* la opción placeholder también gris dentro del desplegable */
 #proj-status-filter option[value=""] { color: #9aa0a6; }
 
+/* =============================
+  TABLE OUTLINE + SCROLLER (unificado)
+  ============================= */
+.table-outline {
+  border: 1px solid #dfe7ef; border-radius: 12px; background: #fff; overflow: visible;  /* dedupe: se mantiene visible */
+}
+.table-outline .table { margin-bottom: 0; }
+.table-scroll-x { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+.table-scroll-x > table { min-width: 1400px; }
+@media (max-width: 1400px) { .table-scroll-x > table { min-width: 1200px; } }
+@media (max-width: 992px)  { .table-scroll-x > table { min-width: 900px;  } }
 
+/* =============================
+  CARD OUTLINE CUT
+  ============================= */
+.card-outline-cut { position: relative; background: #fff; border: none; border-radius: 12px; }
+.card-outline-cut::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border: 2px dotted #d3d3d3; border-radius: 12px; --cut: 12px;
+}
+.card-outline-cut.card-outline-dashed::before { border-style: dashed; }
 
-/* Borde exterior tipo outline para la tabla */
-.table-outline{
-  border: 1px solid #dfe7ef;   /* gris suave */
-  border-radius: 12px;
-  overflow: hidden;            /* recorta esquinas del thead/filas */
-  background: #fff;            /* opcional, para contraste */
+/* =============================
+  FILE PREVIEW
+  ============================= */
+.file-preview-card .fp-list { width: 220px; max-height: 380px; overflow: auto; background: #fafbfd; }
+.file-preview-card .fp-view { min-height: 380px; }
+.file-preview-card .fp-canvas { height: 380px; background: #fff; border-radius: 12px; position: relative; overflow: hidden; }
+#fp-list li button { width: 100%; text-align: left; padding: .6rem .75rem; border: 0; background: transparent; display: flex; align-items: center; cursor: pointer; }
+#fp-list li button:hover { background: #eef2f7; }
+#fp-list li.active button { background: #e6f0ff; }
+.fp-thumb { width: 32px; height: 32px; border-radius: 6px; margin-right: .6rem; object-fit: cover; background: #e2e8f0; display: flex; align-items: center; justify-content: center; }
+.fp-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; color: #0f172a; }
+.fp-preview-wrapper { position: absolute; inset: 12px; overflow: auto; border-radius: 8px; }
+.fp-preview-wrapper img, .fp-preview-wrapper iframe, .fp-preview-wrapper embed { width: 100%; height: 100%; object-fit: contain; border: 0; }
+
+/* =============================
+  MISMA ALTURA CARDS XL / STACK
+  ============================= */
+.same-h-460 { height: 400px; display: flex; flex-direction: column; } /* dedupe */
+.same-h-460 .card-body { flex: 1 1 auto; overflow: auto; }            /* dedupe */
+
+/* =============================
+  SIDEBAR OVERLAY < 1200px (unificado)
+  ============================= */
+@media (max-width: 1199.98px) {
+
+  .main-sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 260px; height: 100vh;
+    transform: translateX(-100%) !important;
+    transition: transform .25s ease;
+    z-index: 2001;
+  }
+
+  body.sidebar-open .main-sidebar { transform: translateX(0) !important; }
+
+  .content-wrapper, .main-header, .main-footer, .wrapper { margin-left: 0 !important; }
+
+  body.sidebar-collapse .content-wrapper,
+  body.sidebar-collapse .main-header,
+  body.sidebar-collapse .main-footer { margin-left: 0 !important; }
+
+  body.sidebar-open { overflow: hidden; }
+  
 }
 
-/* Asegura que no haya margen extra bajo la tabla */
-.table-outline .table{
-  margin-bottom: 0;
+.sidebar-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.28); z-index: 1500;
 }
 
-/* Scroll horizontal suave dentro del wrapper */
-.table-scroll-x{
+body.sidebar-open .sidebar-backdrop { display: block; }
+
+.table-scroll {
+  width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Fuerza un ancho mínimo para que aparezca el scroll */
-.table-scroll-x > table{
-  min-width: 1400px;   /* ajusta según columnas/contenido */
+.table-scroll > table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
 }
 
-/* Si quieres afinar por breakpoint */
-@media (max-width: 1400px){
-  .table-scroll-x > table{ min-width: 1200px; }
+.table-scroll th,
+.table-scroll td {
+  white-space: nowrap; 
 }
-@media (max-width: 992px){
-  .table-scroll-x > table{ min-width: 900px; }
+
+.grupo-disenos {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 20px 0px 20px;
+  background-color: #f9f9f9; /* gris muy claro */
 }
+
+.tabla-no-scroll td.col-title {
+  width: 180px; /* ajusta este valor */
+  white-space: nowrap;
+}
+
+.tabla-no-scroll td {
+  vertical-align: middle;
+}
+
+
+/* MODAL HISTORIAL DE TAREAS*/
+
+ .timeline {
+    position: relative;
+    padding: 12px 0;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 14px 16px 14px 56px;
+    border-bottom: 1px solid #f1f3f5;
+  }
+  .timeline-item:last-child { border-bottom: 0; }
+
+  .timeline-item .dot {
+    position: absolute;
+    left: 16px;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0d6efd;      /* BS5 primary */
+    box-shadow: 0 0 0 3px #e9ecef;
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+
+  .timeline-item .meta {
+    font-size: 12px;
+    color: #6c757d;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .timeline-item .desc {
+    margin-top: 6px;
+    background: #f8f9fa;
+    border: 1px solid #f1f3f5;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .badge-state {
+    font-size: 11px;
+    border-radius: 999px;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+  }
+  .badge-pendiente  { background: #fff3cd; border-color: #ffe69c; color:#8a6d3b; }
+  .badge-proceso    { background: #e7f1ff; border-color: #cfe2ff; color:#0b5ed7; }
+  .badge-completada { background: #eaf7ea; border-color: #cfe8cf; color:#1e7e34; }
+
+
+/* Mantén tu UI; solo posicionamos los botones sin mover el título */
+.header-con-acciones{ position: relative; }
+.acciones-seccion{ position: absolute; right: .75rem; top: .5rem; display: flex; gap: .25rem; }
+
+.toast-area{ position: fixed; top:1rem; right:1rem; z-index:1080; }
+.toast{ min-width:280px; }
+
+/* ===== Tipografía más marcada en Detalle Estructural (sin cargar 700) ===== */
+.detalle-grid .table .text-bold.td-fonts { 
+  font-weight: 600;
+  color: #263238;
+}
+
+.detalle-grid .table td.td-fonts {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 15px;
+}
+
+.detalle-grid [data-seccion-target] .form-control,
+.detalle-grid [data-seccion-target] select.form-control,
+.detalle-grid [data-seccion-target] textarea.form-control {
+  font-weight: 600;
+  color: #111827;
+  border-color: #cbd5e1;
+  line-height: 1.35; /* textareas más legibles */
+}
+
+.header-con-acciones h5 {
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+
+/* ================== Comparación de Calidad – v2 (clean UI) ================== */
+#bloque-comparacion-calidad { margin-top: 1.25rem; }
+
+.cmp-card{
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 1px rgba(16,24,40,.04);
+  overflow: hidden;
+  background: #fff;
+}
+
+/* header */
+.cmp-header{
+  display:flex; align-items:center; justify-content:space-between;
+  background:#16a34a; color:#fff; padding:12px 16px; font-weight:600;
+}
+
+/* chip de estado */
+.tag{ display:inline-flex; align-items:center; padding:4px 10px;
+  border-radius:999px; font-size:12px; line-height:1; font-weight:600;
+}
+.tag--ok{ background:#10b981; color:#052e16; }
+.tag--warn{ background:#fde68a; color:#7a5307; }
+
+.cmp-summary{
+  padding:10px 16px; font-size:13px; color:#6b7280; border-bottom:1px solid #f1f5f9;
+}
+
+/* grupo */
+.cmp-group{ border-bottom:1px solid #f1f5f9; }
+.cmp-group:last-child{ border-bottom:0; }
+
+.cmp-group-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px; background:#f8fafc; color:#0f172a; font-weight:700;
+}
+.cmp-group-head .pill{
+  background:#e2e8f0; color:#0f172a; border-radius:999px; padding:4px 10px; font-size:12px;
+}
+
+/* banda de la calidad del grupo */
+.cmp-quality{
+  display:flex; align-items:center; gap:8px;
+  background:#0891b2; color:#fff; padding:8px 16px; font-weight:600;
+  border-top:1px solid #e5e7eb;
+}
+.cmp-quality em{ font-style:normal; font-weight:500; opacity:.95; }
+
+/* filas de proyectos */
+.cmp-rows{ padding:4px 0; }
+.proy-row{
+  display:flex; gap:16px; align-items:flex-start;
+  padding:12px 16px; border-top:1px dashed #eef2f7;
+}
+.proy-row:first-child{ border-top:0; }
+
+.proy-col--name{
+  flex:0 0 280px; font-weight:700; color:#0f172a;
+}
+.proy-col--name small{ color:#64748b; font-weight:600; }
+
+.proy-col--quality{
+  flex:1; color:#334155; word-break:break-word;
+}
+
+/* zebra + hover */
+.cmp-rows .proy-row:nth-child(even){ background:#fafafa; }
+.cmp-rows .proy-row:hover{ background:#f1f5f9; }
+
+/* Responsive */
+@media (max-width: 768px){
+  .proy-row{ flex-direction:column; gap:6px; }
+  .proy-col--name{ flex: none; width:100%; }
+}
+
+/* -- stack de tarjetas para comparación de calidad -- */
+.cmp-card--summary{ margin-bottom: 14px; }
+.cmp-card--group{ margin-bottom: 14px; }
+
+/* opcional: borde inferior sutil del header del grupo */
+.cmp-card--group .cmp-group-head{
+  background:#f8fafc; border-bottom:1px solid #e5e7eb;
+}
+
+
+.drop-target {
+    min-height: 260px;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+  .drop-target.is-active { border-color: #3c8dbc; background: #eef7ff; }
+  .todo-list li { cursor: grab; }
+  .todo-list li .remove-btn { cursor: pointer; }
+  /* feedback visual de Sortable */
+  .sortable-chosen { opacity: .7; }
+  .sortable-ghost { opacity: .4; }
+
+  /* Alinear el divider de ambas columnas */
+.list-header{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  min-height:44px;           /* misma altura para las dos cabeceras */
+  padding:.25rem 1.25rem;
+}
+.list-header .title{
+  margin:0; white-space:nowrap;
+}
+.list-header .divider{
+  flex:1;
+  height:1px;
+  background:rgba(0,0,0,.1); /* color del divider */
+  border-radius:1px;
+}
+.list-header .actions{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+
+/* Drop area derecha */
+#todo-right.drop-target {
+  position: relative;
+  min-height: 240px; /* alto visible del área punteada */
+}
+
+#todo-left.drop-target {
+  position: relative;
+  min-height: 240px; /* alto visible del área punteada */
+}
+
+/* Cuando está vacía, centra el placeholder y muéstralo */
+#todo-right.drop-target:empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Texto “+AS400” */
+#todo-right.drop-target:empty::before {
+  content: 'Arrastra los proyectos de la izquierda \A y suéltalos aquí para agregarlos a AS400';
+  white-space: pre-line;       /* respeta el salto de línea (\A) */ 
+  font-weight: 600;
+  font-size: 25px;
+  color: #9aa0a6;              /* gris amigable */
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+  opacity: .9;
+  line-height: 1.4;
+} 
+
+/* Oculta lápiz y papelera en cualquier lista */
+.todo-list .tools .fa-edit,
+.todo-list .tools .fa-pen,
+.todo-list .tools .fa-pen-to-square,
+.todo-list .tools .fa-trash,
+.todo-list .tools .fa-trash-alt,
+.todo-list .tools .fa-trash-o {
+  display: none !important;
+}
+
+/* (Opcional) Solo ocultar herramientas en el lado izquierdo */
+#todo-left .tools { display: none !important; }
+
+/* Si usas el botón de quitar (la X) en la derecha, mantenlo visible */
+#todo-right .tools .remove-btn { display: inline-block !important; }
+
+/* --- Estado vacío lado izquierdo --- */
+#todo-left {
+  position: relative;
+  min-height: 140px;              /* para que se vea el placeholder */
+}
+
+#todo-left.is-empty::before {
+  content: "No hay información";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  color: #b8c0cc;                 /* gris suave */
+  pointer-events: none;
+}
+
+/* Si ya usas el placeholder de la derecha, esto lo oculta cuando haya items */
+#todo-right.has-items::before { display: none; }
+
+/* Cuando el item está en la lista derecha */
+.todo-list > li.is-in-right {
+  background: #fff !important;   /* blanco */
+  transition: background .15s ease;
+}
+
+:root { --drop-min-h: 260px; }      /* ajusta si quieres */
+.drop-target { min-height: var(--drop-min-h); }
+
+.drop-target{
+  position: relative;
+  min-height: var(--drop-min-h);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* derecha: siempre punteado */
+#todo-right.drop-target{
+  border: 2px dashed #cbd5e1;
+  background: #f8fafc;
+}
+
+/* izquierda: solo punteado cuando está vacía */
+#todo-left.drop-target{
+  border: 2px dashed transparent;
+  background: transparent;
+}
+#todo-left.drop-target.is-empty{
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+/* texto “No hay información” centrado perfectamente */
+#todo-left.drop-target.is-empty::before{
+  content: "No hay información";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  color: #94a3b8;
+}
+
+ 
+.todo-list > li{
+  background: #f8fafc;
+  transition: background .15s ease;
+}
+
+
+.todo-list > li.in-right{
+  background: #ffffff !important;
+}
+
+ 
+#todo-right > li {
+  padding-top: 10px;       
+  padding-bottom: 10px;
+  border-radius: 10px;     
+  margin-right: 10px;
+  border: #dad7cd 1px solid; 
+}
+
+ 
+#todo-right > li + li {
+  margin-top: 6px;     
+}
+
+
+ 
+#todo-left > li {
+  padding-top: 10px;        
+  padding-bottom: 10px;
+  border-radius: 10px;     
+  margin-right: 15px;
+  border: #dad7cd 1px solid;  
+}
+
+ 
+#todo-left > li + li {
+  margin-top: 6px;       
+}
+ 
+/* Contenedor de las dos listas */
+.drag-row{ position:relative; isolation:isolate; }
+
+/* Pastilla vertical centrada entre columnas */
+.drag-hint{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  z-index:2000;
+  display:flex;                 /* d-none/d-md-flex controla el display por breakpoint */
+  flex-direction:column;        /* una encima de la otra */
+  align-items:center;
+  gap:8px;              /* ancho fijo de la pastilla */
+  padding: 8px 6px;
+  background:#eef0f2;           /* gris claro de fondo */
+  border:1px solid #e6e9ee;
+  border-radius:24px;           /* bordes redondeados (pastilla) */
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+  pointer-events:none;          /* no bloquea el drag */
+}
+
+/* Botón circular interno */
+.drag-hint i{
+  width: 56px;
+  height: 56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 25px;
+  color:#ffffff;                /* flecha blanca */
+  background:#bfc6ce !important;           /* círculo gris medio */
+  border:1px solid #c9d0d9;
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.35),
+    0 1px 2px rgba(0,0,0,.08); 
+}
+
+
+/* Bloque principal del item */
+.todo-list .item-main{ display:block; }
+
+/* Título (línea superior) */
+.todo-list .item-title{
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 15px;
+  background-color: #17A2B8;
+  margin: 0 0 4px 0;
+}
+
+/* Lista de campos (viñetas) */
+.todo-list .kv-list{
+  margin: 0 0 2px 1.6rem;   /* deja sitio al handle y crea sangría para las bullets */
+  padding: 0;
+  list-style: disc;
+}
+
+.todo-list .kv-list li{
+  margin: 2px 0;
+  font-size: .95rem;
+  color:#475569;
+  line-height: 1.35;
+}
+
+.todo-list .kv-list li strong{
+  color:#0f172a;
+  font-weight: 700;
+}
+
+/* Altura fija de la lista izquierda + scroll vertical */
+:root{
+  /* usa el mismo alto que el área punteada de la derecha (fallback 260px) */
+  --left-pane-h: var(--drop-min-h, 260px);
+}
+
+#todo-left{
+  max-height: var(--left-pane-h); /* fija el alto */
+  overflow-y: auto;               /* activa scroll vertical */
+  overscroll-behavior: contain;   /* evita que se desplace toda la página */
+  padding-right: .25rem;          /* deja espacio para el scrollbar */
+}
+
+/* Scrollbar sutil (opcional) */
+#todo-left::-webkit-scrollbar{ width: 8px; }
+#todo-left::-webkit-scrollbar-thumb{
+  background: #cbd5e1; border-radius: 999px;
+}
+#todo-left:hover::-webkit-scrollbar-thumb{ background: #94a3b8; }
+
+/* === Panels más altos + scroll en ambos lados === */
+
+/* Aumenta la altura “base” de las dos áreas */
+:root{
+  /* opción simple (fijo): súbelo a lo que te guste */
+  --drop-min-h: 500px;
+  /* opción responsive (descomenta si prefieres por viewport)
+  @media (min-height: 800px){
+    --drop-min-h: calc(100vh - 320px);
+  }
+  */
+}
+
+/* Izquierda: ya usabas esta regla; se beneficia del nuevo valor */
+#todo-left{
+  max-height: var(--drop-min-h);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: .25rem;
+}
+
+/* Derecha: mismo alto y con scroll si se llena */
+#todo-right.drop-target{
+  min-height: var(--drop-min-h);
+  max-height: var(--drop-min-h);
+  overflow-y: auto;
+  padding-right: .25rem;
+}
+
+/* Para que el bloque de flechas quede centrado respecto a la altura nueva */
+.drag-row{ min-height: var(--drop-min-h); }
+
+/* El item completo se puede agarrar sin seleccionar texto */
+#todo-left li,
+#todo-right li {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y; /* permite scroll vertical, drag horizontal fluido */
+  cursor: grab;
+}
+
+/* El contenido “pasivo” no captura el click: el drag inicia fácil */
+#todo-left li .text,
+#todo-left li small.badge,
+#todo-right li .text,
+#todo-right li small.badge {
+  pointer-events: none;
+}
+
+/* …pero la X y herramientas siguen siendo clicables en la derecha */
+#todo-right li .tools,
+#todo-right li .remove-btn {
+  pointer-events: auto;
+}
+
+/* El item siempre captura el pointer: */
+.todo-list li{
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y; /* scroll vertical ok, drag fluido */
+}
+
+/* 🔥 Martillo: nada dentro del li “roba” el click */
+.todo-list li *{
+  pointer-events: none;
+}
+
+/* …pero la X/herramientas sí deben poder clicarse en la DERECHA */
+#todo-right li .tools,
+#todo-right li .tools *{
+  pointer-events: auto;
+}
+
+/* Cards de la izquierda y derecha (solo dentro de la fila de arrastre) */
+.drag-row > [class*="col-"] > .card {
+  box-shadow: none !important;                 /* sin sombra */
+  border: 1px solid #d1d5db !important;        /* borde gris */
+  background: #fff;                             /* fondo blanco */
+}
+
+/* Quitar la X de la lista derecha */
+#todo-right .tools .remove-btn { 
+  display: none !important; 
+}
+
+/* 1) La UL se comporta como columna con separación homogénea */
+.todo-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;              /* espacio entre todas las cards */
+  list-style: none;
+  margin: 0;
+  padding: 0;             /* quitamos padding propio; lo da .drop-target */
+}
+
+/* 2) Más aire dentro del área punteada, especialmente abajo */
+#todo-left.drop-target,
+#todo-right.drop-target{
+  padding: 10px 10px 0px ; /* ↑ derecha izquierda ↓ (aumenta el bottom) */
+}
+
+/* 3) (Opcional) elimina/neutraliza la regla antigua basada en + li */
+#todo-left > li + li,
+#todo-right > li + li{ margin-top: 0; }
+
+/* Si quieres, un filo extra para que no “toquen” los bordes laterales */
+#todo-left > li,
+#todo-right > li{
+  margin-right: 0px;   /* ya lo tenías; ajústalo o quítalo */
+}
+
+.drag-hint .iconr{ 
+  color: #17A2B8 !important;
+}
+
+/* === Misma altura para ambas cards (izquierda y derecha) === */
+:root{
+  /* altura del área de trabajo de ambas columnas */
+  --panel-h: clamp(320px, 62vh, 560px);
+}
+
+.drag-row{ align-items: stretch; }
+
+/* Las dos cards ocupan la misma altura */
+.drag-row > [class*="col-"] > .card.h-100{
+  height: var(--panel-h) !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El body se estira y deja que la lista haga scroll */
+.drag-row > [class*="col-"] > .card.h-100 .card-body{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Las zonas drop ocupan el 100% del body (mismo alto en ambos lados) */
+#todo-left.drop-target,
+#todo-right.drop-target{
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto;
+}
+
+/* (opcional) centra el placeholder cuando está vacío */
+#todo-right.drop-target:empty{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sortable-drag,
+.sortable-chosen { opacity: 1 !important; }
+.sortable-ghost  { opacity: 0 !important; }
+
+.drop-target { transition: background-color .15s, border-color .15s, box-shadow .15s; }
+.drop-target.is-hover{
+  background: #e9f5ff;
+  border-color: #3c8dbc;
+  box-shadow: inset 0 0 0 3px rgba(60,141,188,.15);
+}
+
+
+/* transición suave y color base (izquierda) */
+.todo-list > li{
+  background:#f8fafc;
+  border:1px solid #dad7cd;
+  transition: background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+/* durante el drag, cuando estás sobre la derecha */
+.todo-list > li.preview-right,
+.sortable-drag.preview-right{
+  background:#fff !important;
+  border-color:#dad7cd;
+  box-shadow: inset 0 0 0 1px rgba(16,24,40,.05);
+}
+
+/* Estado visual del ítem mientras se arrastra (forceFallback) */
+.drag-over-right .sortable-fallback,
+.drag-over-right .sortable-drag {
+  background: #fff !important;      /* blanco en la derecha */
+  border-color: #dad7cd !important;
+  box-shadow: inset 0 0 0 1px rgba(16,24,40,.05);
+}
+
+.drag-over-left .sortable-fallback,
+.drag-over-left .sortable-drag {
+  background: #f8fafc !important;   /* gris en la izquierda */
+  border-color: #dad7cd !important;
+}
+
+/* (opcional) evita que el clon tenga transparencia */
+.sortable-ghost   { opacity: 0 !important; }
+.sortable-chosen,
+.sortable-fallback{ opacity: 1 !important; }
+
+
+/* 🔒 Mientras arrastras (forceFallback): oculta TODO el contenido del clon.
+   Se ve solo el fondo/borde del <li>, sin texto ni bullets */
+.sortable-fallback *,
+.sortable-drag * {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* (opcional) cursor “grabbing” en el clon */
+.sortable-fallback,
+.sortable-drag {
+  cursor: grabbing !important;
+}
+
+/* ya lo tenías, pero lo dejamos por si acaso */
+.sortable-ghost { opacity: 0 !important; }
+.sortable-chosen,
+.sortable-fallback { opacity: 1 !important; }
+
+/* ✅ Mostrar contenido del clon mientras se arrastra (anula la regla anterior) */
+.sortable-fallback *,
+.sortable-drag * {
+  visibility: visible !important;
+}
+
+/* ✅ El clon va por encima, con fondo/borde propios */
+.sortable-fallback,
+.sortable-drag {
+  background: #f8fafc;                 /* color base (como la izquierda) */
+  border: 1px solid #dad7cd;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.16);
+  z-index: 9999 !important;
+  cursor: grabbing !important;
+}
+
+/* ✅ Cuando cruza a la derecha (clase que ya pones desde JS) */
+.sortable-fallback.preview-right,
+.sortable-drag.preview-right {
+  background: #fff !important;          /* blanco en la derecha */
+}
+
+/* Mantén el ghost invisible para que no “duplique” el contenido */
+.sortable-ghost { opacity: 0 !important; }
+
+/* Quitar el punto (marker) del item mientras se arrastra */
+.todo-list > li,
+.sortable-chosen,
+.sortable-ghost,
+.sortable-drag,
+.sortable-fallback {
+  list-style: none !important;
+}
+.sortable-chosen::marker,
+.sortable-ghost::marker,
+.sortable-drag::marker,
+.sortable-fallback::marker {
+  content: '' !important;
+}
+
+/* Ocultar la "x" (remove-btn) en el clon/elemento durante el drag */
+.sortable-chosen .remove-btn,
+.sortable-ghost  .remove-btn,
+.sortable-drag   .remove-btn,
+.sortable-fallback .remove-btn {
+  display: none !important;
+}
+
+/* 1) Acolchado homogéneo dentro de cada card (izq y der) */
+#todo-left > li,
+#todo-right > li{
+  padding: 10px 16px;          /* ↑↓ 10 – ←→ 16 */
+  box-sizing: border-box;
+}
+
+/* 2) Mientras se arrastra (clon de Sortable), conserva el padding y el radio */
+.sortable-fallback,
+.sortable-drag,
+.sortable-chosen{
+  padding: 10px 16px !important;
+  border-radius: 10px !important;
+  box-sizing: border-box !important;
+}
+
+/* 3) Mantener el color dinámico que ya tienes */
+.sortable-drag.preview-right,
+.sortable-fallback.preview-right{ background:#fff !important; }
+.sortable-drag:not(.preview-right),
+.sortable-fallback:not(.preview-right){ background:#f8fafc !important; }
+
+
+.indicacion-vacia {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #999;
+  font-size: 15px;
+  pointer-events: none; /* evita que bloquee el drop */
+}
+
+.indicacion-vacia .icono {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+/* Mantener el estilo del título en cualquier estado (izq, der y durante el drag) */
+.todo-list .item-title {
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 15px;
+  background-color: #17A2B8;
+  margin: 0 0 4px 0;
+}
+
+/* Mientras se arrastra con forceFallback, el clon conserva la banda turquesa */
+.sortable-drag .item-title,
+.sortable-fallback .item-title {
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 15px;
+  background-color: #17A2B8;
+  margin: 0 0 4px 0;
+}
+
+/* === Drop animation derecha === */
+:root{ --accent:#17A2B8; } /* usa tu color del título */
+
+@keyframes dropPop{
+  0%   { transform: scale(.98); }
+  60%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+@keyframes ringPulse{
+  0%   { box-shadow: 0 0 0 0 rgba(23,162,184,.45); }
+  100% { box-shadow: 0 0 0 14px rgba(23,162,184,0); }
+}
+@keyframes titleFlash{
+  0%   { filter: brightness(1.25); }
+  100% { filter: brightness(1); }
+}
+
+/* aplica al <li> recién soltado */
+.todo-list li.anim-drop{
+  animation: dropPop .24s ease-out both;
+  position: relative;
+}
+.todo-list li.anim-drop::after{
+  content:"";
+  position:absolute; inset:-2px;
+  border-radius:10px;
+  animation: ringPulse .55s ease-out;
+  pointer-events:none;
+  /* usa el mismo tono del header */
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 60%, transparent);
+}
+
+/* brillo suave del título dentro del ítem */
+.todo-list li .item-title.anim-title{
+  animation: titleFlash .5s ease-out both;
+}
+

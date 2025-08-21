@@ -10,19 +10,20 @@
       <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
     </head>
     <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'> 
-      <div class='wrapper'>
+      <div class='wrapper'> 
         <div id='loaderContainer' class='loader-overlay'>
           <div class='loader'></div>
         </div>
+
         <div id='sidebar-placeholder'></div> 
         
         <app-navbar
-          logout-url="/login.html"
-          tooltip-text="Cerrar sesión"
-          placement="bottom"
-          icon-size="fa-2x"
-          menu-icon-size="fa-2x"
-          clear-keys="tab-activo, ultimaCardActiva">
+          logout-url=''
+          tooltip-text='Cerrar sesión'
+          placement='bottom'
+          icon-size='fa-2x'
+          menu-icon-size='fa-2x'
+          clear-keys='tab-activo, ultimaCardActiva'>
         </app-navbar>  
 
         <div class='content-wrapper'>  
@@ -55,6 +56,5 @@
       <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
       <script src='/pages/js/scripts.js'></script>
       <script src='/pages/js/tareas/grafico/agrupaciones.js'></script>
-
     </body>
   </html>

@@ -22,12 +22,12 @@
         <div id='sidebar-placeholder'></div> 
         
         <app-navbar
-          logout-url="/login.html"
-          tooltip-text="Cerrar sesión"
-          placement="bottom"
-          icon-size="fa-2x"
-          menu-icon-size="fa-2x"
-          clear-keys="tab-activo, ultimaCardActiva">
+          logout-url=''
+          tooltip-text='Cerrar sesión'
+          placement='bottom'
+          icon-size='fa-2x'
+          menu-icon-size='fa-2x'
+          clear-keys='tab-activo, ultimaCardActiva'>
         </app-navbar>
 
         <div class='content-wrapper ' >
@@ -70,7 +70,6 @@
           // Después de insertar el HTML, activa el enlace correcto
           const currentPath = window.location.pathname; 
           const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
-          
           links.forEach(link => { 
             link.getAttribute('href') === currentPath 
               ? link.classList.add('active') 

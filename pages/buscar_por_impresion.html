@@ -1,16 +1,14 @@
 <!DOCTYPE html>
   <html lang='en'>
-    <head>
-      
+
+    <head> 
       <meta charset='utf-8'>
       <meta name='viewport' content='width=device-width, initial-scale=1'>
-      <title>Admin Tareas</title> 
-  
+      <title>Admin Tareas</title>  
       <link rel='stylesheet' href='/pages/css/styles.css'>
       <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
       <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
-      <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
-    
+      <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script> 
     </head>
 
     <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'> 
@@ -18,25 +16,21 @@
         <div id='loaderContainer' class='loader-overlay'>
           <div class='loader'></div>
         </div>
-        <div id='sidebar-placeholder'></div> 
-        
+        <div id='sidebar-placeholder'></div>  
         <app-navbar
-          logout-url="/login.html"
-          tooltip-text="Cerrar sesión"
-          placement="bottom"
-          icon-size="fa-2x"
-          menu-icon-size="fa-2x"
-          clear-keys="tab-activo, ultimaCardActiva">
-        </app-navbar>  
-
+          logout-url=''
+          tooltip-text='Cerrar sesión'
+          placement='bottom'
+          icon-size='fa-2x'
+          menu-icon-size='fa-2x'
+          clear-keys='tab-activo, ultimaCardActiva'>
+        </app-navbar>   
         <div class='content-wrapper ' >
-          <div class='nav navbar navbar-expand navbar-white navbar-light border-bottom p-0'>    
-          </div>
           <div class='container-fluid'>
             <h2 class='text-center display mt-3 mb-3'>Buscar Impresión</h2>
             <div class='row'>
               <div class='col-md-8 offset-md-2'>
-                <form >
+                <form>
                   <div class='input-group'>
                     <input type='search' class='form-control form-control-lg' placeholder='Ingresa el número de la  impresión'>
                     <div class='input-group-append'>
@@ -49,8 +43,7 @@
               </div>
             </div>
           </div>
-        </div> 
-        
+        </div>  
         <footer class='main-footer'>
           <strong>Cartonajes Bernabeú.</strong>
         </footer> 
@@ -63,20 +56,14 @@
       <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
       <script src='/pages/js/scripts.js'></script>
 
-      <script>
+      <script> 
         fetch('sidebar.html').then(response => response.text()).then(html => {
-          document.getElementById('sidebar-placeholder').innerHTML = html;
-          
+          document.getElementById('sidebar-placeholder').innerHTML = html; 
           // Después de insertar el HTML, activa el enlace correcto
           const currentPath = window.location.pathname; 
-          const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
-          
-          links.forEach(link => { 
-            link.getAttribute('href') === currentPath 
-              ? link.classList.add('active') 
-              : link.classList.remove('active'); 
-          });
-        });
+          const links = document.querySelectorAll('#sidebar-placeholder .nav-link');  
+          links.forEach(link => { link.getAttribute('href') === currentPath ? link.classList.add('active') : link.classList.remove('active');  });
+        }); 
       </script> 
     </body>
   </html>

@@ -2,13 +2,13 @@
     <html lang='en'>
 
         <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>Admin Tareas</title> 
-        <link rel='stylesheet' href='/pages/css/styles.css'>
-        <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
-        <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
-        <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
+            <meta charset='utf-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1'>
+            <title>Admin Tareas</title> 
+            <link rel='stylesheet' href='/pages/css/styles.css'>
+            <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
+            <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
+            <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
         </head>
 
         <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'>
@@ -20,12 +20,12 @@
                 <div id='sidebar-placeholder'></div> 
                 <!-- Navbar -->
                 <app-navbar
-                    logout-url="/login.html"
-                    tooltip-text="Cerrar sesión"
-                    placement="bottom"
-                    icon-size="fa-2x"
-                    menu-icon-size="fa-2x"
-                    clear-keys="tab-activo, ultimaCardActiva">
+                    logout-url=''
+                    tooltip-text='Cerrar sesión'
+                    placement='bottom'
+                    icon-size='fa-2x'
+                    menu-icon-size='fa-2x'
+                    clear-keys='tab-activo, ultimaCardActiva'>
                 </app-navbar>
 
                 <!-- Content -->
@@ -39,12 +39,12 @@
                                     <table class='table table-hover align-middle'>
                                         <thead class='thead-light'>
                                             <tr>
-                                                <th class="info-destacada">Cliente</th>
-                                                <th class="info-destacada">Código</th> 
-                                                <th class="info-destacada">Acciones</th>
+                                                <th class='info-destacada'>Cliente</th>
+                                                <th class='info-destacada'>Código</th> 
+                                                <th class='info-destacada'>Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="tabla-clientes"> </tbody> 
+                                        <tbody id='tabla-clientes'> </tbody> 
                                     </table>
                                 </div>
                             </div>
@@ -56,8 +56,7 @@
                 <footer class='main-footer'>
                     <strong>Cartonajes Bernabeú.</strong>
                 </footer> 
-                <aside class='control-sidebar control-sidebar-dark'></aside>
-
+                <aside class='control-sidebar control-sidebar-dark'></aside> 
             </div>
 
             <!-- Scripts -->
@@ -69,8 +68,7 @@
 
             <script>
                 fetch('sidebar.html').then(response => response.text()).then(html => {
-                    document.getElementById('sidebar-placeholder').innerHTML = html;
-
+                    document.getElementById('sidebar-placeholder').innerHTML = html; 
                     // Después de insertar el HTML, activa el enlace correcto
                     const currentPath = window.location.pathname; 
                     const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
