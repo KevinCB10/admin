@@ -28,28 +28,53 @@
                     clear-keys='tab-activo, ultimaCardActiva'>
                 </app-navbar>
 
-                <!-- Content -->
+                <!-- ====== CONTENIDO ====== -->
                 <div class='content-wrapper'> 
-                    <div class='nav navbar navbar-expand navbar-white navbar-light border-bottom p-0'></div> 
-                    <div class='container-fluid'>
-                        <h2 class='text-center display mt-3 mb-3'>Listado de Clientes</h2>
-                        <div class='row ml-5 mr-5'>
-                            <div class='col-12'>
-                                <div class='table-responsive'>
-                                    <table class='table table-hover align-middle'>
-                                        <thead class='thead-light'>
-                                            <tr>
-                                                <th class='info-destacada'>Cliente</th>
-                                                <th class='info-destacada'>Código</th> 
-                                                <th class='info-destacada'>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id='tabla-clientes'> </tbody> 
-                                    </table>
+                    <section class='content-header'>
+                        <div class='container-fluid'>
+                            <div class='row'>
+                                <div class='col-sm-6'>
+                                    <h1>Listado de Clientes</h1>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+                    <section>
+                        <div class='card ml-3 mr-3'>
+                            <div class='card-body content fadeInUp-animation'>
+                                <div class='d-flex align-items-center mb-3'>
+                                    <div class='input-group input-group-lg' style='max-width:380px;'>
+                                        <input
+                                            id='buscar-clientes'
+                                            type='search'
+                                            class='form-control'
+                                            placeholder='Buscar cliente...'
+                                            autocomplete='off'
+                                        >
+                                        <div class='input-group-append'>
+                                            <button class='btn btn-outline-secondary' id='limpiar-buscar-clientes' type='button' title='Limpiar'><i class='fa-solid fa-eraser'></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <div class='table-responsive'>
+                                            <table class='table table-hover align-middle'>
+                                                <thead class='thead-light'>
+                                                    <tr>
+                                                        <th class='info-destacada'>Cliente</th>
+                                                        <th class='info-destacada'>Código</th> 
+                                                        <th class='info-destacada'>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id='tabla-clientes'> </tbody> 
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section> 
                 </div>
 
                 <!-- Footer -->
@@ -62,22 +87,60 @@
             <!-- Scripts -->
             <script src='../plugins/jquery/jquery.min.js'></script>
             <script src='../plugins/bootstrap/js/bootstrap.bundle.min.js'></script>
-            <script src='../dist/js/adminlte.min.js'></script>
+            <script src='../plugins/datatables/jquery.dataTables.min.js'></script>
+            <script src='../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'></script>
+            <script src='../plugins/datatables-responsive/js/dataTables.responsive.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/dataTables.buttons.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.bootstrap4.min.js'></script>
+            <script src='../plugins/jszip/jszip.min.js'></script>
+            <script src='../plugins/pdfmake/pdfmake.min.js'></script>
+            <script src='../plugins/pdfmake/vfs_fonts.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.html5.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.print.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.colVis.min.js'></script>
+            <script src='../dist/js/adminlte.min.js'></script> 
             <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
             <script src='/pages/js/scripts.js'></script>
-
+             
             <script>
-                fetch('sidebar.html').then(response => response.text()).then(html => {
-                    document.getElementById('sidebar-placeholder').innerHTML = html; 
-                    // Después de insertar el HTML, activa el enlace correcto
-                    const currentPath = window.location.pathname; 
-                    const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
+                fetch('sidebar.html').then(r => r.text()).then(html => {
+                    const contenedor = document.getElementById('sidebar-placeholder');
+                    contenedor.innerHTML = html;
 
-                    links.forEach(link => {
-                        link.getAttribute('href') === currentPath 
-                        ? link.classList.add('active') 
-                        : link.classList.remove('active'); 
+                    // 1) Limpiar cualquier "active"
+                    const enlaces = contenedor.querySelectorAll('.nav-link');
+                    enlaces.forEach(enlace => enlace.classList.remove('active'));
+
+                    // 2) Calcular a qué item hay que activar según la URL actual
+                    const ruta = window.location.pathname.toLowerCase();
+                    const archivo = ruta.split('/').pop();
+
+                    // Mapa de páginas que comparten el mismo ítem del menú
+                    let hrefObjetivo = ruta; // por defecto, la misma ruta
+                    switch (archivo) {
+                        case 'cliente.html':
+                        case 'detalle_cliente.html':
+                        hrefObjetivo = '/pages/listado_clientes.html';
+                        break; 
+                    }
+
+                    // 3) Activar el enlace cuyo href coincida (igual o por sufijo)
+                    let activado = false;
+                    enlaces.forEach(enlace => {
+                        const h = (enlace.getAttribute('href') || '').toLowerCase();
+                        if (h === hrefObjetivo || h.endsWith(hrefObjetivo)) {
+                        enlace.classList.add('active');
+                        activado = true;
+                        }
                     });
+
+                    // 4) Fallback: si no encontró, intenta por nombre de archivo exacto
+                    if (!activado) {
+                        enlaces.forEach(enlace => {
+                            const h = (enlace.getAttribute('href') || '').toLowerCase();
+                            if (h.endsWith('/' + archivo)) enlace.classList.add('active');
+                        });
+                    }
                 });
             </script>
         </body> 

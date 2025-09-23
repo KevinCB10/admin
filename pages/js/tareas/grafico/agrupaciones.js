@@ -1,12 +1,10 @@
- 
-
 // =================== TAREAS AGRUPACIONES - DISEÑO GRAFICO ============
 
 const estados_agr = [
-    '1. Solicitud de Tarea (Gestor)',
-    '2. Información Incompleta (Diseñador)',
-    '3. Tarea Completada (Diseñador) '
-]
+  '1. Solicitud de Tarea (Gestor)',
+  '2. Información Incompleta (Diseñador)',
+  '3. Tarea Completada (Diseñador) '
+];
 
 // Contenedor donde se insertan dinámicamente las tareas
 const contenedorTareasAgr = document.getElementById('contenedor-tareas-agr');
@@ -15,386 +13,387 @@ const contenedorTareasAgr = document.getElementById('contenedor-tareas-agr');
 let contadorTareasAgr = 1;
 
 // FUNCIÓN PRINCIPAL PARA CREAR TAREAS
-
 function crearTareaAgr(id, autoFocus = false) {
-    // Crea un div para representar la tarea y le asigna clase e ID según si es impar o par
-    const divTarea = document.createElement('div');
-    divTarea.className = id % 2 === 1 ? 'tareaImpar' : 'tareaPar';
-    divTarea.id = `tarea-${id}`;
+  // Crea un div para representar la tarea y le asigna clase e ID según si es impar o par
+  const divTarea = document.createElement('div');
+  divTarea.className = id % 2 === 1 ? 'tareaImpar' : 'tareaPar';
+  divTarea.id = `tarea-${id}`;
 
-    // Fecha actual para mostrar en la tarea
-    const fechaInicio = new Date();
-    const fecha = fechaInicio.toLocaleDateString('es-ES');
+  // Fecha actual para mostrar en la tarea
+  const fechaInicio = new Date();
+  const fecha = fechaInicio.toLocaleDateString('es-ES');
 
-    // Obtener estado correspondiente del gestor para esta tarea
-    const estadosImpares = estados_agr.filter((_, index) => (index + 1) % 2 === 1);
-    const estadoAsignado = estadosImpares[Math.floor((id - 1) / 2)];
-    const esEstadoUno = estadoAsignado && estadoAsignado.startsWith('1. Solicitud de Tarea (Gestor)');
+  // Obtener estado correspondiente del gestor para esta tarea
+  const estadosImpares = estados_agr.filter((_, index) => (index + 1) % 2 === 1);
+  const estadoAsignado = estadosImpares[Math.floor((id - 1) / 2)];
+  const esEstadoUno = !!(estadoAsignado && estadoAsignado.startsWith('1. Solicitud de Tarea (Gestor)'));
 
-    // TAREA IMPAR
-    if (id % 2 === 1) {
-        // Si es el primer estado, genera un modal para seleccionar departamento
-        const modalHTML = esEstadoUno ? `
-        <div class='modal fade' id='modal-sm-${id}' data-backdrop='static' data-keyboard='false'>
-            <div class='modal-dialog'>
-                <div class='modal-content'>
-                    <div class='modal-header'>
-                        <h4 class='modal-title'>Asignar Departamento</h4>
-                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span> 
-                        </button>
-                    </div>
-                    <div class='modal-body'>
-                        <div class='form-group mt-2'>
-                            <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='radio-${id}'>
-                                <label class='form-check-label'>Departamento Interno</label>
-                            </div>
-                            <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='radio-${id}'>
-                                <label class='form-check-label'>Departamento Externo</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='modal-footer justify-content-end'>
-                        <button type='button' class='btn btn-default mr-3' data-dismiss='modal'>Cancelar</button>
-                        <button id='buttonAgregarTareaImpar${id}' onclick='guardarTarea(${id})'  type='button' class='btn btn-success agregar-tarea-impar'>Guardar</button>
-                    </div>
-                </div>
+  // TAREA IMPAR
+  if (id % 2 === 1) {
+    // ======== MODAL (persistente) ========
+    const modalId = `modal-sm-${id}`;
+    const modalHTML = esEstadoUno ? `
+      <div class="modal fade" id="${modalId}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Asignar Departamento</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span> 
+              </button>
             </div>
-        </div>` : '';
-            
-        // Botón que lanza el modal si aplica, o solo ejecuta la acción
-        const botonModal = esEstadoUno
-            ? `<button type='button' data-toggle='modal' data-target='#modal-sm-${id}' class='btn btn-sm bg-gradient-success addTask ml-3'>Agregar Tarea<i class='fas fa-plus ml-1'></i></button>`
-            : `<button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-impar addTask  ml-3'>Agregar Tarea<i class='fas fa-plus ml-1'></i></button>`;
-
-        // HTML de la tarjeta de tarea impar
-        divTarea.innerHTML = `
-        ${modalHTML} 
-        <div class='row justify-content-center info-box-content fadeInUp-animation'>
-            <div class='' style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
-                <div class='card-header'>
-                    <div class='d-flex align-items-center justify-content-between mb-2'>
-                        <h5><span class='badge badge-info'>#${id}</span> Agrupaciones</h5>
-                        ${botonModal}
-                    </div>
+            <div class="modal-body">
+              <div class="form-group mt-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio-${id}">
+                  <label class="form-check-label">Departamento Interno</label>
                 </div>
-                <div class='card-body'>
-                    <h6>Estado de la tarea <span class='badge badge-secondary'>Iniciada</span></h6>
-                    <div class='row mt-3'>
-                        <div class='col-12 col-md-4 mb-2'>
-                            <span class='info-box-number text-left'>Iniciada:</span>
-                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                        </div>
-                        <div class='col-12 col-md-4 mb-2'>
-                            <span class='info-box-number text-left'>Completada:</span>
-                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                        </div>
-                        <div class='col-12 col-md-4 mb-2'>
-                            <span class='info-box-number text-left'>Gestor:</span>
-                            <span class='info-box-number text-left text-muted ml-1'>Kevin de León</span>
-                        </div>
-                    </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio-${id}">
+                  <label class="form-check-label">Departamento Externo</label>
                 </div>
+              </div>
             </div>
-        </div>`;
-
-
-        if (document.getElementById('contenedor-tareas-agr')) {
-            if (contenedorTareasAgr.children.length > 0) {
-                const hr = document.createElement('hr');
-                hr.className = 'my-4'; // espacio arriba y abajo del divider
-                contenedorTareasAgr.appendChild(hr);
-            }
-        }
-
-        if (document.getElementById('contenedor-tareas-agr')) {
-            contenedorTareasAgr.appendChild(divTarea); 
-        }
-       
-
-        // Lógica de botones
-        const botonAgregarImpar = divTarea.querySelector('.agregar-tarea-impar');
-        const botonAddTask = divTarea.querySelector('.addTask');
-        const radios = document.querySelectorAll(`#modal-sm-${id} input[name='radio-${id}']`);
-        
-        if (botonAgregarImpar) {
-            botonAgregarImpar.addEventListener('click', () => {
-                
-                const algunoMarcado = Array.from(radios).some((radio => {  
-                    return radio.checked
-                }));
-
-                if (algunoMarcado || !esEstadoUno) {
-                    botonAddTask.disabled = true;
-                    botonAddTask.innerHTML = 'Agregada <span style="color: white;"><i class="fa-solid fa-circle-check"></i></span>';
-                    botonAddTask.classList.remove('bg-gradient-success');
-                    botonAddTask.classList.add('btn-info');
-                    botonAddTask.style.cursor = 'not-allowed';  
-                }  
-
-                if (algunoMarcado) {
-                    cambiarEstadoAgr(id, 'Completada'); 
-                }
-
-                if (!algunoMarcado && !esEstadoUno) {
-                    cambiarEstadoAgr(id, 'Completada');  
-                }
-            });
-        }
-
-    // TAREA PAR
-    } else {
-        divTarea.innerHTML = `
-        <div class='row justify-content-center pb-4 fadeInUp-animation'>
-            <div class=' ' style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
-                <div class='card-header'>
-                    <div class='d-flex align-items-center justify-content-between mb-2'>
-                        <h5><span class='badge badge-info'>#${id}</span> Agrupaciones</h5>
-                        <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
-                    </div>
-                </div>
-                <div class='card-body'>
-                    <div class='row mt-1 g-2 align-items-end mb-3'>
-                        <div class='col-md-6 mb-2' id='estado-container-${id}'>
-                            <label class='form-label font-weight-bold'>Estado:</label>
-                            <div class='input-group input-group-sm'>
-                                <input type='text' id='estado-text-${id}' class='form-control' readonly />
-                                <select id='estado-select-${id}' class='form-control d-none mr-2'>
-                                    ${estados_agr.map(e => `<option value='${e}'>${e}</option>`).join('')}
-                                </select>
-                                <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
-                                    <i class='fa-solid fa-pen-to-square text-info h5'></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class='col-md-6'>
-                            <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
-                                <p>Departamento Interno</p>
-                            </div>
-                        </div>
-
-                        <div class='form-floating col-md-6 mt-3'>
-                            <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 87px'></textarea>
-                        </div>
-                        <div class='form-floating col-md-6 '>  
-                            <div id='drop-area-${id}' class='file-drop-area'>
-                                <div id='drop-placeholder-${id}' class='text-center'>
-                                    <div class='file-icon'>
-                                    <i class='fas fa-cloud-upload-alt text-secondary'></i>
-                                    </div>
-                                    <p class='text-primary ' style='cursor: pointer; font-size: 14px;' onclick='document.getElementById('fileInput-${id}').click()'>Arrastra tus archivos aquí</p>
-                                </div>
-                                <input type='file' id='fileInput-${id}' hidden>
-                                <div id='file-preview-${id}' class=' d-flex flex-column align-items-center position-relative'  ></div>
-                            </div>
-                        </div>  
-                    </div> 
-                    <div class='row mt-5 justify-content-center'>
-                        <div class='col-12 col-md-4 mb-2'>
-                            <span class='info-box-number text-left'>Iniciada:</span>
-                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                        </div>
-                        <div class='col-12 col-md-4 mb-2'>
-                            <span class='info-box-number text-left'>Completada:</span>
-                            <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
-                        </div>
-                        <div class='col-12 col-md-4 mb-2'>
-                            <span class='info-box-number text-left'>Asignada a:</span>
-                            <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer justify-content-end">
+              <button type="button" class="btn btn-default mr-3" data-dismiss="modal">Cancelar</button>
+              <button id="buttonAgregarTareaImpar${id}" onclick="guardarTarea(${id})" type="button" class="btn btn-success agregar-tarea-impar">Guardar</button>
             </div>
-        </div>`; 
-        
-        if (contenedorTareasAgr.children.length > 0) {
-            const hr = document.createElement('hr');
-            hr.className = 'my-4'; // espacio arriba y abajo del divider
-            contenedorTareasAgr.appendChild(hr);
+          </div>
+        </div>
+      </div>` : '';
+
+    if (esEstadoUno) {
+      // Inyectamos el modal al body (no se eliminará al cerrarse)
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+      const $modal = $(`#${modalId}`);
+      // Al ocultarse, limpia backdrop/clases, pero NO elimina el modal
+      $modal.on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+      });
+    }
+    // ======== FIN MODAL ========
+
+    // Botón que lanza el modal si aplica, o solo ejecuta la acción
+    const botonModal = esEstadoUno
+      ? `<button type="button" data-toggle="modal" data-target="#${modalId}" class="btn btn-sm bg-gradient-success addTask ml-3">Agregar Tarea<i class="fas fa-plus ml-1"></i></button>`
+      : `<button type="button" class="btn btn-sm bg-gradient-success agregar-tarea-impar addTask ml-3">Agregar Tarea<i class="fas fa-plus ml-1"></i></button>`;
+
+    // HTML de la tarjeta de tarea impar
+    divTarea.innerHTML = `
+      <div class='row justify-content-center info-box-content fadeInUp-animation'>
+        <div style='width: 70%; box-shadow: 0px !important; background-color: #f8f9fa !important'>
+          <div class='card-header'>
+            <div class='d-flex align-items-center justify-content-between mb-2'>
+              <h5><span class='badge badge-info'>#${id}</span> Agrupaciones</h5>
+              ${botonModal}
+            </div>
+          </div>
+          <div class='card-body'>
+            <h6>Estado de la tarea <span class='badge badge-secondary'>Iniciada</span></h6>
+            <div class='row mt-3'>
+              <div class='col-12 col-md-4 mb-2'>
+                <span class='info-box-number text-left'>Iniciada:</span>
+                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+              </div>
+              <div class='col-12 col-md-4 mb-2'>
+                <span class='info-box-number text-left'>Completada:</span>
+                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+              </div>
+              <div class='col-12 col-md-4 mb-2'>
+                <span class='info-box-number text-left'>Gestor:</span>
+                <span class='info-box-number text-left text-muted ml-1'>Kevin de León</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    if (document.getElementById('contenedor-tareas-agr')) {
+      if (contenedorTareasAgr.children.length > 0) {
+        const hr = document.createElement('hr');
+        hr.className = 'my-2';
+        contenedorTareasAgr.appendChild(hr);
+      }
+    }
+
+    if (document.getElementById('contenedor-tareas-agr')) {
+      contenedorTareasAgr.appendChild(divTarea);
+    }
+
+    // Lógica de botones para tarea impar
+    const botonAgregarImpar = divTarea.querySelector('.agregar-tarea-impar'); // solo existe si NO hay modal (esEstadoUno=false)
+    const botonAddTask = divTarea.querySelector('.addTask');
+
+    if (botonAgregarImpar && !esEstadoUno) {
+      // Caso SIN modal: al pulsar, marcar y crear siguiente
+      botonAgregarImpar.addEventListener('click', () => {
+        if (botonAddTask && !botonAddTask.disabled) {
+          botonAddTask.disabled = true;
+          botonAddTask.innerHTML = 'Agregada <span style="color: white;"><i class="fa-solid fa-circle-check"></i></span>';
+          botonAddTask.classList.remove('bg-gradient-success');
+          botonAddTask.classList.add('btn-info');
+          botonAddTask.style.cursor = 'not-allowed';
         }
+        cambiarEstadoAgr(); // crea la siguiente tarjeta
+      });
+    }
 
-        contenedorTareasAgr.appendChild(divTarea);
+  // TAREA PAR
+  } else {
+    divTarea.innerHTML = `
+      <div class='row justify-content-center pb-4 fadeInUp-animation'>
+        <div style='width: 70%; box-shadow: 0px; background-color: #f8f9fa !important'>
+          <div class='card-header'>
+            <div class='d-flex align-items-center justify-content-between mb-2'>
+              <h5><span class='badge badge-info'>#${id}</span> Agrupaciones</h5>
+              <button type='button' class='btn btn-sm bg-gradient-success agregar-tarea-par'>Completar Tarea <i class='fas fa-check'></i></button>
+            </div>
+          </div>
+          <div class='card-body'>
+            <div class='row mt-1 g-2 align-items-end mb-3'>
+              <div class='col-md-6 mb-2' id='estado-container-${id}'>
+                <label class='form-label font-weight-bold'>Estado:</label>
+                <div class='input-group input-group-sm'>
+                  <input type='text' id='estado-text-${id}' class='form-control' readonly />
+                  <select id='estado-select-${id}' class='form-control d-none mr-2'>
+                    ${estados_agr.map(estado => `<option valuestado='${estado}'>${estado}</option>`).join('')}
+                  </select>
+                  <button type='button' class='swalDefaultSuccess' style='padding: 4px; border: none; background-color: transparent;' id='btn-cambiar-estado-${id}' title='Cambiar Estado'>
+                    <i class='fa-solid fa-pen-to-square text-info h5'></i>
+                  </button>
+                </div>
+              </div>
 
-        // Estado dinámico editable
-        const estadoText = document.getElementById(`estado-text-${id}`);
-        const estadoSelect = document.getElementById(`estado-select-${id}`);
-        const btnCambiarEstado = document.getElementById(`btn-cambiar-estado-${id}`);
-        const estadoMsg = document.getElementById(`estado-msg-${id}`);
+              <div class='col-md-6'>
+                <div class='callout callout-info' style='padding: 7px; box-shadow: none;'>
+                  <p>Departamento Interno</p>
+                </div>
+              </div>
 
-        // Estado inicial para diseñador
-        const estadosImpares = estados_agr.filter((_, index) => (index + 1) % 2 === 1);
-        const estadoValido = estadosImpares[Math.floor((id - 1) / 2)] || estadosImpares[estadosImpares.length - 1];
+              <div class='form-floating col-md-6 mt-3'>
+                <textarea class='form-control' placeholder='Indicaciones' id='floatingTextarea2-${id}' style='height: 87px'></textarea>
+              </div>
+              <div class='form-floating col-md-6 '>
+                <div id='drop-area-${id}' class='file-drop-area'>
+                  <div id='drop-placeholder-${id}' class='text-center'>
+                    <div class='file-icon'>
+                      <i class='fas fa-cloud-upload-alt text-secondary'></i>
+                    </div>
+                    <p class='text-primary ' style='cursor: pointer; font-size: 14px;' onclick='document.getElementById("fileInput-${id}").click()'>Arrastra tus archivos aquí</p>
+                  </div>
+                  <input type='file' id='fileInput-${id}' hidden>
+                  <div id='file-preview-${id}' class=' d-flex flex-column align-items-center position-relative'></div>
+                </div>
+              </div>
+            </div>
+            <div class='row mt-5 justify-content-center'>
+              <div class='col-12 col-md-4 mb-2'>
+                <span class='info-box-number text-left'>Iniciada:</span>
+                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+              </div>
+              <div class='col-12 col-md-4 mb-2'>
+                <span class='info-box-number text-left'>Completada:</span>
+                <span class='info-box-number text-left text-muted ml-1'>${fecha}</span>
+              </div>
+              <div class='col-12 col-md-4 mb-2'>
+                <span class='info-box-number text-left'>Asignada a:</span>
+                <span class='info-box-number text-left text-muted ml-1'>Comercial</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
 
+    if (contenedorTareasAgr.children.length > 0) {
+      const hr = document.createElement('hr');
+      hr.className = 'my-2';
+      contenedorTareasAgr.appendChild(hr);
+    }
 
-        if (estadoSelect && estadoText) {
-            estadoSelect.value = estadoValido;
-            estadoText.value = estadoValido;
-        }
+    contenedorTareasAgr.appendChild(divTarea);
 
-        // Lógica para cambiar de estado editable
-        btnCambiarEstado.addEventListener('click', () => {
-            if (estadoSelect.classList.contains('d-none')) {
-                estadoText.classList.add('d-none');
-                estadoSelect.classList.remove('d-none');
-                btnCambiarEstado.innerHTML = `<i class='fa-solid fa-floppy-disk text-success h5'></i>`;
-                btnCambiarEstado.title = 'Guardar';
-                estadoSelect.focus();
-            } else {
-                const nuevoEstado = estadoSelect.value;
-                estadoText.value = nuevoEstado;
-                estadoText.classList.remove('d-none');
-                estadoSelect.classList.add('d-none'); 
-                btnCambiarEstado.title = 'Cambiar Estado';
-                btnCambiarEstado.innerHTML = `<i class='fa-solid fa-pen-to-square text-info h5'></i>`;
-                
-                // Toast de confirmación
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                });
+    // Estado dinámico editable
+    const estadoText = document.getElementById(`estado-text-${id}`);
+    const estadoSelect = document.getElementById(`estado-select-${id}`);
+    const btnCambiarEstado = document.getElementById(`btn-cambiar-estado-${id}`);
+    const estadoMsg = document.getElementById(`estado-msg-${id}`);
 
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Estado actualizado correctamente'
-                });
+    const estadosImpares2 = estados_agr.filter((_, index) => (index + 1) % 2 === 1);
+    const estadoValido = estadosImpares2[Math.floor((id - 1) / 2)] || estadosImpares2[estadosImpares2.length - 1];
 
-                if (estadoMsg) {
-                    estadoMsg.classList.remove('d-none');
-                    setTimeout(() => estadoMsg.classList.add('d-none'), 2500);
-                }
-            }
+    if (estadoSelect && estadoText) {
+      estadoSelect.value = estadoValido;
+      estadoText.value = estadoValido;
+    }
+
+    btnCambiarEstado.addEventListener('click', () => {
+      if (estadoSelect.classList.contains('d-none')) {
+        estadoText.classList.add('d-none');
+        estadoSelect.classList.remove('d-none');
+        btnCambiarEstado.innerHTML = `<i class='fa-solid fa-floppy-disk text-success h5'></i>`;
+        btnCambiarEstado.title = 'Guardar';
+        estadoSelect.focus();
+      } else {
+        const nuevoEstado = estadoSelect.value;
+        estadoText.value = nuevoEstado;
+        estadoText.classList.remove('d-none');
+        estadoSelect.classList.add('d-none');
+        btnCambiarEstado.title = 'Cambiar Estado';
+        btnCambiarEstado.innerHTML = `<i class='fa-solid fa-pen-to-square text-info h5'></i>`;
+
+        const Toast = Swal.mixin({
+          'toast': true,
+          'position': 'top-end',
+          'showConfirmButton': false,
+          'timer': 3000,
+          'timerProgressBar': true,
         });
 
-        // Acción al completar tarea
-        const botonAgregarPar = divTarea.querySelector('.agregar-tarea-par');
-        if (botonAgregarPar) {
-            botonAgregarPar.addEventListener('click', () => {
-                botonAgregarPar.disabled = true;
-                botonAgregarPar.innerHTML = 'Completada <span style="color: white;"><i class="fa-solid fa-circle-check"></i></span>';
-                botonAgregarPar.classList.remove('bg-gradient-success');
-                botonAgregarPar.classList.add('btn-info');
-                botonAgregarPar.style.cursor = 'not-allowed';
-                cambiarEstadoAgr(id, 'Completada');
-            });
-        }
-    } 
+        Toast.fire({ 'icon': 'success', 'title': 'Estado actualizado correctamente' });
 
-    const dropArea = document.getElementById(`drop-area-${id}`);
+        if (estadoMsg) {
+          estadoMsg.classList.remove('d-none');
+          setTimeout(() => estadoMsg.classList.add('d-none'), 2500);
+        }
+      }
+    });
+
+    // Acción al completar tarea
+    const botonAgregarPar = divTarea.querySelector('.agregar-tarea-par');
+    if (botonAgregarPar) {
+      botonAgregarPar.addEventListener('click', () => {
+        botonAgregarPar.disabled = true;
+        botonAgregarPar.innerHTML = 'Completada <span style="color: white;"><i class="fa-solid fa-circle-check"></i></span>';
+        botonAgregarPar.classList.remove('bg-gradient-success');
+        botonAgregarPar.classList.add('btn-info');
+        botonAgregarPar.style.cursor = 'not-allowed';
+        cambiarEstadoAgr();
+      });
+    }
+  }
+
+  // Drag & Drop (sin cambios funcionales)
+  const dropArea = document.getElementById(`drop-area-${id}`);
+  const fileInput = document.getElementById(`fileInput-${id}`);
+
+  function showFilePreview(file, id) {
+    const placeholder = document.getElementById(`drop-placeholder-${id}`);
+    const filePreview = document.getElementById(`file-preview-${id}`);
+
+    if (!file) {
+      filePreview.innerHTML = '';
+      placeholder.classList.remove('d-none');
+      return;
+    }
+
+    placeholder.classList.add('d-none');
+    const url = URL.createObjectURL(file);
+
+    filePreview.innerHTML = `
+      <div class='position-relative d-inline-block pt-3'>
+        <i class='fas fa-file-word text-primary' style='height: 24px;'></i>
+        <button type='button' class='btn-close position-absolute top-5 start-100 translate-middle' style='font-size: 0.7rem;' aria-label='Eliminar archivo' onclick='removeSelectedFile(${id})'></button>
+      </div>
+      <div class='small text-muted mb-3 text-center'>
+        <a href='${url}' download='${file.name}'> ${file.name}</a>
+      </div>
+    `;
+
+    const externalDownloadLink = document.getElementById(`file-download-link-${id}`);
+    if (externalDownloadLink) {
+      externalDownloadLink.href = url;
+      externalDownloadLink.download = file.name;
+      externalDownloadLink.innerHTML = `${file.name} <i class='fa-solid fa-file-arrow-down'></i>`;
+      externalDownloadLink.classList.remove('text-muted', 'disabled-link');
+      externalDownloadLink.style.pointerEvents = 'auto';
+    }
+  }
+
+  window.removeSelectedFile = function (id) {
     const fileInput = document.getElementById(`fileInput-${id}`);
+    const filePreview = document.getElementById(`file-preview-${id}`);
+    const externalDownloadLink = document.getElementById(`file-download-link-${id}`);
+    const placeholder = document.getElementById(`drop-placeholder-${id}`);
 
-    function showFilePreview(file, id) {
-        const placeholder = document.getElementById(`drop-placeholder-${id}`);
-        const filePreview = document.getElementById(`file-preview-${id}`);
+    fileInput.value = '';
+    filePreview.innerHTML = '';
+    placeholder.classList.remove('d-none');
 
-        if (!file) {
-            filePreview.innerHTML = '';
-            placeholder.classList.remove('d-none');
-            return;
-        }
-
-        placeholder.classList.add('d-none');
-        const url = URL.createObjectURL(file);
-
-        filePreview.innerHTML = `
-            <div class='position-relative d-inline-block pt-3'>
-                <i class='fas fa-file-word text-primary' style='height: 24px;'></i>
-                <button type='button' class='btn-close position-absolute top-5 start-100 translate-middle' style='font-size: 0.7rem;' aria-label='Eliminar archivo' onclick='removeSelectedFile(${id})'></button>
-            </div>
-            <div class='small text-muted mb-3 text-center'>
-                <a href='${url}' download='${file.name}'> ${file.name}</a>
-            </div>
-        `;
-
-        const externalDownloadLink = document.getElementById(`file-download-link-${id}`);
-        if (externalDownloadLink) {
-            externalDownloadLink.href = url;
-            externalDownloadLink.download = file.name;
-            externalDownloadLink.innerHTML = `${file.name} <i class='fa-solid fa-file-arrow-down'></i>`;
-            externalDownloadLink.classList.remove('text-muted', 'disabled-link');
-            externalDownloadLink.style.pointerEvents = 'auto';
-        }
+    if (externalDownloadLink) {
+      externalDownloadLink.href = '#';
+      externalDownloadLink.removeAttribute('download');
+      externalDownloadLink.innerHTML = `Descargar archivo <i class='fa-solid fa-file-arrow-down'></i>`;
+      externalDownloadLink.classList.add('text-muted', 'disabled-link');
+      externalDownloadLink.style.pointerEvents = 'none';
     }
+  };
 
-    window.removeSelectedFile = function(id) {
-        const fileInput = document.getElementById(`fileInput-${id}`);
-        const filePreview = document.getElementById(`file-preview-${id}`);
-        const externalDownloadLink = document.getElementById(`file-download-link-${id}`);
-        const placeholder = document.getElementById(`drop-placeholder-${id}`);
+  if (dropArea) {
+    ['dragenter', 'dragover'].forEach(event => {
+      dropArea.addEventListener(event, e => {
+        e.preventDefault();
+        dropArea.classList.add('dragover');
+      });
+    });
 
-        fileInput.value = '';
-        filePreview.innerHTML = '';
-        placeholder.classList.remove('d-none');
+    ['dragleave', 'drop'].forEach(event => {
+      dropArea.addEventListener(event, e => {
+        e.preventDefault();
+        dropArea.classList.remove('dragover');
+      });
+    });
 
-        if (externalDownloadLink) {
-            externalDownloadLink.href = '#';
-            externalDownloadLink.removeAttribute('download');
-            externalDownloadLink.innerHTML = `Descargar archivo <i class='fa-solid fa-file-arrow-down'></i>`;
-            externalDownloadLink.classList.add('text-muted', 'disabled-link');
-            externalDownloadLink.style.pointerEvents = 'none';
-        }
-    };
+    dropArea.addEventListener('drop', e => {
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        fileInput.files = files;
+        showFilePreview(files[0], id);
+      }
+    });
 
-    if (dropArea) {
-        ['dragenter', 'dragover'].forEach(event => {
-            dropArea.addEventListener(event, e => {
-            e.preventDefault();
-            dropArea.classList.add('dragover');
-            });
-        });
-
-        ['dragleave', 'drop'].forEach(event => {
-            dropArea.addEventListener(event, e => {
-            e.preventDefault();
-            dropArea.classList.remove('dragover');
-            });
-        });
-
-        dropArea.addEventListener('drop', e => {
-            const files = e.dataTransfer.files;
-            if (files.length) {
-            fileInput.files = files;
-            showFilePreview(files[0]);
-            }
-        }); 
-        
-        fileInput.addEventListener('change', function () {
-            const file = this.files[0];
-            showFilePreview(file, id); 
-        }); 
-    }
-
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      showFilePreview(file, id);
+    });
+  }
 }
 
-// Cierra el modal al guardar
-function guardarTarea(id) { 
+// Cierra el modal al guardar (sin eliminarlo) y avanza
+function guardarTarea(id) {
+  const radios = document.querySelectorAll(`#modal-sm-${id} input[name='radio-${id}']`);
+  const algunoMarcado = Array.from(radios).some(radio => radio.checked);
 
-    // Selecciona todos los radios del modal correspondiente
-    const radios = document.querySelectorAll(`#modal-sm-${id} input[name='radio-${id}']`);
+  if (!algunoMarcado) {
+    mostrarAlerta('Departamento requerido', 'Por favor, selecciona un departamento antes de continuar.', 'warning', 1800);
+    return;
+  }
 
-    // Verifica si al menos uno está seleccionado
-    const algunoMarcado = Array.from(radios).some(radio => radio.checked);
+  mostrarAlerta('Tarea Agregada', 'La tarea se ha asignado al Departamento Interno', 'success', 1800);
 
-    !algunoMarcado 
-        ? mostrarAlerta('Departamento requerido', 'Por favor, selecciona un departamento antes de continuar.', 'warning', 1800)
-        : mostrarAlerta('Tarea Agregada', 'La tarea se ha asignado al Departamento Interno', 'success', 1800);
+  // Marca el botón de la tarjeta como "Agregada"
+  const addBtn = document.querySelector(`#tarea-${id} .addTask`);
+  if (addBtn && !addBtn.disabled) {
+    addBtn.disabled = true;
+    addBtn.innerHTML = 'Agregada <span style="color: white;"><i class="fa-solid fa-circle-check"></i></span>';
+    addBtn.classList.remove('bg-gradient-success');
+    addBtn.classList.add('btn-info');
+    addBtn.style.cursor = 'not-allowed';
+  }
 
-    // Si sí hay selección, entonces cierra el modal normalmente
-    $(`#modal-sm-${id}`).modal('hide');
-    
+  // Avanza y crea la siguiente tarjeta abajo
+  cambiarEstadoAgr();
+
+  // Cierra el modal sin eliminarlo
+  const $modal = $(`#modal-sm-${id}`);
+  $modal.modal('hide'); // la limpieza visual se hace en hidden.bs.modal
 }
 
-function cambiarEstadoAgr() {  
-    contadorTareasAgr++;
-    crearTareaAgr(contadorTareasAgr); 
+function cambiarEstadoAgr() {
+  contadorTareasAgr++;
+  crearTareaAgr(contadorTareasAgr);
 }
 
 crearTareaAgr(contadorTareasAgr);
-
 
 // ================== FIN TAREAS AGRUPACIONES - DISEÑO GRAFICO =========

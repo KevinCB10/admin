@@ -10,21 +10,31 @@
     <link rel='stylesheet' href='../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'>
     <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
     <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
+
+    <!-- Pre-carga del sidebar (SIN skeleton) -->
+    <script>
+      window.__sidebarCacheKey = 'SIDEBAR_HTML_v1';
+      window.__sidebarHTML = sessionStorage.getItem(window.__sidebarCacheKey) || null;
+      window.__sidebarFetch = window.__sidebarHTML
+        ? Promise.resolve(window.__sidebarHTML)
+        : fetch('sidebar.html').then(r => r.text()).then(html => {
+            try { sessionStorage.setItem(window.__sidebarCacheKey, html); } catch(e){}
+            return html;
+          });
+    </script>
   
     <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
   </head>
 
   <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'> 
-    <div class='wrapper'>
-      
+    <div class='wrapper'> 
       <!-- Loader -->
       <div id='loaderContainer' class='loader-overlay'>
         <div class='loader'></div>
       </div>
 
       <!-- Sidebar -->
-      <div id='sidebar-placeholder'></div>  
-
+      <div id='sidebar-placeholder'></div>   
       <!-- Navbar -->
       <app-navbar
         logout-url=''
@@ -37,36 +47,45 @@
 
       <!-- Contenido -->
       <div class='content-wrapper'>
-        <div class='tab-content'>
-          <div class='tab-empty pt-3'>
-            <h2 class='display text-center'>Listado Maquetas y Trazados</h2>
-          </div> 
-        </div>
-
-        <div class='card mr-3 ml-3 mt-3'>
-          <div class='card-body'>
-            <div class='table-scroll'>
-              <table id='tablaMaquetas' class='table table-bordered table-striped'>
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Proyecto</th>
-                    <th>Maqueta</th>
-                    <th>Troquel</th>
-                    <th>Cliente</th>
-                    <th>Comercial</th>
-                    <th>Gestor Estructural</th>
-                    <th>Gestor de Proyecto</th>
-                    <th>Urgente</th>
-                    <th>Estado</th>
-                    <th>Observaciones</th>
-                  </tr>
-                </thead>
-                <tbody id='bodyMaquetas'></tbody>
-              </table>
+        <section class='content-header'>
+          <div class='container-fluid'>
+            <div class='row'>
+              <div class='col-sm-6'>
+                <h1>Listado Maquetas y Trazados</h1>
+              </div>
             </div>
           </div>
-        </div>
+        </section>  
+        <section>
+          <div class='card ml-3 mr-3'>
+            <div class='card-body content fadeInUp-animation'>
+              <div>
+                <div class='card-body'>
+                  <div class='table-scroll'>
+                    <table id='tablaMaquetas' class='table table-bordered table-striped'>
+                      <thead>
+                        <tr>
+                          <th>Fecha</th>
+                          <th>Proyecto</th>
+                          <th>Maqueta</th>
+                          <th>Troquel</th>
+                          <th>Cliente</th>
+                          <th>Comercial</th>
+                          <th>Gestor Estructural</th>
+                          <th>Gestor de Proyecto</th>
+                          <th>Urgente</th>
+                          <th>Estado</th>
+                          <th>Observaciones</th>
+                        </tr>
+                      </thead>
+                      <tbody id='bodyMaquetas'></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section> 
       </div>    
 
       <!-- Footer -->
@@ -76,6 +95,59 @@
 
       <aside class='control-sidebar control-sidebar-dark'></aside> 
     </div>                 
+
+    <!-- Hidratar el sidebar ANTES de scripts pesados (sin skeleton) -->
+    <script>
+      (async () => {
+        const target = document.getElementById('sidebar-placeholder');
+        if (!target) return;
+
+        try {
+          const html = window.__sidebarHTML || await window.__sidebarFetch;
+          target.innerHTML = html;
+
+          // ==== marcar activo de forma robusta ====
+          const norm = p => p.replace(/\/+$/,'');
+          const current = norm(location.pathname);
+          const currentFile = (current.split('/').pop() || 'index.html').toLowerCase();
+
+          const links = target.querySelectorAll('.nav-link[href]');
+          let matched = null;
+
+          links.forEach(link => {
+            link.classList.remove('active');
+            const raw = link.getAttribute('href') || '';
+            if (!raw || raw === '#') return;
+
+            const url = new URL(raw, location.origin);
+            const linkPath = norm(url.pathname);
+            const linkFile = (linkPath.split('/').pop() || 'index.html').toLowerCase();
+
+            const isExact    = linkPath === current;
+            const isSameFile = linkFile === currentFile;
+            const isSuffix   = current.endsWith(linkPath) || linkPath.endsWith(current);
+
+            if (isExact || isSameFile || isSuffix) matched = link;
+          });
+
+          if (matched) {
+            matched.classList.add('active');
+            let li = matched.closest('.nav-item');
+            while (li) {
+              if (li.classList.contains('has-treeview')) {
+                li.classList.add('menu-open');
+                const parentLink = li.querySelector(':scope > .nav-link');
+                if (parentLink) parentLink.classList.add('active');
+              }
+              li = li.parentElement?.closest('.nav-item');
+            }
+          }
+          // ==== fin activo robusto ====
+        } catch (e) {
+          console.error('No se pudo hidratar el sidebar:', e);
+        }
+      })();
+    </script>
 
     <!-- JS -->
     <script src='../plugins/jquery/jquery.min.js'></script>
@@ -96,135 +168,23 @@
     <script src='/pages/js/scripts.js'></script>
 
     <script>
-      // Datos de ejemplo (pueden venir de tu API)
-      const datosMaquetas = [
-        { fecha: '11/07/2025', proyecto: '77461', maqueta: '52579', troquel: '85187', cliente: 'Nestlé España, S.A.U', comercial: 'Pedro Nadal', gestorEstructural: 'Vero', gestorProyecto: 'Maite', urgente: '', estado: '', observaciones: '' },
-        { fecha: '11/07/2025', proyecto: '77461', maqueta: '52579', troquel: '85187', cliente: 'Nestlé España, S.A.U', comercial: 'Pedro Nadal', gestorEstructural: 'Vero', gestorProyecto: 'Maite', urgente: '', estado: '', observaciones: '' },
-        { fecha: '11/07/2025', proyecto: '77461', maqueta: '52579', troquel: '85187', cliente: 'Nestlé España, S.A.U', comercial: 'Pedro Nadal', gestorEstructural: 'Vero', gestorProyecto: 'Maite', urgente: '', estado: '', observaciones: '' },
-        { fecha: '11/07/2025', proyecto: '77461', maqueta: '52579', troquel: '85187', cliente: 'Nestlé España, S.A.U', comercial: 'Pedro Nadal', gestorEstructural: 'Vero', gestorProyecto: 'Maite', urgente: '', estado: '', observaciones: '' },
-        { fecha: '11/07/2025', proyecto: '77461', maqueta: '52579', troquel: '85187', cliente: 'Nestlé España, S.A.U', comercial: 'Pedro Nadal', gestorEstructural: 'Vero', gestorProyecto: 'Maite', urgente: '', estado: '', observaciones: '' },
-        { fecha: '11/07/2025', proyecto: '77461', maqueta: '52579', troquel: '85187', cliente: 'Nestlé España, S.A.U', comercial: 'Pedro Nadal', gestorEstructural: 'Vero', gestorProyecto: 'Maite', urgente: '', estado: '', observaciones: '' },
-      ];
-
-      // Renderizar tabla dinámicamente
-      function renderTabla() {
-        const tbody = document.getElementById('bodyMaquetas');
-        tbody.innerHTML = datosMaquetas.map(d => `
-          <tr>
-            <td class='td-fonts'>${d.fecha}</td>
-            <td class='td-fonts'>${d.proyecto}</td>
-            <td class='td-fonts'>${d.maqueta}</td>
-            <td class='td-fonts'>${d.troquel}</td>
-            <td class='td-fonts'>${d.cliente}</td>
-            <td class='td-fonts'>${d.comercial}</td>
-            <td class='td-fonts'>${d.gestorEstructural}</td>
-            <td class='td-fonts'>${d.gestorProyecto}</td>
-            <td class='td-fonts'>${d.urgente}</td>
-            <td class='td-fonts'>${d.estado}</td>
-            <td class='td-fonts'>${d.observaciones}</td>
-          </tr>
-        `).join('');
-      }
-
-      // Inicializar DataTable
-      function initDataTable() {
-        $('#tablaMaquetas').DataTable({
-          responsive: true,
-          lengthChange: false,
-          autoWidth: false,
-          buttons: [
-            {
-              extend: 'excelHtml5',
-              text: '📊 Excel',
-              exportOptions: { columns: ':visible' }
-            },
-            {
-              extend: 'pdfHtml5',
-              text: '📄 PDF',
-              orientation: 'landscape',
-              pageSize: 'A4',
-              exportOptions: { columns: ':visible' },
-              customize: function (doc) {
-                // ====== ENCABEZADOS ======
-                doc.styles.tableHeader = {
-                  fillColor: '#003366', // azul
-                  color: 'white',       // texto blanco
-                  bold: true,
-                  fontSize: 10
-                };
-
-                // Centrar todos los encabezados manualmente
-                doc.content[1].table.body[0].forEach(function (headerCell) {
-                  headerCell.alignment = 'center';
-                });
-
-                // ====== TEXTO GENERAL ======
-                doc.defaultStyle.fontSize = 8;
-                doc.defaultStyle.alignment = 'left';
-
-                // ====== ANCHO DE COLUMNAS ======
-                doc.content[1].table.widths = Array(
-                  doc.content[1].table.body[0].length + 1
-                ).join('*').split('');
-
-                // ====== COLORES DE FILA ALTERNOS ======
-                var rowCount = doc.content[1].table.body.length;
-                for (var i = 1; i < rowCount; i++) {
-                  if (i % 2 === 0) {
-                    doc.content[1].table.body[i].forEach(function (cell) {
-                      cell.fillColor = '#f3f3f3'; // gris claro
-                    });
-                  }
-                }
-
-                // ====== BORDES ======
-                var objLayout = {};
-                objLayout['hLineWidth'] = function(i) { return 0.5; };
-                objLayout['vLineWidth'] = function(i) { return 0.5; };
-                objLayout['hLineColor'] = function(i) { return '#cccccc'; };
-                objLayout['vLineColor'] = function(i) { return '#cccccc'; };
-                objLayout['paddingLeft'] = function(i) { return 4; };
-                objLayout['paddingRight'] = function(i) { return 4; };
-                objLayout['paddingTop'] = function(i) { return 2; };
-                objLayout['paddingBottom'] = function(i) { return 2; };
-                doc.content[1].layout = objLayout;
-              }
-
-            }
-          ],
-          language: {
-            lengthMenu: '📄 Mostrar _MENU_ registros por página',
-            zeroRecords: '⚠️ No se encontraron resultados',
-            info: '📊 Viendo <b>_START_ → _END_</b> de un total de <b>_TOTAL_</b> registros',
-            infoEmpty: '📊 No hay registros para mostrar',
-            infoFiltered: '(filtrado de <b>_MAX_</b> registros totales)',
-            search: '🔍 Buscar:',
-            paginate: {
-              first: '⏮️ Primero',
-              last: '⏭️ Último',
-              next: '➡️ Siguiente',
-              previous: '⬅️ Anterior'
-            }
-          }
-        }).buttons().container().appendTo('#tablaMaquetas_wrapper .col-md-6:eq(0)');
-      }
-  
-      // Cargar sidebar
-      fetch('sidebar.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById('sidebar-placeholder').innerHTML = html;
-          const currentPath = window.location.pathname;
-          document.querySelectorAll('#sidebar-placeholder .nav-link').forEach(link => {
-            link.getAttribute('href') === currentPath
-              ? link.classList.add('active')
-              : link.classList.remove('active');
-          });
-        });
-
       // Ejecutar todo
       renderTabla();
       $(document).ready(() => initDataTable());
+
+         fetch('sidebar.html').then(response => response.text()).then(html => {
+        document.getElementById('sidebar-placeholder').innerHTML = html;
+        
+        // Después de insertar el HTML, activa el enlace correcto
+        const currentPath = window.location.pathname; 
+        const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
+        
+        links.forEach(link => { 
+          link.getAttribute('href') === currentPath 
+            ? link.classList.add('active') 
+            : link.classList.remove('active'); 
+        });
+      });
     </script>
   </body>
 </html>

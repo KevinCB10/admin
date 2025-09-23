@@ -8,9 +8,7 @@
     </head>
     <body> 
       <aside class='main-sidebar sidebar-dark-primary elevation-4'>
-        <a href='/index.html' class='brand-link text-center'>
-          Admin
-        </a>
+        <a href='/index.html' class='brand-link text-center'> Admin </a>
         <div class='sidebar'>
           <nav class='mt-2'>
             <ul class='nav nav-pills nav-sidebar flex-column'> 
@@ -74,17 +72,53 @@
       </aside> 
       <div id='sidebar-backdrop' class='sidebar-backdrop'></div>
       <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const currentUrl = window.location.pathname;
-          const navLinks = document.querySelectorAll('.nav-sidebar a.nav-link');
+       fetch('sidebar.html').then(r => r.text()).then(html => {
+          const contenedor = document.getElementById('sidebar-placeholder');
+          contenedor.innerHTML = html;
 
-          navLinks.forEach(link => {
-            const linkPath = link.getAttribute('href');
-            if (currentUrl.endsWith(linkPath) || currentUrl === linkPath) {
-              link.classList.add('active');
+          // 1) Limpiar cualquier 'active'
+          const enlaces = contenedor.querySelectorAll('.nav-link');
+          enlaces.forEach(enlace => enlace.classList.remove('active'));
+
+          // 2) Calcular a qué item hay que activar según la URL actual
+          const ruta = window.location.pathname.toLowerCase();
+          const archivo = ruta.split('/').pop();
+
+          // Mapa de páginas que comparten el mismo ítem del menú
+          let hrefObjetivo = ruta; // por defecto, la misma ruta
+          switch (archivo) {
+
+            case 'cliente.html':
+            case 'detalle_cliente.html':
+              hrefObjetivo = '/pages/listado_clientes.html';
+              break;
+
+            // (si más adelante quieres agrupar otras páginas, añádelas aquí)
+            // case 'tareas_maqueta.html':
+            // case 'tareas_trazados.html':
+            //   hrefObjetivo = '/pages/listado_maquetas_y_trazados.html';
+            //   break;
+
+          }
+
+          // 3) Activar el enlace cuyo href coincida (igual o por sufijo)
+          let activado = false;
+          enlaces.forEach(enlace => {
+            const h = (enlace.getAttribute('href') || '').toLowerCase();
+            if (h === hrefObjetivo || h.endsWith(hrefObjetivo)) {
+              enlace.classList.add('active');
+              activado = true;
             }
           });
+
+          // 4) Fallback: si no encontró, intenta por nombre de archivo exacto
+          if (!activado) {
+            enlaces.forEach(enlace => {
+              const h = (enlace.getAttribute('href') || '').toLowerCase();
+              if (h.endsWith('/' + archivo)) enlace.classList.add('active');
+            });
+          }
         });
       </script>
     </body>
-</html>
+  </html>

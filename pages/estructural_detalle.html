@@ -2,7 +2,8 @@
   <html lang='en'>
     <head>
       <meta charset='utf-8'>
-      <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>      <title>Admin Tareas</title>
+      <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>      
+      <title>Admin Tareas</title>
 
       <link rel='stylesheet' href='/pages/css/styles.css'>
       <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
@@ -56,14 +57,11 @@
         </div>
       </div>
 
-      <div class='wrapper'> 
-
+      <div class='wrapper'>  
         <div id='loaderContainer' class='loader-overlay'>
           <div class='loader'></div>
-        </div>
-
-        <div id='sidebar-placeholder'></div>
-    
+        </div> 
+        <div id='sidebar-placeholder'></div> 
         <app-navbar
           logout-url=''
           tooltip-text='Cerrar sesión'
@@ -92,7 +90,7 @@
               </div>
               <div class='card-body fadeInUp-animation'>
                 <div class='row detalle-grid'>  
-                  <div class='col-12 col-md-6 col-stack'>
+                  <div class='col-12 col-xl-6  col-stack'>
                     <div class='scroll-desktop' style='height: 75vh; overflow-y: scroll;'>
 
                       <!-- ===== Encabezado: Diseño Estructural ===== -->
@@ -175,10 +173,10 @@
                       </div> <!-- /card-body -->
                     </div>
                   </div>
-                  <div class='col-12 col-md-6 col-stack'>
+                  <div class='col-12 col-xl-6 col-stack'>
                     <div class='card'>
                       <div class='card-header'>
-                        <h4 class=''>
+                        <h4 >
                           <i class="fa-solid fa-list-check"></i>
                           Tareas
                         </h4>
@@ -221,8 +219,7 @@
               </div>
             </div>
           </section>
-        </div> 
-        
+        </div>  
         <div id='toastArea' aria-live='polite' aria-atomic='true' class='toast-area'></div>
         <footer class='main-footer'>
           <strong>Cartonajes Bernabeú.</strong>

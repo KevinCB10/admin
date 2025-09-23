@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+    <html lang='es'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Admin Tareas — Cliente</title>
+            <link rel='stylesheet' href='/pages/css/styles.css'>
+            <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap' rel='stylesheet'>
+            <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
+            <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
+        </head>
+
+        <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'>
+            <div class='wrapper'>
+                
+                <!-- Loader -->
+                <div id='loaderContainer' class='loader-overlay'>
+                    <div class='loader'></div>
+                </div>
+
+                <!-- Sidebar -->
+                <div id='sidebar-placeholder'></div>
+
+                <!-- Navbar -->
+                <app-navbar
+                    logout-url=''
+                    tooltip-text='Cerrar sesión'
+                    placement='bottom'
+                    icon-size='fa-2x'
+                    menu-icon-size='fa-2x'
+                    clear-keys='tab-activo, ultimaCardActiva'>
+                </app-navbar>
+
+                <!-- ====== CONTENIDO ====== -->
+                <div class='content-wrapper'> 
+                    <!-- Header de página -->
+                    <section class='content-header'>
+                        <div class='container-fluid'>
+                            <div class='row ml-1 mb-3'>
+                                <div id='btn-volver-placeholder' class='mr-2'></div>
+                                <div class='col-sm-6'>
+                                    <h1>Información del Cliente</h1>
+                                </div> 
+                            </div>
+                        </div>
+                    </section> 
+                    <section>
+                        <div class='fadeInUp-animation ml-3 mr-3'>  
+                            <div class='card shadow-sm mb-3'>
+                                <div class='card-body d-flex align-items-center flex-wrap'>
+                                    <div class='avatar-circle mr-3' id='cli-avatar'>C</div>
+                                    <div class='mr-auto'>
+                                        <h4 class='mb-0' id='cli-nombre'>Cliente</h4>
+                                        <div class='text-muted' id='cli-codigo'>Código: —</div>
+                                    </div>
+                                    <div class='d-flex proj-toolbar'>
+                                        <div class='kpi badge badge-info p-3 mr-2'>
+                                            <div class='small td-fonts'>Contactos</div>
+                                            <div class='h5 mb-0' id='kpi-contactos'>0</div>
+                                        </div>
+                                        <div class='kpi badge badge-primary p-3 mr-2'>
+                                            <div class='small td-fonts'>Troqueles</div>
+                                            <div class='h5 mb-0' id='kpi-troqueles'>0</div>
+                                        </div>
+                                        <div class='kpi badge badge-primary p-3'>
+                                            <div class='small td-fonts'>Fichas</div>
+                                            <div class='h5 mb-0' id='kpi-fichas'>0</div>
+                                        </div>
+                                        <div class='kpi badge badge-primary p-3'>
+                                            <div class='small td-fonts'>E. Mercancías</div>
+                                            <div class='h5 mb-0' id='kpi-enviomer'>0</div>
+                                        </div>
+                                        <div class='kpi badge badge-primary p-3'>
+                                            <div class='small td-fonts'>E. Muestras</div>
+                                            <div class='h5 mb-0' id='kpi-enviom'>0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tabs -->
+                            <ul class='nav nav-tabs mt-4' id='cliTabs' role='tablist'>
+                                <li class='nav-item'>
+                                    <a class='nav-link active' id='tab-contactos' data-toggle='tab' href='#panel-contactos' role='tab'>
+                                        <i class='fa-regular fa-address-book mr-1'></i> Contactos
+                                        <span class='badge badge-light ml-1' id='badge-contactos'>0</span>
+                                    </a>
+                                </li>
+                                <li class='nav-item'>
+                                    <a class='nav-link' id='tab-troqueles' data-toggle='tab' href='#panel-troqueles' role='tab'>
+                                        <i class='fa-solid fa-dice-d6 mr-1'></i> Troqueles
+                                        <span class='badge badge-light ml-1' id='badge-troqueles'>0</span>
+                                    </a>
+                                </li>
+                                <li class='nav-item'>
+                                    <a class='nav-link' id='tab-fichas' data-toggle='tab' href='#panel-fichas' role='tab'>
+                                        <i class='fa-regular fa-folder-open mr-1'></i> Fichas
+                                        <span class='badge badge-light ml-1' id='badge-fichas'>0</span>
+                                    </a>
+                                </li>
+                                <li class='nav-item'>
+                                    <a class='nav-link' id='tab-envios' data-toggle='tab' href='#panel-envios' role='tab'>
+                                        <i class='fa-solid fa-truck-fast mr-1'></i> Envío Mercancías
+                                        <span class='badge badge-light ml-1' id='badge-envios'>0</span>
+                                    </a>
+                                </li>
+                                <li class='nav-item'>
+                                    <a class='nav-link' id='tab-enviomuestras' data-toggle='tab' href='#panel-enviomuestras' role='tab'>
+                                        <i class='fa-solid fa-box-open mr-1'></i> Envío muestras
+                                        <span class='badge badge-light ml-1' id='badge-enviomuestras'>0</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class='tab-content card card-body'>
+
+                                <!-- Contactos -->
+                                <div class='tab-pane fade show active' id='panel-contactos' role='tabpanel'>
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <div class='input-group input-group-lg' style='max-width:380px;'>
+                                            <input id='search-contactos' type='search' class='form-control' placeholder='Buscar contacto…' autocomplete='off'>
+                                            <div class='input-group-append'>
+                                                <button class='btn btn-outline-secondary' id='clear-contactos' type='button' title='Limpiar'><i class='fa-solid fa-eraser'></i></button>
+                                            </div>
+                                        </div>
+                                        <button id='btn-add-contacto' class='btn btn-info btn-lg ml-5'>
+                                            <i class='fa-solid fa-plus mr-1'></i> Agregar
+                                        </button>
+                                    </div>
+                                    <div class='table-h-scroll'>
+                                        <table class='table table-hover mb-0 table-nowrap table-min-contactos'>
+                                            <thead class='thead-light'>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Email</th>
+                                                    <th>Teléfono</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id='tbody-contactos'></tbody>
+                                        </table>
+                                    </div>
+                                    <div class='empty-state text-muted text-center py-4 d-none' id='empty-contactos'> 
+                                        Sin contactos para mostrar.
+                                    </div>
+                                </div>
+
+                                <!-- Troqueles -->
+                                <div class='tab-pane fade' id='panel-troqueles' role='tabpanel'>
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <div class='input-group input-group-lg' style='max-width:380px;'>
+                                            <input id='search-troqueles' type='search' class='form-control' placeholder='Buscar troquel…' autocomplete='off'>
+                                            <div class='input-group-append'>
+                                                <button class='btn btn-outline-secondary' id='clear-troqueles' type='button' title='Limpiar'><i class='fa-solid fa-eraser'></i></button>
+                                            </div>
+                                        </div>
+                                        <button id='btn-add-troquel' class='btn btn-primary btn-lg ml-5'>
+                                            <i class='fa-solid fa-plus mr-1'></i> Agregar
+                                        </button> 
+                                    </div>
+                                    <div class='table-h-scroll'>
+                                        <table class='table table-hover mb-0 table-nowrap table-min-troqueles'>
+                                            <thead class='thead-light'>
+                                                <tr>
+                                                    <th># Troquel</th>
+                                                    <th>Cliente</th>
+                                                    <th>Cajas/Palet</th>
+                                                    <th>Medida Palet</th>
+                                                    <th>Uds/Paquete</th>
+                                                    <th>Altura Palet</th>
+                                                    <th>Observaciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id='tbody-troqueles'></tbody>
+                                        </table>
+                                    </div>
+                                    <div class='empty-state text-muted text-center py-4 d-none' id='empty-troqueles'> 
+                                        No hay troqueles para este cliente.
+                                    </div>
+                                </div>
+
+                                <!-- Fichas -->
+                                <div class='tab-pane fade' id='panel-fichas' role='tabpanel'>
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <div class='input-group input-group-lg' style='max-width:380px;'>
+                                            <input id='search-fichas' type='search' class='form-control' placeholder='Buscar ficha…' autocomplete='off'>
+                                            <div class='input-group-append'>
+                                                <button class='btn btn-outline-secondary' id='clear-fichas' type='button' title='Limpiar'><i class='fa-solid fa-eraser'></i></button>
+                                            </div>
+                                        </div>
+                                        <button id='btn-add-ficha' class='btn btn-primary btn-lg ml-5'>
+                                            <i class='fa-solid fa-plus mr-1'></i> Agregar
+                                        </button> 
+                                    </div>
+                                    <div class='table-h-scroll'>
+                                        <table class='table table-hover mb-0 table-nowrap table-min-fichas'>
+                                            <thead class='thead-light'>
+                                                <tr>
+                                                    <th># Ficha</th>
+                                                    <th>Código Cliente</th>
+                                                    <th>ID</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id='tbody-fichas'></tbody>
+                                        </table>
+                                    </div>
+                                    <div class='empty-state text-muted text-center py-4 d-none' id='empty-fichas'> 
+                                        Sin fichas relacionadas.
+                                    </div>
+                                </div>
+
+                                <!-- Envío Mercancías -->
+                                <div class='tab-pane fade' id='panel-envios' role='tabpanel'>
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <div class='input-group input-group-lg' style='max-width:380px;'>
+                                            <input id='search-envios' type='search' class='form-control' placeholder='Buscar envío…' autocomplete='off'>
+                                            <div class='input-group-append'>
+                                                <button class='btn btn-outline-secondary' id='clear-envios' type='button' title='Limpiar'>
+                                                    <i class='fa-solid fa-eraser'></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button id='btn-add-envio' class='btn btn-primary btn-lg ml-5'>
+                                            <i class='fa-solid fa-plus mr-1'></i> Agregar
+                                        </button> 
+                                    </div> 
+                                    <div class='table-h-scroll'>
+                                        <table class='table table-hover mb-0 table-nowrap table-min-envios'>
+                                            <thead class='thead-light'>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Descripción</th>
+                                                    <th>Dirección</th>
+                                                    <th>CP</th>
+                                                    <th>Ciudad</th>
+                                                    <th>País</th>
+                                                    <th>Altura Máx.</th>
+                                                    <th>Palets</th>
+                                                    <th>Tablero</th>
+                                                    <th>Cantoneras</th>
+                                                    <th>Flejado</th>
+                                                    <th>Retractilado</th>
+                                                    <th>Sobresalir</th>
+                                                    <th>Observaciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id='tbody-envios'></tbody>
+                                        </table>
+                                    </div> 
+                                    <div class='empty-state text-muted text-center py-4 d-none' id='empty-envios'>
+                                        No hay direcciones de envío para este cliente.
+                                    </div>
+                                </div> 
+
+                                <!-- Envío muestras -->
+                                <div class='tab-pane fade' id='panel-enviomuestras' role='tabpanel'>
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <div class='input-group input-group-lg' style='max-width:380px;'>
+                                            <input id='search-enviomuestras' type='search' class='form-control' placeholder='Buscar envío muestra…' autocomplete='off'>
+                                            <div class='input-group-append'>
+                                                <button class='btn btn-outline-secondary' id='clear-enviomuestras' type='button' title='Limpiar'>
+                                                    <i class='fa-solid fa-eraser'></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button id='btn-add-enviomuestra' class='btn btn-primary btn-lg ml-5'>
+                                            <i class='fa-solid fa-plus mr-1'></i> Agregar
+                                        </button>
+                                    </div>
+
+                                    <div class='table-h-scroll'>
+                                        <table class='table table-hover mb-0 table-nowrap table-min-enviomuestras'>
+                                            <thead class='thead-light'>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Empresa</th>
+                                                    <th>Nombre</th>
+                                                    <th>Persona contacto</th>
+                                                    <th>Teléfono</th>
+                                                    <th>Dirección</th>
+                                                    <th>CP</th>
+                                                    <th>Ciudad</th>
+                                                    <th>País</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id='tbody-enviomuestras'></tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class='empty-state text-muted text-center py-4 d-none' id='empty-enviomuestras'>
+                                        No hay direcciones de envío de muestras para este cliente.
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div>
+                    </section>
+                </div>
+                <!-- /content-wrapper -->
+            </div> 
+            <div class='modal fade' id='modalEditarContacto' tabindex='-1' role='dialog' aria-labelledby='modalEditarContactoLabel' aria-hidden='true'>
+                <div class='modal-dialog modal-dialog-centered' role='document'>
+                    <div class='modal-content border-0 shadow-lg rounded-lg'>
+                        <div class='modal-header bg-info text-white'>
+                            <h5 class='modal-title' id='modalEditarContactoLabel'>
+                                <i class='fas fa-user-edit mr-2'></i> Editar contacto
+                            </h5>
+                            <button type='button' class='close text-white' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div>
+
+                        <form id='formEditarContacto'>
+                            <div class='modal-body'>
+                                <input type='hidden' id='ec-index'>
+                                <div class='form-group'>
+                                    <label for='ec-nombre' class='font-weight-bold'>Nombre</label>
+                                    <input id='ec-nombre' type='text' class='form-control'>
+                                </div>
+                                <div class='form-group'>
+                                    <label for='ec-email' class='font-weight-bold'>Email</label>
+                                    <input id='ec-email' type='email' class='form-control'>
+                                </div>
+                                <div class='form-group mb-0'>
+                                    <label for='ec-telefono' class='font-weight-bold'>Teléfono</label>
+                                    <input id='ec-telefono' type='text' class='form-control'>
+                                </div>
+                            </div> 
+                            <div class='modal-footer bg-light'>
+                                <button type='button' class='btn btn-outline-secondary' data-dismiss='modal'>Cancelar</button>
+                                <button type='button' id='btn-guardar-contacto' class='btn btn-info'>
+                                    <i class='fas fa-save mr-1'></i> Guardar cambios
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+
+            <!-- MODAL GENÉRICO PARA GUARDAR INFORMACIÓN RELACIONADA CON EL CLIENTE --> 
+            <!-- MODAL AGREGAR (REUTILIZABLE) -->
+            <div class='modal fade' id='modalAgregarGenerico' tabindex='-1' role='dialog' aria-labelledby='modalAgregarTitulo' aria-hidden='true'>
+                <div class='modal-dialog modal-dialog-centered' role='document'>
+                    <div class='modal-content border-0 shadow-lg rounded-lg'>
+                        <div class='modal-header bg-info text-white'>
+                            <h5 class='modal-title' id='modalAgregarTitulo'>
+                                <i class='fas fa-plus mr-2'></i> <span id='agregarModalHeading'>Agregar</span>
+                            </h5>
+                            <button type='button' class='close text-white' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div> 
+                        <form id='formAgregarGenerico'>
+                            <input type='hidden' id='agregarTipo'> 
+                            <div class='modal-body'> 
+                                <!-- === CONTACTO === -->
+                                <div class='fieldset' data-section='contacto'>
+                                    <div class='form-group'>
+                                        <label for='ac-nombre' class='font-weight-bold'>Nombre</label>
+                                        <input id='ac-nombre' type='text' class='form-control'>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='ac-email' class='font-weight-bold'>Email</label>
+                                        <input id='ac-email' type='email' class='form-control'>
+                                    </div>
+                                    <div class='form-group mb-0'>
+                                        <label for='ac-telefono' class='font-weight-bold'>Teléfono</label>
+                                        <input id='ac-telefono' type='text' class='form-control'>
+                                    </div>
+                                </div>
+
+                                <!-- === TROQUEL === -->
+                                <div class='fieldset d-none' data-section='troquel'>
+                                    <div class='form-group'>
+                                        <label for='at-numero' class='font-weight-bold'># Troquel</label>
+                                        <input id='at-numero' type='text' class='form-control'>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='at-cliente' class='font-weight-bold'>Cliente</label>
+                                        <input id='at-cliente' type='text' class='form-control'>
+                                    </div>
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-6'>
+                                            <label for='at-cajas' class='font-weight-bold'>Cajas/Palet</label>
+                                            <input id='at-cajas' type='number' class='form-control' min='0'>
+                                        </div>
+                                        <div class='form-group col-md-6'>
+                                            <label for='at-medida' class='font-weight-bold'>Medida Palet</label>
+                                            <input id='at-medida' type='text' class='form-control' placeholder='80x120, 100x120…'>
+                                        </div>
+                                    </div>
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-6'>
+                                            <label for='at-uds' class='font-weight-bold'>Uds/Paquete</label>
+                                            <input id='at-uds' type='number' class='form-control' min='0'>
+                                        </div>
+                                        <div class='form-group col-md-6'>
+                                            <label for='at-altura' class='font-weight-bold'>Altura Palet</label>
+                                            <input id='at-altura' type='number' class='form-control' min='0'>
+                                        </div>
+                                    </div>
+                                    <div class='form-group mb-0'>
+                                        <label for='at-observ' class='font-weight-bold'>Observaciones</label>
+                                        <textarea id='at-observ' class='form-control' rows='3'></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- === FICHA === -->
+                                <div class='fieldset d-none' data-section='ficha'>
+                                    <div class='form-group'>
+                                        <label for='af-numero' class='font-weight-bold'># Ficha</label>
+                                        <input id='af-numero' type='text' class='form-control'>
+                                    </div>
+                                    <div class='form-group mb-0'>
+                                        <label for='af-codigo' class='font-weight-bold'>Código Cliente</label>
+                                        <input id='af-codigo' type='text' class='form-control'>
+                                    </div>
+                                </div>
+
+                                <!-- === ENVÍO MERCANCÍAS === -->
+                                <div class='fieldset d-none' data-section='envio'>
+                                    <div class='form-group'>
+                                        <label for='ae-descripcion' class='font-weight-bold'>Descripción</label>
+                                        <input id='ae-descripcion' type='text' class='form-control'>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='ae-direccion' class='font-weight-bold'>Dirección</label>
+                                        <input id='ae-direccion' type='text' class='form-control'>
+                                    </div>
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-4'>
+                                            <label for='ae-cp' class='font-weight-bold'>CP</label>
+                                            <input id='ae-cp' type='text' class='form-control'>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <label for='ae-ciudad' class='font-weight-bold'>Ciudad</label>
+                                            <input id='ae-ciudad' type='text' class='form-control'>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <label for='ae-pais' class='font-weight-bold'>País</label>
+                                            <input id='ae-pais' type='text' class='form-control'>
+                                        </div>
+                                    </div>
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-4'>
+                                            <label for='ae-altura' class='font-weight-bold'>Altura Máx.</label>
+                                            <input id='ae-altura' type='number' class='form-control' min='0'>
+                                        </div>
+                                        <div class='form-group col-md-8'>
+                                            <label for='ae-palets' class='font-weight-bold'>Palets</label>
+                                            <input id='ae-palets' type='text' class='form-control' placeholder='EURO 80x120, AMERICANO 100x120…'>
+                                        </div>
+                                    </div> 
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-4'>
+                                            <div class='custom-control custom-switch'>
+                                                <input type='checkbox' class='custom-control-input' id='ae-tablero'>
+                                                <label class='custom-control-label' for='ae-tablero'>Tablero</label>
+                                            </div>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <div class='custom-control custom-switch'>
+                                                <input type='checkbox' class='custom-control-input' id='ae-cantoneras'>
+                                                <label class='custom-control-label' for='ae-cantoneras'>Cantoneras</label>
+                                            </div>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <div class='custom-control custom-switch'>
+                                                <input type='checkbox' class='custom-control-input' id='ae-flejado'>
+                                                <label class='custom-control-label' for='ae-flejado'>Flejado</label>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-6'>
+                                            <div class='custom-control custom-switch'>
+                                                <input type='checkbox' class='custom-control-input' id='ae-retractilado'>
+                                                <label class='custom-control-label' for='ae-retractilado'>Retractilado</label>
+                                            </div>
+                                        </div>
+                                        <div class='form-group col-md-6'>
+                                            <div class='custom-control custom-switch'>
+                                                <input type='checkbox' class='custom-control-input' id='ae-sobresalir'>
+                                                <label class='custom-control-label' for='ae-sobresalir'>Puede sobresalir</label>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class='form-group mb-0'>
+                                        <label for='ae-observ' class='font-weight-bold'>Observaciones</label>
+                                        <textarea id='ae-observ' class='form-control' rows='3'></textarea>
+                                    </div>
+                                </div>  
+                                    <!-- === ENVÍO MUESTRAS === -->
+                                <div class='fieldset d-none' data-section='enviomuestra'>
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-6'>
+                                            <label for='am-empresa' class='font-weight-bold'>Empresa</label>
+                                            <input id='am-empresa' type='text' class='form-control' required>
+                                        </div>
+                                        <div class='form-group col-md-6'>
+                                            <label for='am-nombre' class='font-weight-bold'>Nombre</label>
+                                            <input id='am-nombre' type='text' class='form-control' required>
+                                        </div>
+                                    </div>
+
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-6'>
+                                            <label for='am-persona' class='font-weight-bold'>Persona contacto</label>
+                                            <input id='am-persona' type='text' class='form-control'>
+                                        </div>
+                                        <div class='form-group col-md-6'>
+                                            <label for='am-telefono' class='font-weight-bold'>Teléfono</label>
+                                            <input id='am-telefono' type='text' class='form-control'>
+                                        </div>
+                                    </div>
+
+                                    <div class='form-group'>
+                                        <label for='am-direccion' class='font-weight-bold'>Dirección</label>
+                                        <input id='am-direccion' type='text' class='form-control' required>
+                                    </div>
+
+                                    <div class='form-row'>
+                                        <div class='form-group col-md-4'>
+                                            <label for='am-cp' class='font-weight-bold'>CP</label>
+                                            <input id='am-cp' type='text' class='form-control'>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <label for='am-ciudad' class='font-weight-bold'>Ciudad</label>
+                                            <input id='am-ciudad' type='text' class='form-control'>
+                                        </div>
+                                        <div class='form-group col-md-4'>
+                                            <label for='am-pais' class='font-weight-bold'>País</label>
+                                            <input id='am-pais' type='text' class='form-control'>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <div class='modal-footer bg-light'>
+                                <button type='button' class='btn btn-outline-secondary' data-dismiss='modal'>Cancelar</button>
+                                <button type='button' id='btn-guardar-agregar' class='btn btn-info'>
+                                    <i class='fas fa-save mr-1'></i> Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Mini helper: abre el modal y muestra el fieldset del tipo solicitado
+                (function () {
+                    function toggleFieldset(fs, active) {
+                        fs.classList.toggle('d-none', !active);
+                        fs.querySelectorAll('input, textarea, select').forEach(el => {
+                            // recuerda si era required
+                            if (active) {
+                                if (el._wasRequired === true) el.required = true;
+                                el.disabled = false;
+                            } else {
+                                if (el.required) el._wasRequired = true;
+                                el.required = false;
+                                el.disabled = true;
+                            }
+                        });
+                    }
+
+                    function showSection(tipo) {
+                        document.getElementById('agregarTipo').value = tipo;
+                        document.getElementById('agregarModalHeading').textContent =
+                            'Agregar ' + (tipo === 'contacto'   ? 'contacto'    :
+                                        tipo === 'troquel'      ? 'troquel'     :
+                                        tipo === 'ficha'        ? 'ficha'       : 'envío');
+
+                        // Activa/Desactiva fieldsets + required
+                        document.querySelectorAll('#modalAgregarGenerico .fieldset').forEach(fs => {
+                            toggleFieldset(fs, fs.getAttribute('data-section') === tipo);
+                        });
+
+                        // abrir modal
+                        if (window.jQuery) {
+                            jQuery('#modalAgregarGenerico').modal('show');
+                        } else {
+                            var m = document.getElementById('modalAgregarGenerico');
+                            m.classList.add('show'); m.style.display = 'block';
+                        }
+                    }
+
+                    // Deshabilita todos menos "contacto" al cargar (o el que quieras por defecto)
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.querySelectorAll('#modalAgregarGenerico .fieldset').forEach(fs => {
+                            const active = fs.getAttribute('data-section') === 'contacto';
+                            toggleFieldset(fs, active);
+                        });
+                        var map = {
+                            'btn-add-contacto': 'contacto',
+                            'btn-add-troquel':  'troquel',
+                            'btn-add-ficha':    'ficha',
+                            'btn-add-envio':    'envio',
+                            'btn-add-enviomuestra': 'enviomuestra'
+                        };
+                        Object.keys(map).forEach(id => {
+                            var btn = document.getElementById(id);
+                            if (btn) btn.addEventListener('click', function () { showSection(map[id]); });
+                        });
+                    });
+                })();
+            </script>
+ 
+            <!-- FIN -->
+            <script src='../plugins/jquery/jquery.min.js'></script>
+            <script src='../plugins/bootstrap/js/bootstrap.bundle.min.js'></script>
+            <script src='../plugins/datatables/jquery.dataTables.min.js'></script>
+            <script src='../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'></script>
+            <script src='../plugins/datatables-responsive/js/dataTables.responsive.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/dataTables.buttons.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.bootstrap4.min.js'></script>
+            <script src='../plugins/jszip/jszip.min.js'></script>
+            <script src='../plugins/pdfmake/pdfmake.min.js'></script>
+            <script src='../plugins/pdfmake/vfs_fonts.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.html5.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.print.min.js'></script>
+            <script src='../plugins/datatables-buttons/js/buttons.colVis.min.js'></script>
+            <script src='../dist/js/adminlte.min.js'></script> 
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script src='/pages/js/scripts.js'></script>
+
+            <script>
+                fetch('sidebar.html').then(r => r.text()).then(html => {
+                    const contenedor = document.getElementById('sidebar-placeholder');
+                    contenedor.innerHTML = html;
+
+                    // 1) Limpiar cualquier "active"
+                    const enlaces = contenedor.querySelectorAll('.nav-link');
+                    enlaces.forEach(a => a.classList.remove('active'));
+
+                    // 2) Calcular a qué item hay que activar según la URL actual
+                    const ruta = window.location.pathname.toLowerCase();
+                    const archivo = ruta.split('/').pop();
+
+                    // Mapa de páginas que comparten el mismo ítem del menú
+                    let hrefObjetivo = ruta; // por defecto, la misma ruta
+                    switch (archivo) {
+                        case 'cliente.html':
+                        case 'detalle_cliente.html':
+                            hrefObjetivo = '/pages/listado_clientes.html';
+                        break; 
+                    }
+
+                    // 3) Activar el enlace cuyo href coincida (igual o por sufijo)
+                    let activado = false;
+                    enlaces.forEach(enlace => {
+                        const h = (enlace.getAttribute('href') || '').toLowerCase();
+                        if (h === hrefObjetivo || h.endsWith(hrefObjetivo)) {
+                            enlace.classList.add('active');
+                            activado = true;
+                        }
+                    });
+ 
+                    // 4) Fallback: si no encontró, intenta por nombre de archivo exacto
+                    if (!activado) {
+                        enlaces.forEach(enlace => {
+                            const h = (enlace.getAttribute('href') || '').toLowerCase();
+                            if (h.endsWith('/' + archivo)) enlace.classList.add('active');
+                        });
+                    }
+                });
+            </script> 
+        </body>
+    </html>
+
+
+

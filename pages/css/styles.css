@@ -1,3 +1,4 @@
+ 
 /* =============================
   FUENTE GLOBAL PARA TODO
   ============================= */
@@ -21,11 +22,23 @@ h1, h2, h3, h4, h5, h6, .card-title { font-weight: 900; }
 /* =============================
   ANIMACIONES Y EFECTOS
   ============================= */
+/* Animación estable: usa píxeles para evitar “recalcular” durante el montaje */
 @keyframes fadeInUpSoft {
-  0% { transform: translateY(3%); opacity: 0; }
-  100% { transform: translateY(0%); opacity: 1; }
+  from { transform: translate3d(0, 16px, 0); opacity: 0; }
+  to   { transform: translate3d(0, 0, 0);   opacity: 1; }
 }
-.fadeInUp-animation { animation: fadeInUpSoft 1.2s ease-out; }
+
+/* Misma clase que ya usas en el HTML */
+.fadeInUp-animation {
+  animation: fadeInUpSoft .6s ease-out both;  /* both = mantiene estado inicial/final */
+  will-change: transform, opacity;            /* pista al compositor (suave) */
+  backface-visibility: hidden;                /* evita pequeños parpadeos */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeInUp-animation { animation-duration: .01ms; animation-iteration-count: 1; }
+}
+
 
 .small-box.active-card { transform: scale(1.02); transition: 0.2s; }
 #card-proyectos.active-card { box-shadow: 0 0px 25px 5px rgba(23,162,184,.7); }
@@ -63,7 +76,7 @@ h1, h2, h3, h4, h5, h6, .card-title { font-weight: 900; }
 }
 .file-item:hover { background: #f8f9fa; }
 .file-thumb { width: 32px; height: 32px; object-fit: cover; border-radius: 4px; margin-right: 10px; }
-.file-icon { font-size: 18px; width: 24px; text-align: center; margin-right: 10px; }
+.file-icon { font-size: 25px; width: 24px; text-align: center; margin-right: 10px; }
 .file-item-name { flex: 1; color: #17a2b8; text-decoration: none; cursor: pointer; }
 .file-item-name:hover { text-decoration: underline; }
 .file-item-changed { font-size: .85rem; color: #6c757d; margin-right: 10px; }
@@ -115,7 +128,7 @@ table.projects tbody tr:hover { background-color: rgba(0,123,255,.05); }
 .table td, .table th { vertical-align: middle; white-space: nowrap; }
 .table .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .table td button { overflow: hidden; text-overflow: ellipsis; }
-.table td { font-size: 13px; padding: 6px 8px; } /* dedupe: padding base */
+.table td { font-size: 13px; padding: 6px 8px; }  
 .table thead th { font-weight: 900; font-size: 14px; text-transform: none; color: #222; }
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th { background-color: #eee; }
 .table thead > tr > th { border-bottom: 1px solid #C2C2C2; padding-bottom: 0; }
@@ -127,9 +140,9 @@ table.projects tbody tr:hover { background-color: rgba(0,123,255,.05); }
   border-bottom: 2px solid #C2C2C2; display: inline-block; padding: 0 5px 5px; font-weight: normal;
 }
 .table thead > tr > th > a span { color: #344644; }
-.table thead > tr > th > a span:after { content: "\f0dc"; font-family: FontAwesome; margin-left: 5px; font-size: .75em; }
-.table thead > tr > th > a.asc span:after { content: "\f0dd"; }
-.table thead > tr > th > a.desc span:after { content: "\f0de"; }
+.table thead > tr > th > a span:after { content: '\f0dc'; font-family: FontAwesome; margin-left: 5px; font-size: .75em; }
+.table thead > tr > th > a.asc span:after { content: '\f0dd'; }
+.table thead > tr > th > a.desc span:after { content: '\f0de'; }
 .table thead > tr > th > a:hover span { text-decoration: none; color: #2bb6a3; border-color: #2bb6a3; }
 .table.table-hover tbody > tr > td { transition: background-color .15s ease-in-out; }
 
@@ -204,7 +217,7 @@ table.projects tbody tr:hover { background-color: rgba(0,123,255,.05); }
 .col-title { min-width: 220px; white-space: normal; vertical-align: top; padding-right: 10px; }
 
 /* Ajustes de celda más grande si se requiere */
-.table td { padding-top: 14px !important; padding-bottom: 14px !important; font-size: 14px; } /* dedupe: regla final dominante */
+.table td { padding-top: 12px !important; padding-bottom: 12px !important; font-size: 14px; } /* dedupe: regla final dominante */
 
 /* Tareas */
 .task-item {
@@ -242,7 +255,7 @@ table.projects tbody tr:hover { background-color: rgba(0,123,255,.05); }
   background-color: #17a2b8 !important; color: #fff !important; font-weight: bold; width: 100%; border-radius: .4rem !important;
 }
 
-.td-fonts { font-size: 16px !important; }
+.td-fonts { font-size: 15px !important; }
 
 /* =============================
   LAYOUT HEIGHT HELPERS
@@ -259,7 +272,7 @@ table.projects tbody tr:hover { background-color: rgba(0,123,255,.05); }
 }
 
 @media (max-width: 1199.98px) {
-  .stack-below-xl > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
+  .stack-below-xl > [class*='col-'] { flex: 0 0 100%; max-width: 100%; }
   .equal-h-xl-420 { height: auto; }
   .equal-h-xl-420 .card-body { overflow: visible; }
   .fp-canvas { height: 260px !important; }
@@ -302,7 +315,7 @@ body { background: #f5f7fb; }
 .small-box:hover .icon { opacity: .35; transform: scale(1.06) translateY(-2px); }
 .small-box .small-box-footer { position: relative; z-index: 1; }
 
-.card { border-radius: var(--radius); box-shadow: var(--shadow); border: 0; }
+.card {  border: 0; }
 .card-header { border-bottom: 1px solid rgba(0,0,0,.06); }
 
 /* Tabla Proyectos */
@@ -329,8 +342,8 @@ body { background: #f5f7fb; }
 .proj-toolbar .form-control.form-control-lg { min-width: 220px; }
 .proj-toolbar .form-control, .proj-toolbar .input-group-text, .proj-toolbar .btn { border-radius: 10px; }
 @media (min-width: 768px) { .proj-toolbar { flex-wrap: nowrap; } .proj-toolbar > * { margin-bottom: 0; } }
-input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
-input[type="search"]::-ms-clear { display: none; width: 0; height: 0; }
+input[type='search']::-webkit-search-cancel-button { -webkit-appearance: none; }
+input[type='search']::-ms-clear { display: none; width: 0; height: 0; }
 .proj-toolbar .input-group.input-group-lg .form-control { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 .proj-toolbar .input-group-append .input-group-text { border-top-left-radius: 0; border-bottom-left-radius: 0; }
 .proj-toolbar .clear-addon { cursor: pointer; user-select: none; background-color: #e9ecef; }
@@ -338,7 +351,7 @@ input[type="search"]::-ms-clear { display: none; width: 0; height: 0; }
 .proj-toolbar .clear-addon.is-disabled { opacity: .5; pointer-events: none; }
 #proj-status-filter:invalid { color: #9aa0a6 !important; }
 #proj-status-filter option { color: #0f172a; }
-#proj-status-filter option[value=""] { color: #9aa0a6; }
+#proj-status-filter option[value=''] { color: #9aa0a6; }
 
 /* =============================
   TABLE OUTLINE + SCROLLER (unificado)
@@ -357,7 +370,7 @@ input[type="search"]::-ms-clear { display: none; width: 0; height: 0; }
   ============================= */
 .card-outline-cut { position: relative; background: #fff; border: none; border-radius: 12px; }
 .card-outline-cut::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   border: 2px dotted #d3d3d3; border-radius: 12px; --cut: 12px;
 }
 .card-outline-cut.card-outline-dashed::before { border-style: dashed; }
@@ -455,7 +468,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   }
 
   .timeline::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 24px;
     top: 0;
@@ -725,7 +738,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 }
 
 #todo-left.is-empty::before {
-  content: "No hay información";
+  content: 'No hay piezas disponibles';
   position: absolute;
   inset: 0;
   display: flex;
@@ -774,7 +787,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 
 /* texto “No hay información” centrado perfectamente */
 #todo-left.drop-target.is-empty::before{
-  content: "No hay información";
+  content: 'No hay piezas disponibles';
   position: absolute;
   inset: 0;
   display: flex;
@@ -998,7 +1011,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 }
 
 /* Cards de la izquierda y derecha (solo dentro de la fila de arrastre) */
-.drag-row > [class*="col-"] > .card {
+.drag-row > [class*='col-'] > .card {
   box-shadow: none !important;                 /* sin sombra */
   border: 1px solid #d1d5db !important;        /* borde gris */
   background: #fff;                             /* fondo blanco */
@@ -1048,14 +1061,14 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 .drag-row{ align-items: stretch; }
 
 /* Las dos cards ocupan la misma altura */
-.drag-row > [class*="col-"] > .card.h-100{
+.drag-row > [class*='col-'] > .card.h-100{
   height: var(--panel-h) !important;
   display: flex;
   flex-direction: column;
 }
 
 /* El body se estira y deja que la lista haga scroll */
-.drag-row > [class*="col-"] > .card.h-100 .card-body{
+.drag-row > [class*='col-'] > .card.h-100 .card-body{
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -1185,7 +1198,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   content: '' !important;
 }
 
-/* Ocultar la "x" (remove-btn) en el clon/elemento durante el drag */
+/* Ocultar la 'x' (remove-btn) en el clon/elemento durante el drag */
 .sortable-chosen .remove-btn,
 .sortable-ghost  .remove-btn,
 .sortable-drag   .remove-btn,
@@ -1281,7 +1294,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   position: relative;
 }
 .todo-list li.anim-drop::after{
-  content:"";
+  content:'';
   position:absolute; inset:-2px;
   border-radius:10px;
   animation: ringPulse .55s ease-out;
@@ -1294,4 +1307,311 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 .todo-list li .item-title.anim-title{
   animation: titleFlash .5s ease-out both;
 }
+
+
+/* === Altura ajustable y misma para ambas imágenes === */
+:root{ --pair-media-h: 200px; }          
+
+.media-frame{
+  position: relative;
+  height: var(--pair-media-h);
+  border: 2px dashed #d3d3d3;
+  border-radius: 12px;
+  background: #fff; 
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+
+/* La fila fuerza cards con la MISMA altura */
+.equalize-pair{ align-items: stretch; }
+.equalize-pair > [class*='col-']{ display: flex; }
+.equalize-pair > [class*='col-'] > .card{
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;    /* todas crecen al mismo alto */
+}
+
+/* evita recorte vertical interno */
+.card .table-responsive{ overflow-y: visible !important; }
+
+/* Responsive: baja un poco la altura en pantallas más pequeñas si quieres */
+@media (max-width: 1400px){
+  :root{ --pair-media-h: 300px; }
+}
+@media (max-width: 992px){
+  :root{ --pair-media-h: 300px; }
+}
+/* Altura única para ambas vistas (ajústala a gusto) */
+:root{ --pair-media-h: 300px; }
+
+/* Igualar altura de las dos cards */
+.equalize-pair{ align-items: stretch; }
+.equalize-pair > [class*='col-']{ display:flex; }
+.equalize-pair > [class*='col-'] > .card{
+  display:flex; flex-direction:column; height:100%;
+}
+
+/* Marco de la vista previa (un solo borde, sin sombras extra) */
+.media-frame{
+  position: relative;
+  height: var(--pair-media-h);
+  padding: 12px;
+  border: 1px solid #e5e7eb;        /* sólido y muy suave para no “chocar” con el punteado del PNG */
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Imagen responsive sin recorte ni deformación */
+.media-frame img{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+}
+
+/* Por si en algún lado quedara un card-outline, neutralízalo dentro del marco */
+.media-frame.card-outline-dashed,
+.media-frame.card-outline-cut{ border:1px solid #e5e7eb !important; box-shadow:none !important; }
+.media-frame.card-outline-dashed::before,
+.media-frame.card-outline-cut::before{ content:none !important; }
+
+/* Responsive opcional */
+@media (max-width: 1400px){ :root{ --pair-media-h: 380px; } }
+@media (max-width: 992px){  :root{ --pair-media-h: 320px; } }
+
+
+/* Scroll horizontal + ancho mínimo por tabla en pantallas pequeñas */
+@media (max-width: 992px){
+  /* activa el scroll en el wrapper */
+  #panel-contactos .table-responsive,
+  #panel-troqueles .table-responsive,
+  #panel-fichas .table-responsive{
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ancho mínimo para que “pida” scroll */
+  #panel-contactos .table,
+  #panel-fichas .table{
+    min-width: 560px;   /* 3 columnas */
+  }
+
+  #panel-troqueles .table{
+    min-width: 1000px;  /* 7 columnas; ajusta si te hace falta */
+  }
+}
+
+/* Uniformar el “marco” de todas las tablas */
+.table-outline{
+  border: 1px solid #dfe7ef;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;              /* 🔑 evita desbordes y deja esquinas iguales */
+}
+
+/* Anula borde externo de .table-bordered para no duplicar línea con el marco */
+.table-outline .table{
+  border: 0 !important;
+}
+
+/* Misma línea superior del header en todas */
+.table-outline .table thead th{
+  border-top: 0;                 /* sin doble borde arriba */
+  /* si quieres, fuerza el mismo color inferior del thead: */
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Evita “doble” borde en los extremos, lo cubre el marco */
+.table-outline .table thead th:first-child,
+.table-outline .table tbody td:first-child { border-left: 0; }
+.table-outline .table thead th:last-child,
+.table-outline .table tbody td:last-child  { border-right: 0; }
+
+
+/* === Botón de la toolbar (más compacto y alineado) === */
+:root { --toolbar-btn-h: 42px; }          /* ajusta a 40–44 si quieres */
+
+.proj-toolbar .proj-btn{
+  height: var(--toolbar-btn-h);
+  padding: 0 .75rem;                      /* horizontal compacto */
+  line-height: 1;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.proj-toolbar .proj-btn i{
+  font-size: 18px;                        /* icono un poco menor */
+}
+
+.proj-toolbar .proj-btn .spinner-border{
+  width: 1rem; height: 1rem;              /* spinner proporcional */
+}
+
+/* === Botón de refrescar: cuadrado y CENTRADO pixel-perfect === */
+:root{
+  --toolbar-btn-size: 44px;   /* ajusta 40–48 si quieres */
+  --toolbar-btn-radius: 10px;
+  --toolbar-icon-size: 18px;
+}
+
+.proj-toolbar .btn.proj-btn{
+  position: relative;                       /* para centrar con absolute */
+  display: inline-block !important;
+  width: var(--toolbar-btn-size) !important;
+  min-width: var(--toolbar-btn-size) !important;
+  height: var(--toolbar-btn-size) !important;
+  padding: 0 !important;                    /* anula padding Bootstrap */
+  line-height: 1 !important;
+  text-align: center !important;
+  border-radius: var(--toolbar-btn-radius);
+  box-sizing: border-box;
+  vertical-align: middle;
+  /* evita que flex lo estire/comprima */
+  flex: 0 0 var(--toolbar-btn-size) !important;
+}
+
+/* Contenido centrado ABSOLUTO (sirve para <i>, spinner, spans, etc.) */
+.proj-toolbar .btn.proj-btn > *,
+.proj-toolbar .btn.proj-btn .icono-actualizar,
+.proj-toolbar .btn.proj-btn .spinner-cargando{
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  line-height: 1 !important;
+}
+
+/* Tamaño del icono */
+.proj-toolbar .btn.proj-btn i{
+  font-size: var(--toolbar-icon-size) !important;
+}
+
+/* Spinner proporcional */
+.proj-toolbar .btn.proj-btn .spinner-border{
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+/* modal bonito sin tocar nada más */
+#modalEditarContacto .modal-content { border-radius: 14px; }
+#modalEditarContacto .modal-header { border-bottom: 0; }
+#modalEditarContacto .modal-footer { border-top: 0; }
+
+/* Skeleton simple para el hueco del sidebar */
+#sidebar-placeholder {
+  min-width: 260px;
+  min-height: 100vh;
+  background: #0f172a; /* o el color de tu sidebar */
+}
+
+  #sidebar-placeholder{
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+  }
+  /* Por si alguna regla cambió el fondo del contenido */
+  .content-wrapper{ background: #f5f7fb !important; }
+  body{ background: #f5f7fb !important; }
+
+.buscador-clientes .form-control { border-right: 0; }
+.buscador-clientes .clear-addon { background: #fff; border-left: 0; cursor: pointer; }
+.buscador-clientes .clear-addon:active { transform: scale(.97); }
+
+.img-350 {
+  height: 350px;   /* alto fijo */
+  width: auto;     /* mantiene proporción */
+  max-width: 100%; /* no desborda en pantallas pequeñas */
+}
+
+/* Alto fijo de la imagen sin usar img-fluid */
+.img-350 { height: 350px; width: auto; max-width: 100%; }
+
+/* (opcional) si ves un “salto” por el header, puedes añadir un padding-top pequeño al body de la card en pantallas altas */
+@media (min-height: 700px) {
+  .card .card-body.content { padding-top: 1rem; }
+}
+
+.modal { z-index: 2000; }
+.modal-backdrop { z-index: 1990; }
+
+/* Alto único para ambos campos (ajústalo a tu gusto) */
+:root { --task-box-h: 100px; }
+
+/* Textarea de la izquierda */
+.task-textarea { height: var(--task-box-h) !important; }
+
+/* Contenedor de arrastre */
+.file-drop-area{
+  border: 2px dashed #d7dbe0;
+  border-radius: 8px;
+  height: var(--task-box-h);
+  display: flex;                 /* centra vertical y horizontal */
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  padding: 8px 12px;
+}
+
+/* Efecto al arrastrar */
+.file-drop-area.dragover{
+  border-color:#0ea5e9;
+  background:#f0f9ff;
+}
+
+/* Centrar icono y texto en columna */
+.file-drop-area > .text-center{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin:0;                      /* por si el p tiene márgenes */
+}
+
+/* Tamaño del icono */
+.file-drop-area .file-icon i{
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* Ícono un poco más grande */
+.file-drop-area .file-icon i{
+  font-size: 32px !important;   /* antes 22px */
+  line-height: 1;
+}
+
+/* Scroll horizontal suave en cualquier ancho */
+.table-h-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* inercia en móviles */
+}
+
+/* Evita que el contenido salte de línea */
+.table-nowrap th,
+.table-nowrap td {
+  white-space: nowrap;
+}
+
+/* Ajuste de anchos mínimos por tabla */
+.table-min-contactos { min-width: 600px; }    /* Nombre, Email, Teléfono, Acciones */
+.table-min-troqueles { min-width: 1300px; }    /* ~7 columnas */
+.table-min-fichas    { min-width: 600px; }    /* #Ficha, Código, ID */
+.table-min-envios    { min-width: 1600px; }   /* 14 columnas */
 

@@ -1,54 +1,73 @@
+
+
 <!DOCTYPE html>
   <html lang='en'>
+
     <head> 
       <meta charset='utf-8'>
       <meta name='viewport' content='width=device-width, initial-scale=1'>
       <title>Admin Tareas</title> 
- 
+
       <link rel='stylesheet' href='/pages/css/styles.css'>
       <link rel='stylesheet' href='../dist/css/adminlte.min.css'>
       <link href='https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap' rel='stylesheet'>
       <script src='https://use.fontawesome.com/releases/v6.3.0/js/all.js' crossorigin='anonymous'></script>
-  
     </head>
-    <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'>
     
+    <body class='hold-transition sidebar-mini layout-fixed layout-footer-fixed'>
       <div class='wrapper'>
         <div id='loaderContainer' class='loader-overlay'>
           <div class='loader'></div>
         </div>
         <div id='sidebar-placeholder'></div> 
         
+        <!-- Navbar -->
         <app-navbar
-          logout-url=''
-          tooltip-text='Cerrar sesión'
-          placement='bottom'
-          icon-size='fa-2x'
-          menu-icon-size='fa-2x'
-          clear-keys='tab-activo, ultimaCardActiva'>
+            logout-url=''
+            tooltip-text='Cerrar sesión'
+            placement='bottom'
+            icon-size='fa-2x'
+            menu-icon-size='fa-2x'
+            clear-keys='tab-activo, ultimaCardActiva'>
         </app-navbar>
 
-        <div class='content-wrapper'>
-          <div class='nav navbar navbar-expand navbar-white navbar-light border-bottom p-0'></div>
-          <div class='tab-content'>
-            <div class='tab-empty'>
-              <h2 class='display text-center mt-3 mb-3'>Petición</h2>
-            </div> 
-          </div>
-        </div> 
-        
+        <!-- ====== CONTENIDO ====== -->
+        <div class='content-wrapper d-flex flex-column' >
+          <section class='content-header'>
+            <div class='container-fluid'>
+              <div class='row'>
+                <div class='col-sm-6'>
+                  <h1>Petición</h1>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class='content flex-fill d-flex'>
+            <div class='card ml-3 mr-3 w-100 h-100 d-flex'>
+              <div class='card-body content fadeInUp-animation d-flex flex-column justify-content-start'>
+                 
+              <!-- separador opcional -->
+              <div class='my-3'></div> 
+              <!-- imagen centrada y a 350px -->
+              <div class='row no-gutters flex-grow-1 pb-5'>
+                <div class='col-12 d-flex justify-content-center align-items-center'>
+                  <img src='/assets/document.png' alt='Search...' class='img-350 d-block'>
+                </div>
+              </div>
+              </div> 
+            </div>
+          </section> 
+        </div>  
         <footer class='main-footer'>
           <strong>Cartonajes Bernabeú.</strong>
-        </footer> 
-        <aside class='control-sidebar control-sidebar-dark'></aside> 
+        </footer>
+        <aside class='control-sidebar control-sidebar-dark'></aside>
       </div>                                                                          
-  
+    
       <script src='../plugins/jquery/jquery.min.js'></script> 
       <script src='../plugins/bootstrap/js/bootstrap.bundle.min.js'></script> 
-      <script src='../dist/js/adminlte.min.js'></script> 
-
-      <!-- Tareas Scripts --> 
-      <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script> 
+      <script src='../dist/js/adminlte.min.js'></script>  
+      <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
       <script src='/pages/js/scripts.js'></script>
 
       <script>
@@ -57,13 +76,13 @@
 
           // Después de insertar el HTML, activa el enlace correcto
           const currentPath = window.location.pathname; 
-          const links = document.querySelectorAll('#sidebar-placeholder .nav-link');
-          links.forEach(link => { 
+          const links = document.querySelectorAll('#sidebar-placeholder .nav-link'); 
+          links.forEach(link => {
             link.getAttribute('href') === currentPath 
               ? link.classList.add('active') 
               : link.classList.remove('active'); 
           });
         });
-      </script>
+      </script> 
     </body>
   </html>
